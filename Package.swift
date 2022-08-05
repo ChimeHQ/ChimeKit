@@ -12,7 +12,7 @@ let package = Package(
         .package(url: "https://github.com/ChimeHQ/ConcurrencyPlus", from: "0.2.3"),
         .package(url: "https://github.com/Flight-School/AnyCodable", from: "0.6.3"),
         .package(url: "https://github.com/ChimeHQ/ProcessEnv", from: "0.3.0"),
-        .package(url: "https://github.com/ChimeHQ/LanguageClient.", from: "0.2.3"),
+        .package(url: "https://github.com/ChimeHQ/LanguageClient", from: "0.2.3"),
         .package(url: "https://github.com/ChimeHQ/LanguageServerProtocol.", from: "0.7.3"),
     ],
     targets: [
