@@ -15,7 +15,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			yiyIEvmwXLLJHy3Vs7KUiNgSsGSYzKfHQFsaZjyMrfM=
+			c4/pNoOoPOY5ZqmqmwGMHsXQIZLt8u+XZhfn8A3JoLI=
 			</data>
 		</dict>
 		<key>Headers/ChimeKit.h</key>
@@ -25,74 +25,88 @@
 			3q2ih2FgTVKP8M30zbYr096RrEuf35ZBDkhXS+PjzWk=
 			</data>
 		</dict>
+		<key>Modules/ChimeKit.swiftmodule/Project/arm64-apple-macos.swiftsourceinfo</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			+ipaw/JuN4j6C8N99DAhN5PfJXSti6GMHFYns97u/DQ=
+			</data>
+		</dict>
+		<key>Modules/ChimeKit.swiftmodule/Project/x86_64-apple-macos.swiftsourceinfo</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			U7Cg3anGfDqFCpai1vX6gR3ZI53RSZ/vA7M5Gl8VB+c=
+			</data>
+		</dict>
 		<key>Modules/ChimeKit.swiftmodule/arm64-apple-macos.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			x13EZkqDmiFXO4D6Cp8/unW5uL+mwiHLMldkpOx5lR4=
+			gnpWEQpbAXPT1oXXxeB+yc9hNrJsX54HPlQJPR+zb64=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/arm64-apple-macos.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			phP59m2NcGrOCIMKqpAuniRbm0TcREmC7y+ngW0ObSM=
+			CIlVqNLjCyID1zIZvME3NZ1lUkrqEOsE8bMkmatfJs0=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/arm64-apple-macos.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Qrlo8hRefa0QedEujscRrgFsdFdPQU7Jhkc+d9V87R8=
+			J/0Tbt7deHOwlpB1cWSyJuLKof9pQlq8wjdzfmek4bc=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/arm64-apple-macos.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			phP59m2NcGrOCIMKqpAuniRbm0TcREmC7y+ngW0ObSM=
+			CIlVqNLjCyID1zIZvME3NZ1lUkrqEOsE8bMkmatfJs0=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/arm64-apple-macos.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			/p3VX6SCACA0138BT+M2q4oZwIeoDp3OZpXzLzLiAGY=
+			Yf9k7m0cbEWCRtP0FGQiK/Z+WVTePC7xVuJ4tyFffNw=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/x86_64-apple-macos.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			x13EZkqDmiFXO4D6Cp8/unW5uL+mwiHLMldkpOx5lR4=
+			gnpWEQpbAXPT1oXXxeB+yc9hNrJsX54HPlQJPR+zb64=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/x86_64-apple-macos.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			fsFSxzUyHmS38dMknc3lQ7ffpo4q8BNp+a0wf4Me8ys=
+			Q1B7ypwbcrW7phJSprpZcNQ90gm88Tny54HMmLU2daA=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/x86_64-apple-macos.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ZkDJ0sprn37cDVhxijmCAL/G9oQZ65i1YAUKBBKuE94=
+			QLGVQJp2iNpBWzzigGlQq5HXAAO3XtfSfdJ2pGZ+gYw=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/x86_64-apple-macos.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			fsFSxzUyHmS38dMknc3lQ7ffpo4q8BNp+a0wf4Me8ys=
+			Q1B7ypwbcrW7phJSprpZcNQ90gm88Tny54HMmLU2daA=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/x86_64-apple-macos.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			3P8sCc18U5JsCteCxVhLtSxiwj37JFw+SLCJUgbVsgM=
+			1eCcfVBkRtMK7OZuDK5r6AXImSVsOabcuk8/6o2aGS0=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -113,7 +127,7 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			LUis4uj6Rqtm2T5M7u41AR3lFRo=
+			HC3wucusVz0b+vNm7604DccOb74=
 			</data>
 			<key>requirement</key>
 			<string>identifier "com.chimehq.ChimeKit.ProcessService" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: Matthew Massicotte (963AZ7H6D8)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>

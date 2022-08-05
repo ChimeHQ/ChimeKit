@@ -229,6 +229,8 @@ using UInt = size_t;
 #if __has_warning("-Watimport-in-framework-header")
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
+@import Foundation;
+@import ObjectiveC;
 #endif
 
 #endif
@@ -249,6 +251,185 @@ using UInt = size_t;
 #endif
 
 #if defined(__OBJC__)
+
+SWIFT_CLASS_NAMED("CodingCombinedTextContent")
+@interface CodingCombinedTextContent : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class NSCoder;
+
+@interface CodingCombinedTextContent (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+
+SWIFT_CLASS_NAMED("CodingCombinedTextPosition")
+@interface CodingCombinedTextPosition : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface CodingCombinedTextPosition (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+
+SWIFT_CLASS_NAMED("CodingCombinedTextRange")
+@interface CodingCombinedTextRange : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface CodingCombinedTextRange (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+
+SWIFT_CLASS_NAMED("CodingDiagnostic")
+@interface CodingDiagnostic : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface CodingDiagnostic (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+
+SWIFT_CLASS_NAMED("CodingProjectContext")
+@interface CodingProjectContext : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface CodingProjectContext (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+
+SWIFT_CLASS_NAMED("CodingTextChange")
+@interface CodingTextChange : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface CodingTextChange (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+
+SWIFT_CLASS_NAMED("CodingTextRange")
+@interface CodingTextRange : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface CodingTextRange (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+@class NSData;
+
+/// Scene Host XPC API
+SWIFT_PROTOCOL("_TtP8ChimeKit29ExtensionSceneHostXPCProtocol_")
+@protocol ExtensionSceneHostXPCProtocol
+- (void)textBoundsWithXpcRanges:(NSData * _Nonnull)xpcRanges version:(NSInteger)version reply:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))reply;
+@end
+
+
+/// Extension Scene XPC API
+SWIFT_PROTOCOL("_TtP8ChimeKit25ExtensionSceneXPCProtocol_")
+@protocol ExtensionSceneXPCProtocol
+- (void)setActiveContextWithProject:(CodingProjectContext * _Nullable)xpcProjectContext document:(NSData * _Nonnull)xpcDocumentContext reply:(void (^ _Nonnull)(NSError * _Nullable))reply;
+@end
+
+@class NSURL;
+@class NSString;
+
+/// Extension XPC API
+SWIFT_PROTOCOL("_TtP8ChimeKit20ExtensionXPCProtocol_")
+@protocol ExtensionXPCProtocol
+- (void)didOpenProjectWith:(CodingProjectContext * _Nonnull)xpcContext bookmarkData:(NSArray<NSData *> * _Nonnull)bookmarkData;
+- (void)willCloseProjectWith:(CodingProjectContext * _Nonnull)xpcContext;
+- (void)didOpenDocumentWith:(NSData * _Nonnull)xpcContext bookmarkData:(NSArray<NSData *> * _Nonnull)bookmarkData completionHandler:(void (^ _Nonnull)(NSURL * _Nullable, NSError * _Nullable))completionHandler;
+- (void)didChangeDocumentContextFrom:(NSData * _Nonnull)xpcOldContext to:(NSData * _Nonnull)xpcNewContext completionHandler:(void (^ _Nonnull)(NSError * _Nullable))completionHandler;
+- (void)willCloseDocumentWith:(NSData * _Nonnull)xpcContext;
+- (void)willApplyChangeWith:(NSData * _Nonnull)xpcContext xpcChange:(NSData * _Nonnull)xpcChange;
+- (void)didApplyChangeWith:(NSData * _Nonnull)xpcContext xpcChange:(NSData * _Nonnull)xpcChange;
+- (void)willSaveWith:(NSData * _Nonnull)xpcContext completionHandler:(void (^ _Nonnull)(NSError * _Nullable))completionHandler;
+- (void)didSaveWith:(NSData * _Nonnull)xpcContext completionHandler:(void (^ _Nonnull)(NSError * _Nullable))completionHandler;
+- (void)completionsFor:(NSData * _Nonnull)xpcContext at:(CodingCombinedTextPosition * _Nonnull)xpcPosition xpcTrigger:(NSString * _Nullable)xpcTrigger completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)formattingFor:(NSData * _Nonnull)xpcContext for:(NSData * _Nonnull)xpcRanges completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)organizeImportsFor:(NSData * _Nonnull)xpcContext completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)semanticDetailsFor:(NSData * _Nonnull)xpcContext at:(CodingCombinedTextPosition * _Nonnull)xpcPosition completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)findDefinitionFor:(NSData * _Nonnull)xpcContext at:(CodingCombinedTextPosition * _Nonnull)xpcPosition completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)tokensFor:(NSData * _Nonnull)xpcContext in:(CodingCombinedTextRange * _Nonnull)xpcRange completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)symbolsForProject:(CodingProjectContext * _Nonnull)xpcContext matching:(NSString * _Nonnull)query completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)symbolsForDocument:(NSData * _Nonnull)xpcContext matching:(NSString * _Nonnull)query completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+@end
+
+@class NSUUID;
+@class NSNumber;
+
+/// Host XPC API
+SWIFT_PROTOCOL("_TtP8ChimeKit15HostXPCProtocol_")
+@protocol HostXPCProtocol
+- (void)textContentFor:(NSUUID * _Nonnull)id reply:(void (^ _Nonnull)(NSString * _Nullable, NSInteger, NSError * _Nullable))reply;
+- (void)textContentFor:(NSUUID * _Nonnull)id xpcRange:(CodingTextRange * _Nonnull)xpcRange reply:(void (^ _Nonnull)(CodingCombinedTextContent * _Nullable, NSError * _Nullable))reply;
+- (void)textBoundsFor:(NSUUID * _Nonnull)id xpcRanges:(NSData * _Nonnull)xpcRanges version:(NSInteger)version reply:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))reply;
+- (void)publishDiagnostics:(NSData * _Nonnull)xpcDiagnostics for:(NSURL * _Nonnull)documentURL version:(NSNumber * _Nullable)version;
+- (void)invalidateTokensFor:(NSUUID * _Nonnull)documentId in:(NSData * _Nonnull)xpcTarget;
+- (void)documentServiceConfigurationChangedFor:(NSUUID * _Nonnull)documentId to:(NSData * _Nonnull)xpcConfiguration;
+@end
+
+
+
+
+SWIFT_PROTOCOL("_TtP8ChimeKit24ProcessClientXPCProtocol_")
+@protocol ProcessClientXPCProtocol
+- (void)launchedProcessWith:(NSUUID * _Nonnull)identifier stdoutData:(NSData * _Nonnull)stdoutData;
+- (void)launchedProcessWith:(NSUUID * _Nonnull)identifier stderrData:(NSData * _Nonnull)stderrData;
+- (void)launchedProcessWith:(NSUUID * _Nonnull)identifier terminated:(NSInteger)terminated;
+@end
+
+
+SWIFT_PROTOCOL("_TtP8ChimeKit24ProcessServerXPCProtocol_")
+@protocol ProcessServerXPCProtocol
+- (void)launchProcessAt:(NSURL * _Nonnull)url arguments:(NSArray<NSString *> * _Nonnull)arguments environment:(NSDictionary<NSString *, NSString *> * _Nullable)environment currentDirectoryURL:(NSURL * _Nullable)currentDirectoryURL completionHandler:(void (^ _Nonnull)(NSUUID * _Nullable, NSError * _Nullable))completionHandler;
+- (void)terminateProcessWith:(NSUUID * _Nonnull)identifier completionHandler:(void (^ _Nonnull)(NSError * _Nullable))completionHandler;
+- (void)writeDataToStdin:(NSData * _Nonnull)data for:(NSUUID * _Nonnull)identifier completionHandler:(void (^ _Nonnull)(NSError * _Nullable))completionHandler;
+- (void)captureUserEnvironmentWithCompletionHandler:(void (^ _Nonnull)(NSDictionary<NSString *, NSString *> * _Nullable, NSError * _Nullable))completionHandler;
+@end
+
 #endif
 #if defined(__cplusplus)
 #endif
@@ -488,6 +669,8 @@ using UInt = size_t;
 #if __has_warning("-Watimport-in-framework-header")
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
+@import Foundation;
+@import ObjectiveC;
 #endif
 
 #endif
@@ -508,6 +691,185 @@ using UInt = size_t;
 #endif
 
 #if defined(__OBJC__)
+
+SWIFT_CLASS_NAMED("CodingCombinedTextContent")
+@interface CodingCombinedTextContent : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class NSCoder;
+
+@interface CodingCombinedTextContent (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+
+SWIFT_CLASS_NAMED("CodingCombinedTextPosition")
+@interface CodingCombinedTextPosition : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface CodingCombinedTextPosition (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+
+SWIFT_CLASS_NAMED("CodingCombinedTextRange")
+@interface CodingCombinedTextRange : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface CodingCombinedTextRange (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+
+SWIFT_CLASS_NAMED("CodingDiagnostic")
+@interface CodingDiagnostic : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface CodingDiagnostic (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+
+SWIFT_CLASS_NAMED("CodingProjectContext")
+@interface CodingProjectContext : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface CodingProjectContext (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+
+SWIFT_CLASS_NAMED("CodingTextChange")
+@interface CodingTextChange : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface CodingTextChange (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+
+SWIFT_CLASS_NAMED("CodingTextRange")
+@interface CodingTextRange : NSObject
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+
+@interface CodingTextRange (SWIFT_EXTENSION(ChimeKit)) <NSSecureCoding>
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) BOOL supportsSecureCoding;)
++ (BOOL)supportsSecureCoding SWIFT_WARN_UNUSED_RESULT;
+- (void)encodeWithCoder:(NSCoder * _Nonnull)coder;
+- (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder;
+@end
+
+@class NSData;
+
+/// Scene Host XPC API
+SWIFT_PROTOCOL("_TtP8ChimeKit29ExtensionSceneHostXPCProtocol_")
+@protocol ExtensionSceneHostXPCProtocol
+- (void)textBoundsWithXpcRanges:(NSData * _Nonnull)xpcRanges version:(NSInteger)version reply:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))reply;
+@end
+
+
+/// Extension Scene XPC API
+SWIFT_PROTOCOL("_TtP8ChimeKit25ExtensionSceneXPCProtocol_")
+@protocol ExtensionSceneXPCProtocol
+- (void)setActiveContextWithProject:(CodingProjectContext * _Nullable)xpcProjectContext document:(NSData * _Nonnull)xpcDocumentContext reply:(void (^ _Nonnull)(NSError * _Nullable))reply;
+@end
+
+@class NSURL;
+@class NSString;
+
+/// Extension XPC API
+SWIFT_PROTOCOL("_TtP8ChimeKit20ExtensionXPCProtocol_")
+@protocol ExtensionXPCProtocol
+- (void)didOpenProjectWith:(CodingProjectContext * _Nonnull)xpcContext bookmarkData:(NSArray<NSData *> * _Nonnull)bookmarkData;
+- (void)willCloseProjectWith:(CodingProjectContext * _Nonnull)xpcContext;
+- (void)didOpenDocumentWith:(NSData * _Nonnull)xpcContext bookmarkData:(NSArray<NSData *> * _Nonnull)bookmarkData completionHandler:(void (^ _Nonnull)(NSURL * _Nullable, NSError * _Nullable))completionHandler;
+- (void)didChangeDocumentContextFrom:(NSData * _Nonnull)xpcOldContext to:(NSData * _Nonnull)xpcNewContext completionHandler:(void (^ _Nonnull)(NSError * _Nullable))completionHandler;
+- (void)willCloseDocumentWith:(NSData * _Nonnull)xpcContext;
+- (void)willApplyChangeWith:(NSData * _Nonnull)xpcContext xpcChange:(NSData * _Nonnull)xpcChange;
+- (void)didApplyChangeWith:(NSData * _Nonnull)xpcContext xpcChange:(NSData * _Nonnull)xpcChange;
+- (void)willSaveWith:(NSData * _Nonnull)xpcContext completionHandler:(void (^ _Nonnull)(NSError * _Nullable))completionHandler;
+- (void)didSaveWith:(NSData * _Nonnull)xpcContext completionHandler:(void (^ _Nonnull)(NSError * _Nullable))completionHandler;
+- (void)completionsFor:(NSData * _Nonnull)xpcContext at:(CodingCombinedTextPosition * _Nonnull)xpcPosition xpcTrigger:(NSString * _Nullable)xpcTrigger completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)formattingFor:(NSData * _Nonnull)xpcContext for:(NSData * _Nonnull)xpcRanges completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)organizeImportsFor:(NSData * _Nonnull)xpcContext completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)semanticDetailsFor:(NSData * _Nonnull)xpcContext at:(CodingCombinedTextPosition * _Nonnull)xpcPosition completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)findDefinitionFor:(NSData * _Nonnull)xpcContext at:(CodingCombinedTextPosition * _Nonnull)xpcPosition completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)tokensFor:(NSData * _Nonnull)xpcContext in:(CodingCombinedTextRange * _Nonnull)xpcRange completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)symbolsForProject:(CodingProjectContext * _Nonnull)xpcContext matching:(NSString * _Nonnull)query completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+- (void)symbolsForDocument:(NSData * _Nonnull)xpcContext matching:(NSString * _Nonnull)query completionHandler:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))completionHandler;
+@end
+
+@class NSUUID;
+@class NSNumber;
+
+/// Host XPC API
+SWIFT_PROTOCOL("_TtP8ChimeKit15HostXPCProtocol_")
+@protocol HostXPCProtocol
+- (void)textContentFor:(NSUUID * _Nonnull)id reply:(void (^ _Nonnull)(NSString * _Nullable, NSInteger, NSError * _Nullable))reply;
+- (void)textContentFor:(NSUUID * _Nonnull)id xpcRange:(CodingTextRange * _Nonnull)xpcRange reply:(void (^ _Nonnull)(CodingCombinedTextContent * _Nullable, NSError * _Nullable))reply;
+- (void)textBoundsFor:(NSUUID * _Nonnull)id xpcRanges:(NSData * _Nonnull)xpcRanges version:(NSInteger)version reply:(void (^ _Nonnull)(NSData * _Nullable, NSError * _Nullable))reply;
+- (void)publishDiagnostics:(NSData * _Nonnull)xpcDiagnostics for:(NSURL * _Nonnull)documentURL version:(NSNumber * _Nullable)version;
+- (void)invalidateTokensFor:(NSUUID * _Nonnull)documentId in:(NSData * _Nonnull)xpcTarget;
+- (void)documentServiceConfigurationChangedFor:(NSUUID * _Nonnull)documentId to:(NSData * _Nonnull)xpcConfiguration;
+@end
+
+
+
+
+SWIFT_PROTOCOL("_TtP8ChimeKit24ProcessClientXPCProtocol_")
+@protocol ProcessClientXPCProtocol
+- (void)launchedProcessWith:(NSUUID * _Nonnull)identifier stdoutData:(NSData * _Nonnull)stdoutData;
+- (void)launchedProcessWith:(NSUUID * _Nonnull)identifier stderrData:(NSData * _Nonnull)stderrData;
+- (void)launchedProcessWith:(NSUUID * _Nonnull)identifier terminated:(NSInteger)terminated;
+@end
+
+
+SWIFT_PROTOCOL("_TtP8ChimeKit24ProcessServerXPCProtocol_")
+@protocol ProcessServerXPCProtocol
+- (void)launchProcessAt:(NSURL * _Nonnull)url arguments:(NSArray<NSString *> * _Nonnull)arguments environment:(NSDictionary<NSString *, NSString *> * _Nullable)environment currentDirectoryURL:(NSURL * _Nullable)currentDirectoryURL completionHandler:(void (^ _Nonnull)(NSUUID * _Nullable, NSError * _Nullable))completionHandler;
+- (void)terminateProcessWith:(NSUUID * _Nonnull)identifier completionHandler:(void (^ _Nonnull)(NSError * _Nullable))completionHandler;
+- (void)writeDataToStdin:(NSData * _Nonnull)data for:(NSUUID * _Nonnull)identifier completionHandler:(void (^ _Nonnull)(NSError * _Nullable))completionHandler;
+- (void)captureUserEnvironmentWithCompletionHandler:(void (^ _Nonnull)(NSDictionary<NSString *, NSString *> * _Nullable, NSError * _Nullable))completionHandler;
+@end
+
 #endif
 #if defined(__cplusplus)
 #endif
