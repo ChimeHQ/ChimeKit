@@ -157,7 +157,7 @@ public actor LSPService {
   #endif
   public typealias DocumentFilter = (ChimeKit.DocumentContext) -> Swift.Bool
   #if compiler(>=5.3) && $AsyncAwait
-  public init(host: ChimeKit.HostProtocol, serverOptions: AnyCodable.AnyCodable?, transformers: ChimeKit.LSPTransformers = .init(), documentFilter: (ChimeKit.DocumentContext) -> Swift.Bool, executionParamsProvider: @escaping ChimeKit.LSPService.ExecutionParamsProvider)
+  public init(host: ChimeKit.HostProtocol, serverOptions: Swift.Codable = [:] as [String: String], transformers: ChimeKit.LSPTransformers = .init(), documentFilter: (ChimeKit.DocumentContext) -> Swift.Bool, executionParamsProvider: @escaping ChimeKit.LSPService.ExecutionParamsProvider)
   #endif
   @objc deinit
   @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)

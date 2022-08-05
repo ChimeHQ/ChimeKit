@@ -1910,17 +1910,9 @@
               },
               {
                 "kind": "TypeNominal",
-                "name": "Optional",
-                "printedName": "AnyCodable.AnyCodable?",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "AnyCodable",
-                    "printedName": "AnyCodable.AnyCodable",
-                    "usr": "s:10AnyCodableAAV"
-                  }
-                ],
-                "usr": "s:Sq"
+                "name": "ProtocolComposition",
+                "printedName": "Swift.Decodable & Swift.Encodable",
+                "hasDefaultArg": true
               },
               {
                 "kind": "TypeNominal",
@@ -1971,8 +1963,8 @@
               }
             ],
             "declKind": "Constructor",
-            "usr": "s:8ChimeKit10LSPServiceC4host13serverOptions12transformers14documentFilter23executionParamsProviderAcA12HostProtocol_p_10AnyCodableAJVSgAA15LSPTransformersVSbAA15DocumentContextVXESo6NSTaskC10ProcessEnvE19ExecutionParametersVyYaKctcfc",
-            "mangledName": "$s8ChimeKit10LSPServiceC4host13serverOptions12transformers14documentFilter23executionParamsProviderAcA12HostProtocol_p_10AnyCodableAJVSgAA15LSPTransformersVSbAA15DocumentContextVXESo6NSTaskC10ProcessEnvE19ExecutionParametersVyYaKctcfc",
+            "usr": "s:8ChimeKit10LSPServiceC4host13serverOptions12transformers14documentFilter23executionParamsProviderAcA12HostProtocol_p_Se_SEpAA15LSPTransformersVSbAA15DocumentContextVXESo6NSTaskC10ProcessEnvE19ExecutionParametersVyYaKctcfc",
+            "mangledName": "$s8ChimeKit10LSPServiceC4host13serverOptions12transformers14documentFilter23executionParamsProviderAcA12HostProtocol_p_Se_SEpAA15LSPTransformersVSbAA15DocumentContextVXESo6NSTaskC10ProcessEnvE19ExecutionParametersVyYaKctcfc",
             "moduleName": "ChimeKit",
             "declAttributes": [
               "AccessControl"
@@ -28482,21 +28474,28 @@
     {
       "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/Modules\/LSP\/LSPService.swift",
       "kind": "Dictionary",
-      "offset": 1124,
+      "offset": 845,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/Modules\/LSP\/LSPService.swift",
+      "kind": "Dictionary",
+      "offset": 1150,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/Modules\/LSP\/LSPService.swift",
       "kind": "StringLiteral",
-      "offset": 1270,
+      "offset": 1296,
       "length": 22,
       "value": "\"com.chimehq.ChimeKit\""
     },
     {
       "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/Modules\/LSP\/LSPService.swift",
       "kind": "StringLiteral",
-      "offset": 1304,
+      "offset": 1330,
       "length": 12,
       "value": "\"LSPService\""
     },
@@ -29027,29 +29026,36 @@
     },
     {
       "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/Modules\/LSP\/LSPProjectService.swift",
+      "kind": "Dictionary",
+      "offset": 626,
+      "length": 3,
+      "value": "[]"
+    },
+    {
+      "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/Modules\/LSP\/LSPProjectService.swift",
       "kind": "BooleanLiteral",
-      "offset": 796,
+      "offset": 816,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/Modules\/LSP\/LSPProjectService.swift",
       "kind": "Dictionary",
-      "offset": 934,
+      "offset": 954,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/Modules\/LSP\/LSPProjectService.swift",
       "kind": "StringLiteral",
-      "offset": 1078,
+      "offset": 1098,
       "length": 18,
       "value": "\"com.chimehq.Edit\""
     },
     {
       "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/Modules\/LSP\/LSPProjectService.swift",
       "kind": "StringLiteral",
-      "offset": 1108,
+      "offset": 1128,
       "length": 22,
       "value": "\"ProjectLSPConnection\""
     },
