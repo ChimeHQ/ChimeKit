@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/ChimeHQ/LanguageServerProtocol.", from: "0.7.3"),
     ],
     targets: [
-        .target(name: "ChimeKitWrapper", dependencies: ["ConcurrencyPlus", "ChimeKit"]),
+        .target(name: "ChimeKitWrapper", dependencies: ["ConcurrencyPlus", "AnyCodable", "ProcessEnv", "LanguageClient", "LanguageServerProtocol", "ChimeKit"]),
         .binaryTarget(name: "ChimeKit", path: "ChimeKit.xcframework"),
     ]
 )
