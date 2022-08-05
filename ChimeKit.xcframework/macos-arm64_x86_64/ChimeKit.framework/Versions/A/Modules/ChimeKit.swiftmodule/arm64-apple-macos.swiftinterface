@@ -1,0 +1,166 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.7 (swiftlang-5.7.0.123.7 clang-1400.0.29.50)
+// swift-module-flags: -target arm64-apple-macos11.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name ChimeKit
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+@_exported import ChimeKit
+import Combine
+import ConcurrencyPlus
+@_exported import ExtensionInterface
+import ExtensionKit
+import ExtensionXPCInterface
+import Foundation
+@_exported import LSP
+import LineTracker
+import ProcessEnv
+import ProcessServiceInterface
+import Swift
+import SwiftUI
+import _Concurrency
+import _StringProcessing
+import os.log
+import os
+public enum ChimeExtensionPoint : Swift.String, Swift.CaseIterable, Swift.Hashable, Swift.Codable, Swift.Sendable {
+  case nonui
+  case sidebarUI
+  case documentSyncedUI
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [ChimeKit.ChimeExtensionPoint]
+  public typealias RawValue = Swift.String
+  public static var allCases: [ChimeKit.ChimeExtensionPoint] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public protocol ChimeBaseExtension : ExtensionInterface.ExtensionProtocol {
+  var hostApp: ExtensionInterface.HostProtocol? { get set }
+}
+public struct ChimeExtensionConfiguration<Extension> : ExtensionFoundation.AppExtensionConfiguration where Extension : ChimeKit.ChimeBaseExtension {
+  public init(_ appExtension: Extension)
+  public func accept(connection: Foundation.NSXPCConnection) -> Swift.Bool
+}
+@available(macOS 13.0, *)
+public protocol ChimeExtension : ChimeKit.ChimeBaseExtension, ExtensionFoundation.AppExtension {
+}
+@available(macOS 13.0, *)
+extension ChimeKit.ChimeExtension {
+  public var configuration: ChimeKit.ChimeExtensionConfiguration<Self> {
+    get
+  }
+}
+@available(macOS 13.0, *)
+public protocol SidebarChimeUIExtension : ChimeKit.ChimeBaseExtension, ExtensionFoundation.AppExtension {
+  associatedtype Body : SwiftUI.View
+  var body: Self.Body { get }
+}
+@available(macOS 13.0, *)
+extension ChimeKit.SidebarChimeUIExtension {
+  public var configuration: ExtensionKit.AppExtensionSceneConfiguration {
+    get
+  }
+}
+@available(macOS 13.0, *)
+public protocol DocumentSyncedChimeUIExtension : ChimeKit.ChimeBaseExtension, ExtensionFoundation.AppExtension {
+  associatedtype Body : SwiftUI.View
+  var body: Self.Body { get }
+}
+@available(macOS 13.0, *)
+extension ChimeKit.DocumentSyncedChimeUIExtension {
+  public var configuration: ExtensionKit.AppExtensionSceneConfiguration {
+    get
+  }
+}
+public enum ChimeExtensionSceneName : Swift.String, Swift.CaseIterable, Swift.Hashable, Swift.Codable, Swift.Sendable {
+  case sidebar
+  case documentSynced
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [ChimeKit.ChimeExtensionSceneName]
+  public typealias RawValue = Swift.String
+  public static var allCases: [ChimeKit.ChimeExtensionSceneName] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@available(macOS 13.0, *)
+public protocol ChimeExtensionScene : ExtensionKit.AppExtensionScene {
+}
+@available(macOS 13.0, *)
+public struct SidebarScene<Content> : ChimeKit.ChimeExtensionScene where Content : SwiftUI.View {
+  public init(content: @escaping () -> Content)
+  public var body: some ExtensionKit.AppExtensionScene {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s8ChimeKit12SidebarSceneV4bodyQrvp", 0) __<Content>
+}
+@available(macOS 13.0, *)
+public struct DocumentSyncedScene<Content> : ChimeKit.ChimeExtensionScene where Content : SwiftUI.View {
+  public init(content: @escaping () -> Content)
+  public var body: some ExtensionKit.AppExtensionScene {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s8ChimeKit19DocumentSyncedSceneV4bodyQrvp", 0) __<Content>
+}
+public typealias TextRange = ExtensionInterface.TextRange
+public typealias LineRelativeTextPosition = LineTracker.LineRelativeTextPosition
+public typealias LineRelativeTextRange = LineTracker.LineRelativeTextRange
+@_hasMissingDesignatedInitializers final public class ProcessService {
+  #if compiler(>=5.3) && $EffectfulProp
+  public static var userEnvironment: [Swift.String : Swift.String] {
+    get async throws
+  }
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  public static func readOutput(with parameters: Foundation.Process.ExecutionParameters) async throws -> Foundation.Data
+  #endif
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @_Concurrency.MainActor final public class DocumentModel : Combine.ObservableObject {
+  @Combine.Published @_projectedValueProperty($documentContext) @_Concurrency.MainActor final public var documentContext: ExtensionInterface.DocumentContext {
+    get
+  }
+  @_Concurrency.MainActor final public var $documentContext: Combine.Published<ExtensionInterface.DocumentContext>.Publisher {
+    get
+  }
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor final public func getLine() async -> Foundation.NSRect
+  #endif
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+extension ChimeKit.DocumentModel : ExtensionInterface.ExtensionSceneProtocol {
+  #if compiler(>=5.3) && $AsyncAwait
+  @_Concurrency.MainActor final public func setActiveContext(project: ExtensionInterface.ProjectContext?, document: ExtensionInterface.DocumentContext) async throws
+  #endif
+}
+public struct DocumentContextKey : SwiftUI.EnvironmentKey {
+  public static var defaultValue: ExtensionInterface.DocumentContext
+  public typealias Value = ExtensionInterface.DocumentContext
+}
+public struct ProjectContextKey : SwiftUI.EnvironmentKey {
+  public static var defaultValue: ExtensionInterface.ProjectContext?
+  public typealias Value = ExtensionInterface.ProjectContext?
+}
+extension SwiftUI.EnvironmentValues {
+  public var documentContext: ExtensionInterface.DocumentContext {
+    get
+    set
+  }
+  public var projectContext: ExtensionInterface.ProjectContext? {
+    get
+    set
+  }
+}
+@available(macOS 13.0, *)
+@_Concurrency.MainActor(unsafe) public struct SceneContextView<Content> : SwiftUI.View where Content : SwiftUI.View {
+  @_Concurrency.MainActor(unsafe) public init(content: @escaping () -> Content)
+  @_Concurrency.MainActor(unsafe) public var body: some SwiftUI.View {
+    get
+  }
+  public typealias Body = @_opaqueReturnTypeOf("$s8ChimeKit16SceneContextViewV4bodyQrvp", 0) __<Content>
+}
+extension ChimeKit.ChimeExtensionPoint : Swift.RawRepresentable {}
+extension ChimeKit.ChimeExtensionSceneName : Swift.RawRepresentable {}
+extension ChimeKit.DocumentModel : Swift.Sendable {}

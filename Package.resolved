@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "concurrencyplus",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/ConcurrencyPlus",
+      "state" : {
+        "revision" : "ea44fa0a79a9ca4e6dad0420cf0b9876398bdc75",
+        "version" : "0.2.3"
+      }
+    }
+  ],
+  "version" : 2
+}

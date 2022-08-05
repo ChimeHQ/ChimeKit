@@ -1,0 +1,2828 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "ExtensionKit",
+        "printedName": "ExtensionKit",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "ExtensionInterface",
+        "printedName": "ExtensionInterface",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "ExtensionXPCInterface",
+        "printedName": "ExtensionXPCInterface",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ChimeExtensionPoint",
+        "printedName": "ChimeExtensionPoint",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "nonui",
+            "printedName": "nonui",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(ChimeKit.ChimeExtensionPoint.Type) -> ChimeKit.ChimeExtensionPoint",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ChimeExtensionPoint",
+                    "printedName": "ChimeKit.ChimeExtensionPoint",
+                    "usr": "s:8ChimeKit0A14ExtensionPointO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "ChimeKit.ChimeExtensionPoint.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ChimeExtensionPoint",
+                        "printedName": "ChimeKit.ChimeExtensionPoint",
+                        "usr": "s:8ChimeKit0A14ExtensionPointO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:8ChimeKit0A14ExtensionPointO5nonuiyA2CmF",
+            "mangledName": "$s8ChimeKit0A14ExtensionPointO5nonuiyA2CmF",
+            "moduleName": "ChimeKit"
+          },
+          {
+            "kind": "Var",
+            "name": "sidebarUI",
+            "printedName": "sidebarUI",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(ChimeKit.ChimeExtensionPoint.Type) -> ChimeKit.ChimeExtensionPoint",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ChimeExtensionPoint",
+                    "printedName": "ChimeKit.ChimeExtensionPoint",
+                    "usr": "s:8ChimeKit0A14ExtensionPointO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "ChimeKit.ChimeExtensionPoint.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ChimeExtensionPoint",
+                        "printedName": "ChimeKit.ChimeExtensionPoint",
+                        "usr": "s:8ChimeKit0A14ExtensionPointO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:8ChimeKit0A14ExtensionPointO9sidebarUIyA2CmF",
+            "mangledName": "$s8ChimeKit0A14ExtensionPointO9sidebarUIyA2CmF",
+            "moduleName": "ChimeKit"
+          },
+          {
+            "kind": "Var",
+            "name": "documentSyncedUI",
+            "printedName": "documentSyncedUI",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(ChimeKit.ChimeExtensionPoint.Type) -> ChimeKit.ChimeExtensionPoint",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ChimeExtensionPoint",
+                    "printedName": "ChimeKit.ChimeExtensionPoint",
+                    "usr": "s:8ChimeKit0A14ExtensionPointO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "ChimeKit.ChimeExtensionPoint.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ChimeExtensionPoint",
+                        "printedName": "ChimeKit.ChimeExtensionPoint",
+                        "usr": "s:8ChimeKit0A14ExtensionPointO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:8ChimeKit0A14ExtensionPointO16documentSyncedUIyA2CmF",
+            "mangledName": "$s8ChimeKit0A14ExtensionPointO16documentSyncedUIyA2CmF",
+            "moduleName": "ChimeKit"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(rawValue:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "ChimeKit.ChimeExtensionPoint?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ChimeExtensionPoint",
+                    "printedName": "ChimeKit.ChimeExtensionPoint",
+                    "usr": "s:8ChimeKit0A14ExtensionPointO"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:8ChimeKit0A14ExtensionPointO8rawValueACSgSS_tcfc",
+            "mangledName": "$s8ChimeKit0A14ExtensionPointO8rawValueACSgSS_tcfc",
+            "moduleName": "ChimeKit",
+            "implicit": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Var",
+            "name": "rawValue",
+            "printedName": "rawValue",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit0A14ExtensionPointO8rawValueSSvp",
+            "mangledName": "$s8ChimeKit0A14ExtensionPointO8rawValueSSvp",
+            "moduleName": "ChimeKit",
+            "implicit": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit0A14ExtensionPointO8rawValueSSvg",
+                "mangledName": "$s8ChimeKit0A14ExtensionPointO8rawValueSSvg",
+                "moduleName": "ChimeKit",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "allCases",
+            "printedName": "allCases",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[ChimeKit.ChimeExtensionPoint]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ChimeExtensionPoint",
+                    "printedName": "ChimeKit.ChimeExtensionPoint",
+                    "usr": "s:8ChimeKit0A14ExtensionPointO"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit0A14ExtensionPointO8allCasesSayACGvpZ",
+            "mangledName": "$s8ChimeKit0A14ExtensionPointO8allCasesSayACGvpZ",
+            "moduleName": "ChimeKit",
+            "static": true,
+            "implicit": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Array",
+                    "printedName": "[ChimeKit.ChimeExtensionPoint]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ChimeExtensionPoint",
+                        "printedName": "ChimeKit.ChimeExtensionPoint",
+                        "usr": "s:8ChimeKit0A14ExtensionPointO"
+                      }
+                    ],
+                    "usr": "s:Sa"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit0A14ExtensionPointO8allCasesSayACGvgZ",
+                "mangledName": "$s8ChimeKit0A14ExtensionPointO8allCasesSayACGvgZ",
+                "moduleName": "ChimeKit",
+                "static": true,
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:8ChimeKit0A14ExtensionPointO",
+        "mangledName": "$s8ChimeKit0A14ExtensionPointO",
+        "moduleName": "ChimeKit",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "enumRawTypeName": "String",
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "RawRepresentable",
+            "printedName": "RawRepresentable",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "RawValue",
+                "printedName": "RawValue",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:SY",
+            "mangledName": "$sSY"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CaseIterable",
+            "printedName": "CaseIterable",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "AllCases",
+                "printedName": "AllCases",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Array",
+                    "printedName": "[ChimeKit.ChimeExtensionPoint]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ChimeExtensionPoint",
+                        "printedName": "ChimeKit.ChimeExtensionPoint",
+                        "usr": "s:8ChimeKit0A14ExtensionPointO"
+                      }
+                    ],
+                    "usr": "s:Sa"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:s12CaseIterableP",
+            "mangledName": "$ss12CaseIterableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Decodable",
+            "printedName": "Decodable",
+            "usr": "s:Se",
+            "mangledName": "$sSe"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Encodable",
+            "printedName": "Encodable",
+            "usr": "s:SE",
+            "mangledName": "$sSE"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ChimeBaseExtension",
+        "printedName": "ChimeBaseExtension",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "hostApp",
+            "printedName": "hostApp",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "ExtensionInterface.HostProtocol?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "HostProtocol",
+                    "printedName": "ExtensionInterface.HostProtocol",
+                    "usr": "s:18ExtensionInterface12HostProtocolP"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit0A13BaseExtensionP7hostApp0D9Interface12HostProtocol_pSgvp",
+            "mangledName": "$s8ChimeKit0A13BaseExtensionP7hostApp0D9Interface12HostProtocol_pSgvp",
+            "moduleName": "ChimeKit",
+            "protocolReq": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "ExtensionInterface.HostProtocol?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "HostProtocol",
+                        "printedName": "ExtensionInterface.HostProtocol",
+                        "usr": "s:18ExtensionInterface12HostProtocolP"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit0A13BaseExtensionP7hostApp0D9Interface12HostProtocol_pSgvg",
+                "mangledName": "$s8ChimeKit0A13BaseExtensionP7hostApp0D9Interface12HostProtocol_pSgvg",
+                "moduleName": "ChimeKit",
+                "genericSig": "<τ_0_0 where τ_0_0 : ChimeKit.ChimeBaseExtension>",
+                "sugared_genericSig": "<Self where Self : ChimeKit.ChimeBaseExtension>",
+                "protocolReq": true,
+                "reqNewWitnessTableEntry": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "ExtensionInterface.HostProtocol?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "HostProtocol",
+                        "printedName": "ExtensionInterface.HostProtocol",
+                        "usr": "s:18ExtensionInterface12HostProtocolP"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit0A13BaseExtensionP7hostApp0D9Interface12HostProtocol_pSgvs",
+                "mangledName": "$s8ChimeKit0A13BaseExtensionP7hostApp0D9Interface12HostProtocol_pSgvs",
+                "moduleName": "ChimeKit",
+                "genericSig": "<τ_0_0 where τ_0_0 : ChimeKit.ChimeBaseExtension>",
+                "sugared_genericSig": "<Self where Self : ChimeKit.ChimeBaseExtension>",
+                "protocolReq": true,
+                "reqNewWitnessTableEntry": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit0A13BaseExtensionP7hostApp0D9Interface12HostProtocol_pSgvM",
+                "mangledName": "$s8ChimeKit0A13BaseExtensionP7hostApp0D9Interface12HostProtocol_pSgvM",
+                "moduleName": "ChimeKit",
+                "genericSig": "<τ_0_0 where τ_0_0 : ChimeKit.ChimeBaseExtension>",
+                "sugared_genericSig": "<Self where Self : ChimeKit.ChimeBaseExtension>",
+                "protocolReq": true,
+                "implicit": true,
+                "reqNewWitnessTableEntry": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "s:8ChimeKit0A13BaseExtensionP",
+        "mangledName": "$s8ChimeKit0A13BaseExtensionP",
+        "moduleName": "ChimeKit",
+        "genericSig": "<τ_0_0 : ExtensionInterface.ExtensionProtocol>",
+        "sugared_genericSig": "<Self : ExtensionInterface.ExtensionProtocol>",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "ExtensionProtocol",
+            "printedName": "ExtensionProtocol",
+            "usr": "s:18ExtensionInterface0A8ProtocolP",
+            "mangledName": "$s18ExtensionInterface0A8ProtocolP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ChimeExtensionConfiguration",
+        "printedName": "ChimeExtensionConfiguration",
+        "children": [
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(_:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ChimeExtensionConfiguration",
+                "printedName": "ChimeKit.ChimeExtensionConfiguration<τ_0_0>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GenericTypeParam",
+                    "printedName": "τ_0_0"
+                  }
+                ],
+                "usr": "s:8ChimeKit0A22ExtensionConfigurationV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "GenericTypeParam",
+                "printedName": "τ_0_0"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:8ChimeKit0A22ExtensionConfigurationVyACyxGxcfc",
+            "mangledName": "$s8ChimeKit0A22ExtensionConfigurationVyACyxGxcfc",
+            "moduleName": "ChimeKit",
+            "genericSig": "<τ_0_0 where τ_0_0 : ChimeKit.ChimeBaseExtension>",
+            "sugared_genericSig": "<Extension where Extension : ChimeKit.ChimeBaseExtension>",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "accept",
+            "printedName": "accept(connection:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Bool",
+                "printedName": "Swift.Bool",
+                "usr": "s:Sb"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "NSXPCConnection",
+                "printedName": "Foundation.NSXPCConnection",
+                "usr": "c:objc(cs)NSXPCConnection"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:8ChimeKit0A22ExtensionConfigurationV6accept10connectionSbSo15NSXPCConnectionC_tF",
+            "mangledName": "$s8ChimeKit0A22ExtensionConfigurationV6accept10connectionSbSo15NSXPCConnectionC_tF",
+            "moduleName": "ChimeKit",
+            "genericSig": "<τ_0_0 where τ_0_0 : ChimeKit.ChimeBaseExtension>",
+            "sugared_genericSig": "<Extension where Extension : ChimeKit.ChimeBaseExtension>",
+            "declAttributes": [
+              "AccessControl",
+              "RawDocComment"
+            ],
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:8ChimeKit0A22ExtensionConfigurationV",
+        "mangledName": "$s8ChimeKit0A22ExtensionConfigurationV",
+        "moduleName": "ChimeKit",
+        "genericSig": "<τ_0_0 where τ_0_0 : ChimeKit.ChimeBaseExtension>",
+        "sugared_genericSig": "<Extension where Extension : ChimeKit.ChimeBaseExtension>",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "AppExtensionConfiguration",
+            "printedName": "AppExtensionConfiguration",
+            "usr": "s:19ExtensionFoundation03AppA13ConfigurationP",
+            "mangledName": "$s19ExtensionFoundation03AppA13ConfigurationP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ChimeExtension",
+        "printedName": "ChimeExtension",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "configuration",
+            "printedName": "configuration",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ChimeExtensionConfiguration",
+                "printedName": "ChimeKit.ChimeExtensionConfiguration<τ_0_0>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GenericTypeParam",
+                    "printedName": "τ_0_0"
+                  }
+                ],
+                "usr": "s:8ChimeKit0A22ExtensionConfigurationV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit0A9ExtensionPAAE13configurationAA0aC13ConfigurationVyxGvp",
+            "mangledName": "$s8ChimeKit0A9ExtensionPAAE13configurationAA0aC13ConfigurationVyxGvp",
+            "moduleName": "ChimeKit",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ChimeExtensionConfiguration",
+                    "printedName": "ChimeKit.ChimeExtensionConfiguration<τ_0_0>",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "GenericTypeParam",
+                        "printedName": "τ_0_0"
+                      }
+                    ],
+                    "usr": "s:8ChimeKit0A22ExtensionConfigurationV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit0A9ExtensionPAAE13configurationAA0aC13ConfigurationVyxGvg",
+                "mangledName": "$s8ChimeKit0A9ExtensionPAAE13configurationAA0aC13ConfigurationVyxGvg",
+                "moduleName": "ChimeKit",
+                "genericSig": "<τ_0_0 where τ_0_0 : ChimeKit.ChimeExtension>",
+                "sugared_genericSig": "<Self where Self : ChimeKit.ChimeExtension>",
+                "isFromExtension": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "s:8ChimeKit0A9ExtensionP",
+        "mangledName": "$s8ChimeKit0A9ExtensionP",
+        "moduleName": "ChimeKit",
+        "genericSig": "<τ_0_0 : ChimeKit.ChimeBaseExtension, τ_0_0 : ExtensionFoundation.AppExtension>",
+        "sugared_genericSig": "<Self : ChimeKit.ChimeBaseExtension, Self : ExtensionFoundation.AppExtension>",
+        "intro_Macosx": "13.0",
+        "declAttributes": [
+          "AccessControl",
+          "Available"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "ChimeBaseExtension",
+            "printedName": "ChimeBaseExtension",
+            "usr": "s:8ChimeKit0A13BaseExtensionP",
+            "mangledName": "$s8ChimeKit0A13BaseExtensionP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "AppExtension",
+            "printedName": "AppExtension",
+            "usr": "s:19ExtensionFoundation03AppA0P",
+            "mangledName": "$s19ExtensionFoundation03AppA0P"
+          },
+          {
+            "kind": "Conformance",
+            "name": "ExtensionProtocol",
+            "printedName": "ExtensionProtocol",
+            "usr": "s:18ExtensionInterface0A8ProtocolP",
+            "mangledName": "$s18ExtensionInterface0A8ProtocolP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "SidebarChimeUIExtension",
+        "printedName": "SidebarChimeUIExtension",
+        "children": [
+          {
+            "kind": "AssociatedType",
+            "name": "Body",
+            "printedName": "Body",
+            "declKind": "AssociatedType",
+            "usr": "s:8ChimeKit07SidebarA11UIExtensionP4BodyQa",
+            "mangledName": "$s8ChimeKit07SidebarA11UIExtensionP4BodyQa",
+            "moduleName": "ChimeKit",
+            "protocolReq": true
+          },
+          {
+            "kind": "Var",
+            "name": "body",
+            "printedName": "body",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "DependentMember",
+                "printedName": "τ_0_0.Body"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit07SidebarA11UIExtensionP4body4BodyQzvp",
+            "mangledName": "$s8ChimeKit07SidebarA11UIExtensionP4body4BodyQzvp",
+            "moduleName": "ChimeKit",
+            "protocolReq": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "DependentMember",
+                    "printedName": "τ_0_0.Body"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit07SidebarA11UIExtensionP4body4BodyQzvg",
+                "mangledName": "$s8ChimeKit07SidebarA11UIExtensionP4body4BodyQzvg",
+                "moduleName": "ChimeKit",
+                "genericSig": "<τ_0_0 where τ_0_0 : ChimeKit.SidebarChimeUIExtension>",
+                "sugared_genericSig": "<Self where Self : ChimeKit.SidebarChimeUIExtension>",
+                "protocolReq": true,
+                "reqNewWitnessTableEntry": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "configuration",
+            "printedName": "configuration",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AppExtensionSceneConfiguration",
+                "printedName": "ExtensionKit.AppExtensionSceneConfiguration",
+                "usr": "s:12ExtensionKit03AppA18SceneConfigurationV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit07SidebarA11UIExtensionPAAE13configuration09ExtensionB003AppF18SceneConfigurationVvp",
+            "mangledName": "$s8ChimeKit07SidebarA11UIExtensionPAAE13configuration09ExtensionB003AppF18SceneConfigurationVvp",
+            "moduleName": "ChimeKit",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AppExtensionSceneConfiguration",
+                    "printedName": "ExtensionKit.AppExtensionSceneConfiguration",
+                    "usr": "s:12ExtensionKit03AppA18SceneConfigurationV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit07SidebarA11UIExtensionPAAE13configuration09ExtensionB003AppF18SceneConfigurationVvg",
+                "mangledName": "$s8ChimeKit07SidebarA11UIExtensionPAAE13configuration09ExtensionB003AppF18SceneConfigurationVvg",
+                "moduleName": "ChimeKit",
+                "genericSig": "<τ_0_0 where τ_0_0 : ChimeKit.SidebarChimeUIExtension>",
+                "sugared_genericSig": "<Self where Self : ChimeKit.SidebarChimeUIExtension>",
+                "isFromExtension": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "s:8ChimeKit07SidebarA11UIExtensionP",
+        "mangledName": "$s8ChimeKit07SidebarA11UIExtensionP",
+        "moduleName": "ChimeKit",
+        "genericSig": "<τ_0_0 : ChimeKit.ChimeBaseExtension, τ_0_0 : ExtensionFoundation.AppExtension, τ_0_0.Body : SwiftUI.View>",
+        "sugared_genericSig": "<Self : ChimeKit.ChimeBaseExtension, Self : ExtensionFoundation.AppExtension, Self.Body : SwiftUI.View>",
+        "intro_Macosx": "13.0",
+        "declAttributes": [
+          "AccessControl",
+          "Available"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "ChimeBaseExtension",
+            "printedName": "ChimeBaseExtension",
+            "usr": "s:8ChimeKit0A13BaseExtensionP",
+            "mangledName": "$s8ChimeKit0A13BaseExtensionP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "AppExtension",
+            "printedName": "AppExtension",
+            "usr": "s:19ExtensionFoundation03AppA0P",
+            "mangledName": "$s19ExtensionFoundation03AppA0P"
+          },
+          {
+            "kind": "Conformance",
+            "name": "ExtensionProtocol",
+            "printedName": "ExtensionProtocol",
+            "usr": "s:18ExtensionInterface0A8ProtocolP",
+            "mangledName": "$s18ExtensionInterface0A8ProtocolP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "DocumentSyncedChimeUIExtension",
+        "printedName": "DocumentSyncedChimeUIExtension",
+        "children": [
+          {
+            "kind": "AssociatedType",
+            "name": "Body",
+            "printedName": "Body",
+            "declKind": "AssociatedType",
+            "usr": "s:8ChimeKit014DocumentSyncedA11UIExtensionP4BodyQa",
+            "mangledName": "$s8ChimeKit014DocumentSyncedA11UIExtensionP4BodyQa",
+            "moduleName": "ChimeKit",
+            "protocolReq": true
+          },
+          {
+            "kind": "Var",
+            "name": "body",
+            "printedName": "body",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "DependentMember",
+                "printedName": "τ_0_0.Body"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit014DocumentSyncedA11UIExtensionP4body4BodyQzvp",
+            "mangledName": "$s8ChimeKit014DocumentSyncedA11UIExtensionP4body4BodyQzvp",
+            "moduleName": "ChimeKit",
+            "protocolReq": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "DependentMember",
+                    "printedName": "τ_0_0.Body"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit014DocumentSyncedA11UIExtensionP4body4BodyQzvg",
+                "mangledName": "$s8ChimeKit014DocumentSyncedA11UIExtensionP4body4BodyQzvg",
+                "moduleName": "ChimeKit",
+                "genericSig": "<τ_0_0 where τ_0_0 : ChimeKit.DocumentSyncedChimeUIExtension>",
+                "sugared_genericSig": "<Self where Self : ChimeKit.DocumentSyncedChimeUIExtension>",
+                "protocolReq": true,
+                "reqNewWitnessTableEntry": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "configuration",
+            "printedName": "configuration",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AppExtensionSceneConfiguration",
+                "printedName": "ExtensionKit.AppExtensionSceneConfiguration",
+                "usr": "s:12ExtensionKit03AppA18SceneConfigurationV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit014DocumentSyncedA11UIExtensionPAAE13configuration09ExtensionB003AppG18SceneConfigurationVvp",
+            "mangledName": "$s8ChimeKit014DocumentSyncedA11UIExtensionPAAE13configuration09ExtensionB003AppG18SceneConfigurationVvp",
+            "moduleName": "ChimeKit",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AppExtensionSceneConfiguration",
+                    "printedName": "ExtensionKit.AppExtensionSceneConfiguration",
+                    "usr": "s:12ExtensionKit03AppA18SceneConfigurationV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit014DocumentSyncedA11UIExtensionPAAE13configuration09ExtensionB003AppG18SceneConfigurationVvg",
+                "mangledName": "$s8ChimeKit014DocumentSyncedA11UIExtensionPAAE13configuration09ExtensionB003AppG18SceneConfigurationVvg",
+                "moduleName": "ChimeKit",
+                "genericSig": "<τ_0_0 where τ_0_0 : ChimeKit.DocumentSyncedChimeUIExtension>",
+                "sugared_genericSig": "<Self where Self : ChimeKit.DocumentSyncedChimeUIExtension>",
+                "isFromExtension": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "s:8ChimeKit014DocumentSyncedA11UIExtensionP",
+        "mangledName": "$s8ChimeKit014DocumentSyncedA11UIExtensionP",
+        "moduleName": "ChimeKit",
+        "genericSig": "<τ_0_0 : ChimeKit.ChimeBaseExtension, τ_0_0 : ExtensionFoundation.AppExtension, τ_0_0.Body : SwiftUI.View>",
+        "sugared_genericSig": "<Self : ChimeKit.ChimeBaseExtension, Self : ExtensionFoundation.AppExtension, Self.Body : SwiftUI.View>",
+        "intro_Macosx": "13.0",
+        "declAttributes": [
+          "AccessControl",
+          "Available"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "ChimeBaseExtension",
+            "printedName": "ChimeBaseExtension",
+            "usr": "s:8ChimeKit0A13BaseExtensionP",
+            "mangledName": "$s8ChimeKit0A13BaseExtensionP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "AppExtension",
+            "printedName": "AppExtension",
+            "usr": "s:19ExtensionFoundation03AppA0P",
+            "mangledName": "$s19ExtensionFoundation03AppA0P"
+          },
+          {
+            "kind": "Conformance",
+            "name": "ExtensionProtocol",
+            "printedName": "ExtensionProtocol",
+            "usr": "s:18ExtensionInterface0A8ProtocolP",
+            "mangledName": "$s18ExtensionInterface0A8ProtocolP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "ExtensionKit",
+        "printedName": "ExtensionKit",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "os.log",
+        "printedName": "os.log",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "ExtensionXPCInterface",
+        "printedName": "ExtensionXPCInterface",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ChimeExtensionSceneName",
+        "printedName": "ChimeExtensionSceneName",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "sidebar",
+            "printedName": "sidebar",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(ChimeKit.ChimeExtensionSceneName.Type) -> ChimeKit.ChimeExtensionSceneName",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ChimeExtensionSceneName",
+                    "printedName": "ChimeKit.ChimeExtensionSceneName",
+                    "usr": "s:8ChimeKit0A18ExtensionSceneNameO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "ChimeKit.ChimeExtensionSceneName.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ChimeExtensionSceneName",
+                        "printedName": "ChimeKit.ChimeExtensionSceneName",
+                        "usr": "s:8ChimeKit0A18ExtensionSceneNameO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:8ChimeKit0A18ExtensionSceneNameO7sidebaryA2CmF",
+            "mangledName": "$s8ChimeKit0A18ExtensionSceneNameO7sidebaryA2CmF",
+            "moduleName": "ChimeKit"
+          },
+          {
+            "kind": "Var",
+            "name": "documentSynced",
+            "printedName": "documentSynced",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(ChimeKit.ChimeExtensionSceneName.Type) -> ChimeKit.ChimeExtensionSceneName",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ChimeExtensionSceneName",
+                    "printedName": "ChimeKit.ChimeExtensionSceneName",
+                    "usr": "s:8ChimeKit0A18ExtensionSceneNameO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "ChimeKit.ChimeExtensionSceneName.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ChimeExtensionSceneName",
+                        "printedName": "ChimeKit.ChimeExtensionSceneName",
+                        "usr": "s:8ChimeKit0A18ExtensionSceneNameO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:8ChimeKit0A18ExtensionSceneNameO14documentSyncedyA2CmF",
+            "mangledName": "$s8ChimeKit0A18ExtensionSceneNameO14documentSyncedyA2CmF",
+            "moduleName": "ChimeKit"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(rawValue:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "ChimeKit.ChimeExtensionSceneName?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ChimeExtensionSceneName",
+                    "printedName": "ChimeKit.ChimeExtensionSceneName",
+                    "usr": "s:8ChimeKit0A18ExtensionSceneNameO"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:8ChimeKit0A18ExtensionSceneNameO8rawValueACSgSS_tcfc",
+            "mangledName": "$s8ChimeKit0A18ExtensionSceneNameO8rawValueACSgSS_tcfc",
+            "moduleName": "ChimeKit",
+            "implicit": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Var",
+            "name": "rawValue",
+            "printedName": "rawValue",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit0A18ExtensionSceneNameO8rawValueSSvp",
+            "mangledName": "$s8ChimeKit0A18ExtensionSceneNameO8rawValueSSvp",
+            "moduleName": "ChimeKit",
+            "implicit": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit0A18ExtensionSceneNameO8rawValueSSvg",
+                "mangledName": "$s8ChimeKit0A18ExtensionSceneNameO8rawValueSSvg",
+                "moduleName": "ChimeKit",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "allCases",
+            "printedName": "allCases",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Array",
+                "printedName": "[ChimeKit.ChimeExtensionSceneName]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ChimeExtensionSceneName",
+                    "printedName": "ChimeKit.ChimeExtensionSceneName",
+                    "usr": "s:8ChimeKit0A18ExtensionSceneNameO"
+                  }
+                ],
+                "usr": "s:Sa"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit0A18ExtensionSceneNameO8allCasesSayACGvpZ",
+            "mangledName": "$s8ChimeKit0A18ExtensionSceneNameO8allCasesSayACGvpZ",
+            "moduleName": "ChimeKit",
+            "static": true,
+            "implicit": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Array",
+                    "printedName": "[ChimeKit.ChimeExtensionSceneName]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ChimeExtensionSceneName",
+                        "printedName": "ChimeKit.ChimeExtensionSceneName",
+                        "usr": "s:8ChimeKit0A18ExtensionSceneNameO"
+                      }
+                    ],
+                    "usr": "s:Sa"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit0A18ExtensionSceneNameO8allCasesSayACGvgZ",
+                "mangledName": "$s8ChimeKit0A18ExtensionSceneNameO8allCasesSayACGvgZ",
+                "moduleName": "ChimeKit",
+                "static": true,
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Enum",
+        "usr": "s:8ChimeKit0A18ExtensionSceneNameO",
+        "mangledName": "$s8ChimeKit0A18ExtensionSceneNameO",
+        "moduleName": "ChimeKit",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "enumRawTypeName": "String",
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "RawRepresentable",
+            "printedName": "RawRepresentable",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "RawValue",
+                "printedName": "RawValue",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:SY",
+            "mangledName": "$sSY"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CaseIterable",
+            "printedName": "CaseIterable",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "AllCases",
+                "printedName": "AllCases",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Array",
+                    "printedName": "[ChimeKit.ChimeExtensionSceneName]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ChimeExtensionSceneName",
+                        "printedName": "ChimeKit.ChimeExtensionSceneName",
+                        "usr": "s:8ChimeKit0A18ExtensionSceneNameO"
+                      }
+                    ],
+                    "usr": "s:Sa"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:s12CaseIterableP",
+            "mangledName": "$ss12CaseIterableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Decodable",
+            "printedName": "Decodable",
+            "usr": "s:Se",
+            "mangledName": "$sSe"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Encodable",
+            "printedName": "Encodable",
+            "usr": "s:SE",
+            "mangledName": "$sSE"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ChimeExtensionScene",
+        "printedName": "ChimeExtensionScene",
+        "declKind": "Protocol",
+        "usr": "s:8ChimeKit0A14ExtensionSceneP",
+        "mangledName": "$s8ChimeKit0A14ExtensionSceneP",
+        "moduleName": "ChimeKit",
+        "genericSig": "<τ_0_0 : ExtensionKit.AppExtensionScene>",
+        "sugared_genericSig": "<Self : ExtensionKit.AppExtensionScene>",
+        "intro_Macosx": "13.0",
+        "declAttributes": [
+          "AccessControl",
+          "Available"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "AppExtensionScene",
+            "printedName": "AppExtensionScene",
+            "usr": "s:12ExtensionKit03AppA5SceneP",
+            "mangledName": "$s12ExtensionKit03AppA5SceneP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "SidebarScene",
+        "printedName": "SidebarScene",
+        "children": [
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(content:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "SidebarScene",
+                "printedName": "ChimeKit.SidebarScene<τ_0_0>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GenericTypeParam",
+                    "printedName": "τ_0_0"
+                  }
+                ],
+                "usr": "s:8ChimeKit12SidebarSceneV"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "() -> τ_0_0",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GenericTypeParam",
+                    "printedName": "τ_0_0"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:8ChimeKit12SidebarSceneV7contentACyxGxyc_tcfc",
+            "mangledName": "$s8ChimeKit12SidebarSceneV7contentACyxGxyc_tcfc",
+            "moduleName": "ChimeKit",
+            "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.View>",
+            "sugared_genericSig": "<Content where Content : SwiftUI.View>",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Var",
+            "name": "body",
+            "printedName": "body",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "OpaqueTypeArchetype",
+                "printedName": "some ExtensionKit.AppExtensionScene",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AppExtensionScene",
+                    "printedName": "ExtensionKit.AppExtensionScene",
+                    "usr": "s:12ExtensionKit03AppA5SceneP"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit12SidebarSceneV4bodyQrvp",
+            "mangledName": "$s8ChimeKit12SidebarSceneV4bodyQrvp",
+            "moduleName": "ChimeKit",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "OpaqueTypeArchetype",
+                    "printedName": "some ExtensionKit.AppExtensionScene",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AppExtensionScene",
+                        "printedName": "ExtensionKit.AppExtensionScene",
+                        "usr": "s:12ExtensionKit03AppA5SceneP"
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit12SidebarSceneV4bodyQrvg",
+                "mangledName": "$s8ChimeKit12SidebarSceneV4bodyQrvg",
+                "moduleName": "ChimeKit",
+                "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.View>",
+                "sugared_genericSig": "<Content where Content : SwiftUI.View>",
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:8ChimeKit12SidebarSceneV",
+        "mangledName": "$s8ChimeKit12SidebarSceneV",
+        "moduleName": "ChimeKit",
+        "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.View>",
+        "sugared_genericSig": "<Content where Content : SwiftUI.View>",
+        "intro_Macosx": "13.0",
+        "declAttributes": [
+          "AccessControl",
+          "Available"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "ChimeExtensionScene",
+            "printedName": "ChimeExtensionScene",
+            "usr": "s:8ChimeKit0A14ExtensionSceneP",
+            "mangledName": "$s8ChimeKit0A14ExtensionSceneP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "AppExtensionScene",
+            "printedName": "AppExtensionScene",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "Body",
+                "printedName": "Body",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "OpaqueTypeArchetype",
+                    "printedName": "some ExtensionKit.AppExtensionScene",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AppExtensionScene",
+                        "printedName": "ExtensionKit.AppExtensionScene",
+                        "usr": "s:12ExtensionKit03AppA5SceneP"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "usr": "s:12ExtensionKit03AppA5SceneP",
+            "mangledName": "$s12ExtensionKit03AppA5SceneP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "DocumentSyncedScene",
+        "printedName": "DocumentSyncedScene",
+        "children": [
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(content:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "DocumentSyncedScene",
+                "printedName": "ChimeKit.DocumentSyncedScene<τ_0_0>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GenericTypeParam",
+                    "printedName": "τ_0_0"
+                  }
+                ],
+                "usr": "s:8ChimeKit19DocumentSyncedSceneV"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "() -> τ_0_0",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GenericTypeParam",
+                    "printedName": "τ_0_0"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:8ChimeKit19DocumentSyncedSceneV7contentACyxGxyc_tcfc",
+            "mangledName": "$s8ChimeKit19DocumentSyncedSceneV7contentACyxGxyc_tcfc",
+            "moduleName": "ChimeKit",
+            "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.View>",
+            "sugared_genericSig": "<Content where Content : SwiftUI.View>",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Var",
+            "name": "body",
+            "printedName": "body",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "OpaqueTypeArchetype",
+                "printedName": "some ExtensionKit.AppExtensionScene",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AppExtensionScene",
+                    "printedName": "ExtensionKit.AppExtensionScene",
+                    "usr": "s:12ExtensionKit03AppA5SceneP"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit19DocumentSyncedSceneV4bodyQrvp",
+            "mangledName": "$s8ChimeKit19DocumentSyncedSceneV4bodyQrvp",
+            "moduleName": "ChimeKit",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "OpaqueTypeArchetype",
+                    "printedName": "some ExtensionKit.AppExtensionScene",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AppExtensionScene",
+                        "printedName": "ExtensionKit.AppExtensionScene",
+                        "usr": "s:12ExtensionKit03AppA5SceneP"
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit19DocumentSyncedSceneV4bodyQrvg",
+                "mangledName": "$s8ChimeKit19DocumentSyncedSceneV4bodyQrvg",
+                "moduleName": "ChimeKit",
+                "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.View>",
+                "sugared_genericSig": "<Content where Content : SwiftUI.View>",
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:8ChimeKit19DocumentSyncedSceneV",
+        "mangledName": "$s8ChimeKit19DocumentSyncedSceneV",
+        "moduleName": "ChimeKit",
+        "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.View>",
+        "sugared_genericSig": "<Content where Content : SwiftUI.View>",
+        "intro_Macosx": "13.0",
+        "declAttributes": [
+          "AccessControl",
+          "Available"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "ChimeExtensionScene",
+            "printedName": "ChimeExtensionScene",
+            "usr": "s:8ChimeKit0A14ExtensionSceneP",
+            "mangledName": "$s8ChimeKit0A14ExtensionSceneP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "AppExtensionScene",
+            "printedName": "AppExtensionScene",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "Body",
+                "printedName": "Body",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "OpaqueTypeArchetype",
+                    "printedName": "some ExtensionKit.AppExtensionScene",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "AppExtensionScene",
+                        "printedName": "ExtensionKit.AppExtensionScene",
+                        "usr": "s:12ExtensionKit03AppA5SceneP"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "usr": "s:12ExtensionKit03AppA5SceneP",
+            "mangledName": "$s12ExtensionKit03AppA5SceneP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "ExtensionInterface",
+        "printedName": "ExtensionInterface",
+        "declKind": "Import",
+        "moduleName": "ChimeKit",
+        "declAttributes": [
+          "Exported"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "LSP",
+        "printedName": "LSP",
+        "declKind": "Import",
+        "moduleName": "ChimeKit",
+        "declAttributes": [
+          "Exported"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "LineTracker",
+        "printedName": "LineTracker",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "Combine",
+        "printedName": "Combine",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "ConcurrencyPlus",
+        "printedName": "ConcurrencyPlus",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "ProcessEnv",
+        "printedName": "ProcessEnv",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "ProcessServiceInterface",
+        "printedName": "ProcessServiceInterface",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ProcessService",
+        "printedName": "ProcessService",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "userEnvironment",
+            "printedName": "userEnvironment",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Dictionary",
+                "printedName": "[Swift.String : Swift.String]",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:SD"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit14ProcessServiceC15userEnvironmentSDyS2SGvpZ",
+            "mangledName": "$s8ChimeKit14ProcessServiceC15userEnvironmentSDyS2SGvpZ",
+            "moduleName": "ChimeKit",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Dictionary",
+                    "printedName": "[Swift.String : Swift.String]",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:SD"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit14ProcessServiceC15userEnvironmentSDyS2SGvgZ",
+                "mangledName": "$s8ChimeKit14ProcessServiceC15userEnvironmentSDyS2SGvgZ",
+                "moduleName": "ChimeKit",
+                "static": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "throwing": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "readOutput",
+            "printedName": "readOutput(with:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "ExecutionParameters",
+                "printedName": "Foundation.Process.ExecutionParameters",
+                "usr": "s:So6NSTaskC10ProcessEnvE19ExecutionParametersV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:8ChimeKit14ProcessServiceC10readOutput4with10Foundation4DataVSo6NSTaskC0C3EnvE19ExecutionParametersV_tYaKFZ",
+            "mangledName": "$s8ChimeKit14ProcessServiceC10readOutput4with10Foundation4DataVSo6NSTaskC0C3EnvE19ExecutionParametersV_tYaKFZ",
+            "moduleName": "ChimeKit",
+            "static": true,
+            "declAttributes": [
+              "Final",
+              "AccessControl"
+            ],
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "s:8ChimeKit14ProcessServiceC",
+        "mangledName": "$s8ChimeKit14ProcessServiceC",
+        "moduleName": "ChimeKit",
+        "declAttributes": [
+          "Final",
+          "AccessControl"
+        ],
+        "hasMissingDesignatedInitializers": true
+      },
+      {
+        "kind": "Import",
+        "name": "Combine",
+        "printedName": "Combine",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "SwiftUI",
+        "printedName": "SwiftUI",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "os.log",
+        "printedName": "os.log",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "Import",
+        "name": "ExtensionInterface",
+        "printedName": "ExtensionInterface",
+        "declKind": "Import",
+        "moduleName": "ChimeKit"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "DocumentModel",
+        "printedName": "DocumentModel",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "documentContext",
+            "printedName": "documentContext",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "DocumentContext",
+                "printedName": "ExtensionInterface.DocumentContext",
+                "usr": "s:18ExtensionInterface15DocumentContextV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit13DocumentModelC15documentContext18ExtensionInterface0cF0Vvp",
+            "mangledName": "$s8ChimeKit13DocumentModelC15documentContext18ExtensionInterface0cF0Vvp",
+            "moduleName": "ChimeKit",
+            "declAttributes": [
+              "Custom",
+              "Final",
+              "ProjectedValueProperty",
+              "SetterAccess",
+              "AccessControl",
+              "Custom"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "DocumentContext",
+                    "printedName": "ExtensionInterface.DocumentContext",
+                    "usr": "s:18ExtensionInterface15DocumentContextV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit13DocumentModelC15documentContext18ExtensionInterface0cF0Vvg",
+                "mangledName": "$s8ChimeKit13DocumentModelC15documentContext18ExtensionInterface0cF0Vvg",
+                "moduleName": "ChimeKit",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "$documentContext",
+            "printedName": "$documentContext",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Publisher",
+                "printedName": "Combine.Published<ExtensionInterface.DocumentContext>.Publisher",
+                "usr": "s:7Combine9PublishedV9PublisherV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit13DocumentModelC16$documentContext7Combine9PublishedV9PublisherVy18ExtensionInterface0cF0V_Gvp",
+            "mangledName": "$s8ChimeKit13DocumentModelC16$documentContext7Combine9PublishedV9PublisherVy18ExtensionInterface0cF0V_Gvp",
+            "moduleName": "ChimeKit",
+            "implicit": true,
+            "declAttributes": [
+              "Custom",
+              "Final"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Publisher",
+                    "printedName": "Combine.Published<ExtensionInterface.DocumentContext>.Publisher",
+                    "usr": "s:7Combine9PublishedV9PublisherV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit13DocumentModelC16$documentContext7Combine9PublishedV9PublisherVy18ExtensionInterface0cF0V_Gvg",
+                "mangledName": "$s8ChimeKit13DocumentModelC16$documentContext7Combine9PublishedV9PublisherVy18ExtensionInterface0cF0V_Gvg",
+                "moduleName": "ChimeKit",
+                "implicit": true,
+                "declAttributes": [
+                  "Final"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Function",
+            "name": "getLine",
+            "printedName": "getLine()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "CGRect",
+                "printedName": "CoreFoundation.CGRect",
+                "usr": "c:@S@CGRect"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:8ChimeKit13DocumentModelC7getLineSo6CGRectVyYaF",
+            "mangledName": "$s8ChimeKit13DocumentModelC7getLineSo6CGRectVyYaF",
+            "moduleName": "ChimeKit",
+            "declAttributes": [
+              "Custom",
+              "Final",
+              "AccessControl"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "setActiveContext",
+            "printedName": "setActiveContext(project:document:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "ExtensionInterface.ProjectContext?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ProjectContext",
+                    "printedName": "ExtensionInterface.ProjectContext",
+                    "usr": "s:18ExtensionInterface14ProjectContextV"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "DocumentContext",
+                "printedName": "ExtensionInterface.DocumentContext",
+                "usr": "s:18ExtensionInterface15DocumentContextV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:8ChimeKit13DocumentModelC16setActiveContext7project8documenty18ExtensionInterface07ProjectG0VSg_AG0cG0VtYaKF",
+            "mangledName": "$s8ChimeKit13DocumentModelC16setActiveContext7project8documenty18ExtensionInterface07ProjectG0VSg_AG0cG0VtYaKF",
+            "moduleName": "ChimeKit",
+            "declAttributes": [
+              "Custom",
+              "Final",
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "s:8ChimeKit13DocumentModelC",
+        "mangledName": "$s8ChimeKit13DocumentModelC",
+        "moduleName": "ChimeKit",
+        "declAttributes": [
+          "Final",
+          "AccessControl",
+          "Custom"
+        ],
+        "hasMissingDesignatedInitializers": true,
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "ObservableObject",
+            "printedName": "ObservableObject",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "ObjectWillChangePublisher",
+                "printedName": "ObjectWillChangePublisher",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ObservableObjectPublisher",
+                    "printedName": "Combine.ObservableObjectPublisher",
+                    "usr": "s:7Combine25ObservableObjectPublisherC"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:7Combine16ObservableObjectP",
+            "mangledName": "$s7Combine16ObservableObjectP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Sendable",
+            "printedName": "Sendable",
+            "usr": "s:s8SendableP",
+            "mangledName": "$ss8SendableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "ExtensionSceneProtocol",
+            "printedName": "ExtensionSceneProtocol",
+            "usr": "s:18ExtensionInterface0A13SceneProtocolP",
+            "mangledName": "$s18ExtensionInterface0A13SceneProtocolP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "DocumentContextKey",
+        "printedName": "DocumentContextKey",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "defaultValue",
+            "printedName": "defaultValue",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "DocumentContext",
+                "printedName": "ExtensionInterface.DocumentContext",
+                "usr": "s:18ExtensionInterface15DocumentContextV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit18DocumentContextKeyV12defaultValue18ExtensionInterface0cD0VvpZ",
+            "mangledName": "$s8ChimeKit18DocumentContextKeyV12defaultValue18ExtensionInterface0cD0VvpZ",
+            "moduleName": "ChimeKit",
+            "static": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "DocumentContext",
+                    "printedName": "ExtensionInterface.DocumentContext",
+                    "usr": "s:18ExtensionInterface15DocumentContextV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit18DocumentContextKeyV12defaultValue18ExtensionInterface0cD0VvgZ",
+                "mangledName": "$s8ChimeKit18DocumentContextKeyV12defaultValue18ExtensionInterface0cD0VvgZ",
+                "moduleName": "ChimeKit",
+                "static": true,
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "DocumentContext",
+                    "printedName": "ExtensionInterface.DocumentContext",
+                    "usr": "s:18ExtensionInterface15DocumentContextV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit18DocumentContextKeyV12defaultValue18ExtensionInterface0cD0VvsZ",
+                "mangledName": "$s8ChimeKit18DocumentContextKeyV12defaultValue18ExtensionInterface0cD0VvsZ",
+                "moduleName": "ChimeKit",
+                "static": true,
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit18DocumentContextKeyV12defaultValue18ExtensionInterface0cD0VvMZ",
+                "mangledName": "$s8ChimeKit18DocumentContextKeyV12defaultValue18ExtensionInterface0cD0VvMZ",
+                "moduleName": "ChimeKit",
+                "static": true,
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:8ChimeKit18DocumentContextKeyV",
+        "mangledName": "$s8ChimeKit18DocumentContextKeyV",
+        "moduleName": "ChimeKit",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "EnvironmentKey",
+            "printedName": "EnvironmentKey",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "Value",
+                "printedName": "Value",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "DocumentContext",
+                    "printedName": "ExtensionInterface.DocumentContext",
+                    "usr": "s:18ExtensionInterface15DocumentContextV"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:7SwiftUI14EnvironmentKeyP",
+            "mangledName": "$s7SwiftUI14EnvironmentKeyP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "ProjectContextKey",
+        "printedName": "ProjectContextKey",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "defaultValue",
+            "printedName": "defaultValue",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "ExtensionInterface.ProjectContext?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ProjectContext",
+                    "printedName": "ExtensionInterface.ProjectContext",
+                    "usr": "s:18ExtensionInterface14ProjectContextV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit17ProjectContextKeyV12defaultValue18ExtensionInterface0cD0VSgvpZ",
+            "mangledName": "$s8ChimeKit17ProjectContextKeyV12defaultValue18ExtensionInterface0cD0VSgvpZ",
+            "moduleName": "ChimeKit",
+            "static": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "ExtensionInterface.ProjectContext?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ProjectContext",
+                        "printedName": "ExtensionInterface.ProjectContext",
+                        "usr": "s:18ExtensionInterface14ProjectContextV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit17ProjectContextKeyV12defaultValue18ExtensionInterface0cD0VSgvgZ",
+                "mangledName": "$s8ChimeKit17ProjectContextKeyV12defaultValue18ExtensionInterface0cD0VSgvgZ",
+                "moduleName": "ChimeKit",
+                "static": true,
+                "implicit": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "ExtensionInterface.ProjectContext?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ProjectContext",
+                        "printedName": "ExtensionInterface.ProjectContext",
+                        "usr": "s:18ExtensionInterface14ProjectContextV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit17ProjectContextKeyV12defaultValue18ExtensionInterface0cD0VSgvsZ",
+                "mangledName": "$s8ChimeKit17ProjectContextKeyV12defaultValue18ExtensionInterface0cD0VSgvsZ",
+                "moduleName": "ChimeKit",
+                "static": true,
+                "implicit": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit17ProjectContextKeyV12defaultValue18ExtensionInterface0cD0VSgvMZ",
+                "mangledName": "$s8ChimeKit17ProjectContextKeyV12defaultValue18ExtensionInterface0cD0VSgvMZ",
+                "moduleName": "ChimeKit",
+                "static": true,
+                "implicit": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:8ChimeKit17ProjectContextKeyV",
+        "mangledName": "$s8ChimeKit17ProjectContextKeyV",
+        "moduleName": "ChimeKit",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "EnvironmentKey",
+            "printedName": "EnvironmentKey",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "Value",
+                "printedName": "Value",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "ExtensionInterface.ProjectContext?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ProjectContext",
+                        "printedName": "ExtensionInterface.ProjectContext",
+                        "usr": "s:18ExtensionInterface14ProjectContextV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:7SwiftUI14EnvironmentKeyP",
+            "mangledName": "$s7SwiftUI14EnvironmentKeyP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "SceneContextView",
+        "printedName": "SceneContextView",
+        "children": [
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(content:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "SceneContextView",
+                "printedName": "ChimeKit.SceneContextView<τ_0_0>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GenericTypeParam",
+                    "printedName": "τ_0_0"
+                  }
+                ],
+                "usr": "s:8ChimeKit16SceneContextViewV"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "() -> τ_0_0",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "GenericTypeParam",
+                    "printedName": "τ_0_0"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:8ChimeKit16SceneContextViewV7contentACyxGxyc_tcfc",
+            "mangledName": "$s8ChimeKit16SceneContextViewV7contentACyxGxyc_tcfc",
+            "moduleName": "ChimeKit",
+            "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.View>",
+            "sugared_genericSig": "<Content where Content : SwiftUI.View>",
+            "declAttributes": [
+              "Custom",
+              "AccessControl"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Var",
+            "name": "body",
+            "printedName": "body",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "OpaqueTypeArchetype",
+                "printedName": "some SwiftUI.View",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "View",
+                    "printedName": "SwiftUI.View",
+                    "usr": "s:7SwiftUI4ViewP"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8ChimeKit16SceneContextViewV4bodyQrvp",
+            "mangledName": "$s8ChimeKit16SceneContextViewV4bodyQrvp",
+            "moduleName": "ChimeKit",
+            "declAttributes": [
+              "Custom",
+              "AccessControl"
+            ],
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "OpaqueTypeArchetype",
+                    "printedName": "some SwiftUI.View",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "View",
+                        "printedName": "SwiftUI.View",
+                        "usr": "s:7SwiftUI4ViewP"
+                      }
+                    ]
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:8ChimeKit16SceneContextViewV4bodyQrvg",
+                "mangledName": "$s8ChimeKit16SceneContextViewV4bodyQrvg",
+                "moduleName": "ChimeKit",
+                "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.View>",
+                "sugared_genericSig": "<Content where Content : SwiftUI.View>",
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:8ChimeKit16SceneContextViewV",
+        "mangledName": "$s8ChimeKit16SceneContextViewV",
+        "moduleName": "ChimeKit",
+        "genericSig": "<τ_0_0 where τ_0_0 : SwiftUI.View>",
+        "sugared_genericSig": "<Content where Content : SwiftUI.View>",
+        "intro_Macosx": "13.0",
+        "declAttributes": [
+          "Custom",
+          "AccessControl",
+          "Available"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "View",
+            "printedName": "View",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "Body",
+                "printedName": "Body",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "OpaqueTypeArchetype",
+                    "printedName": "some SwiftUI.View",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "View",
+                        "printedName": "SwiftUI.View",
+                        "usr": "s:7SwiftUI4ViewP"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "usr": "s:7SwiftUI4ViewP",
+            "mangledName": "$s7SwiftUI4ViewP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "EnvironmentValues",
+        "printedName": "EnvironmentValues",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "documentContext",
+            "printedName": "documentContext",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "DocumentContext",
+                "printedName": "ExtensionInterface.DocumentContext",
+                "usr": "s:18ExtensionInterface15DocumentContextV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:7SwiftUI17EnvironmentValuesV8ChimeKitE15documentContext18ExtensionInterface08DocumentH0Vvp",
+            "mangledName": "$s7SwiftUI17EnvironmentValuesV8ChimeKitE15documentContext18ExtensionInterface08DocumentH0Vvp",
+            "moduleName": "ChimeKit",
+            "isFromExtension": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "DocumentContext",
+                    "printedName": "ExtensionInterface.DocumentContext",
+                    "usr": "s:18ExtensionInterface15DocumentContextV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7SwiftUI17EnvironmentValuesV8ChimeKitE15documentContext18ExtensionInterface08DocumentH0Vvg",
+                "mangledName": "$s7SwiftUI17EnvironmentValuesV8ChimeKitE15documentContext18ExtensionInterface08DocumentH0Vvg",
+                "moduleName": "ChimeKit",
+                "isFromExtension": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "DocumentContext",
+                    "printedName": "ExtensionInterface.DocumentContext",
+                    "usr": "s:18ExtensionInterface15DocumentContextV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7SwiftUI17EnvironmentValuesV8ChimeKitE15documentContext18ExtensionInterface08DocumentH0Vvs",
+                "mangledName": "$s7SwiftUI17EnvironmentValuesV8ChimeKitE15documentContext18ExtensionInterface08DocumentH0Vvs",
+                "moduleName": "ChimeKit",
+                "isFromExtension": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7SwiftUI17EnvironmentValuesV8ChimeKitE15documentContext18ExtensionInterface08DocumentH0VvM",
+                "mangledName": "$s7SwiftUI17EnvironmentValuesV8ChimeKitE15documentContext18ExtensionInterface08DocumentH0VvM",
+                "moduleName": "ChimeKit",
+                "implicit": true,
+                "isFromExtension": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "projectContext",
+            "printedName": "projectContext",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "ExtensionInterface.ProjectContext?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ProjectContext",
+                    "printedName": "ExtensionInterface.ProjectContext",
+                    "usr": "s:18ExtensionInterface14ProjectContextV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:7SwiftUI17EnvironmentValuesV8ChimeKitE14projectContext18ExtensionInterface07ProjectH0VSgvp",
+            "mangledName": "$s7SwiftUI17EnvironmentValuesV8ChimeKitE14projectContext18ExtensionInterface07ProjectH0VSgvp",
+            "moduleName": "ChimeKit",
+            "isFromExtension": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "ExtensionInterface.ProjectContext?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ProjectContext",
+                        "printedName": "ExtensionInterface.ProjectContext",
+                        "usr": "s:18ExtensionInterface14ProjectContextV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7SwiftUI17EnvironmentValuesV8ChimeKitE14projectContext18ExtensionInterface07ProjectH0VSgvg",
+                "mangledName": "$s7SwiftUI17EnvironmentValuesV8ChimeKitE14projectContext18ExtensionInterface07ProjectH0VSgvg",
+                "moduleName": "ChimeKit",
+                "isFromExtension": true,
+                "accessorKind": "get"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Set",
+                "printedName": "Set()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "ExtensionInterface.ProjectContext?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "ProjectContext",
+                        "printedName": "ExtensionInterface.ProjectContext",
+                        "usr": "s:18ExtensionInterface14ProjectContextV"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7SwiftUI17EnvironmentValuesV8ChimeKitE14projectContext18ExtensionInterface07ProjectH0VSgvs",
+                "mangledName": "$s7SwiftUI17EnvironmentValuesV8ChimeKitE14projectContext18ExtensionInterface07ProjectH0VSgvs",
+                "moduleName": "ChimeKit",
+                "isFromExtension": true,
+                "accessorKind": "set"
+              },
+              {
+                "kind": "Accessor",
+                "name": "Modify",
+                "printedName": "Modify()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:7SwiftUI17EnvironmentValuesV8ChimeKitE14projectContext18ExtensionInterface07ProjectH0VSgvM",
+                "mangledName": "$s7SwiftUI17EnvironmentValuesV8ChimeKitE14projectContext18ExtensionInterface07ProjectH0VSgvM",
+                "moduleName": "ChimeKit",
+                "implicit": true,
+                "isFromExtension": true,
+                "accessorKind": "_modify"
+              }
+            ]
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:7SwiftUI17EnvironmentValuesV",
+        "mangledName": "$s7SwiftUI17EnvironmentValuesV",
+        "moduleName": "SwiftUI",
+        "intro_Macosx": "10.15",
+        "intro_iOS": "13.0",
+        "intro_tvOS": "13.0",
+        "intro_watchOS": "6.0",
+        "declAttributes": [
+          "Available",
+          "Available",
+          "Available",
+          "Available"
+        ],
+        "isExternal": true,
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          }
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/ChimeKit\/ChimeExtension.swift",
+      "kind": "StringLiteral",
+      "offset": 212,
+      "length": 28,
+      "value": "\"com.chimehq.Edit.extension\""
+    },
+    {
+      "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/ChimeKit\/ChimeExtension.swift",
+      "kind": "StringLiteral",
+      "offset": 262,
+      "length": 39,
+      "value": "\"com.chimehq.Edit.extension.ui.sidebar\""
+    },
+    {
+      "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/ChimeKit\/ChimeExtension.swift",
+      "kind": "StringLiteral",
+      "offset": 330,
+      "length": 47,
+      "value": "\"com.chimehq.Edit.extension.ui.document-synced\""
+    },
+    {
+      "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/ChimeKit\/ChimeExtension.swift",
+      "kind": "StringLiteral",
+      "offset": 212,
+      "length": 28,
+      "value": "\"com.chimehq.Edit.extension\""
+    },
+    {
+      "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/ChimeKit\/ChimeExtension.swift",
+      "kind": "StringLiteral",
+      "offset": 262,
+      "length": 39,
+      "value": "\"com.chimehq.Edit.extension.ui.sidebar\""
+    },
+    {
+      "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/ChimeKit\/ChimeExtension.swift",
+      "kind": "StringLiteral",
+      "offset": 330,
+      "length": 47,
+      "value": "\"com.chimehq.Edit.extension.ui.document-synced\""
+    },
+    {
+      "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/ChimeKit\/SceneContextView.swift",
+      "kind": "StringLiteral",
+      "offset": 185,
+      "length": 22,
+      "value": "\"com.chimehq.ChimeKit\""
+    },
+    {
+      "filePath": "\/Users\/matt\/Chime\/Code\/Edit\/ChimeKit\/SceneContextView.swift",
+      "kind": "StringLiteral",
+      "offset": 219,
+      "length": 15,
+      "value": "\"DocumentModel\""
+    }
+  ]
+}
