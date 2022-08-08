@@ -1,0 +1,4 @@
+framework module ChimeKit {
+  header "ChimeKit-Swift.h"
+  requires objc
+}
