@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		f+IYRq5KwC7RthBuoqkOaL2Eg3w=
+		a6YwOtsXuQhDkLkenOW8yXciCkU=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -15,49 +15,49 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			GbqdYyte+9AqnI4Q6M5BJk1TuVn+pMcgYQSoy3RFFaM=
+			RYdXaPNFTNvQxs9YdkEkFxbNSFG3zeOpyZMFDL6C1YI=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/Project/arm64-apple-macos.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			MZ9u267c3yGMs4NnZAuZfJvesZjV5Doy9fXYu2YL8VY=
+			/GOO36myTqmlKZVoIfvRgrOXNAb0X6OnKLRslCKG5E8=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/arm64-apple-macos.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			s/LcnQMgEhHd7LUvSqce5e/lqzYWbj4NW2Ay2Hz4fLY=
+			NTkdMy79BpmEu2kFUSCPQUVeXRm6LGEUKv+3+kyuu8I=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/arm64-apple-macos.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			u6K7VV6YgzCBv5rTeYZ0zaJ+yd8TSrRmP2XKrJ5SVOQ=
+			JpzBY5irJElzl6jLy8N0vizUeIxByvL5chEW0qxchHc=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/arm64-apple-macos.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			DqlMtTY/q2jbmZCwXz/LkAId/Aj4nSMxR2dPi/7u68o=
+			ah6xxW4cbgCPbkH+WkyRYIsHjllzguWTlto9QjcMFtM=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/arm64-apple-macos.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			u6K7VV6YgzCBv5rTeYZ0zaJ+yd8TSrRmP2XKrJ5SVOQ=
+			JpzBY5irJElzl6jLy8N0vizUeIxByvL5chEW0qxchHc=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/arm64-apple-macos.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			0VJkII+LWxhVGcvp4+fITpYLF9XPB3VdR6MXr6ZC5Yo=
+			pWtxrI/Zo/EVMCNiL6uGmEaqCJtPPTX4rqz4r/i5rEo=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -71,14 +71,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			CBrghjCowdWBfs1oTeoSdACzdREzNDqJQHprdrdfexQ=
+			zz2wocHM6GZLaIodJPjaJANyHBxnPYIJFCMW91yqxhs=
 			</data>
 		</dict>
 		<key>XPCServices/ProcessService.xpc</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			laimHeuPTfHxWdePun+y9u7h4+I=
+			CiTau4dKHKxG+RKEipAKN4dIyV4=
 			</data>
 			<key>requirement</key>
 			<string>identifier "com.chimehq.ChimeKit.ProcessService" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: Matthew Massicotte (963AZ7H6D8)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>

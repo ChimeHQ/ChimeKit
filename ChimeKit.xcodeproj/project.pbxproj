@@ -303,7 +303,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -uxo pipefail\n\nxcodebuild -create-xcframework -framework ${BUILT_PRODUCTS_DIR}/ChimeKit.framework -output ${SRCROOT}/ChimeKit.xcframework\n";
+			shellScript = "set -uxo pipefail\n\nrm -rf ${SRCROOT}/ChimeKit.xcframework\nxcodebuild -create-xcframework -framework ${BUILT_PRODUCTS_DIR}/ChimeKit.framework -output ${SRCROOT}/ChimeKit.xcframework\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
