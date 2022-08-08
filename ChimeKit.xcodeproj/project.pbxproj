@@ -24,6 +24,7 @@
 /* Begin PBXBuildFile section */
 		C9285FA428A155B70071B04B /* ProcessServiceServer in Frameworks */ = {isa = PBXBuildFile; productRef = C9285FA328A155B70071B04B /* ProcessServiceServer */; };
 		C9285FA828A15E910071B04B /* ProcessServiceClient in Frameworks */ = {isa = PBXBuildFile; productRef = C9285FA728A15E910071B04B /* ProcessServiceClient */; };
+		C9285FAB28A15F120071B04B /* ChimeExtensionInterface in Frameworks */ = {isa = PBXBuildFile; productRef = C9285FAA28A15F120071B04B /* ChimeExtensionInterface */; };
 		C97D2134289E712800F007F8 /* ChimeKit.docc in Sources */ = {isa = PBXBuildFile; fileRef = C97D2133289E712800F007F8 /* ChimeKit.docc */; };
 		C97D2154289E757000F007F8 /* ConcurrencyPlus in Frameworks */ = {isa = PBXBuildFile; productRef = C97D2153289E757000F007F8 /* ConcurrencyPlus */; };
 		C97D2192289E898A00F007F8 /* ProcessService.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = C97D2187289E898A00F007F8 /* ProcessService.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -84,6 +85,7 @@
 				C97D220E28A11F2900F007F8 /* ProcessEnv in Frameworks */,
 				C97D2154289E757000F007F8 /* ConcurrencyPlus in Frameworks */,
 				C9285FA828A15E910071B04B /* ProcessServiceClient in Frameworks */,
+				C9285FAB28A15F120071B04B /* ChimeExtensionInterface in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,6 +175,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				C9285FAD28A15F220071B04B /* PBXTargetDependency */,
 				C9285FA628A15E8B0071B04B /* PBXTargetDependency */,
 				C97D220B28A11F2400F007F8 /* PBXTargetDependency */,
 				C97D220928A11F2200F007F8 /* PBXTargetDependency */,
@@ -183,6 +186,7 @@
 				C97D2153289E757000F007F8 /* ConcurrencyPlus */,
 				C97D220D28A11F2900F007F8 /* ProcessEnv */,
 				C9285FA728A15E910071B04B /* ProcessServiceClient */,
+				C9285FAA28A15F120071B04B /* ChimeExtensionInterface */,
 			);
 			productName = ChimeKit;
 			productReference = C97D212F289E712800F007F8 /* ChimeKit.framework */;
@@ -243,6 +247,7 @@
 			packageReferences = (
 				C97D2152289E757000F007F8 /* XCRemoteSwiftPackageReference "ConcurrencyPlus" */,
 				C97D21AA289EA73100F007F8 /* XCRemoteSwiftPackageReference "ProcessEnv" */,
+				C9285FA928A15F120071B04B /* XCRemoteSwiftPackageReference "ChimeKit" */,
 			);
 			productRefGroup = C97D2130289E712800F007F8 /* Products */;
 			projectDirPath = "";
@@ -322,6 +327,10 @@
 		C9285FA628A15E8B0071B04B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = C9285FA528A15E8B0071B04B /* ProcessServiceClient */;
+		};
+		C9285FAD28A15F220071B04B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C9285FAC28A15F220071B04B /* ChimeExtensionInterface */;
 		};
 		C97D2180289E849B00F007F8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -611,6 +620,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C9285FA928A15F120071B04B /* XCRemoteSwiftPackageReference "ChimeKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "file:///Users/matt/Chime/Code/ChimeKit";
+			requirement = {
+				branch = local;
+				kind = branch;
+			};
+		};
 		C97D2152289E757000F007F8 /* XCRemoteSwiftPackageReference "ConcurrencyPlus" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ChimeHQ/ConcurrencyPlus.git";
@@ -645,6 +662,15 @@
 		C9285FA728A15E910071B04B /* ProcessServiceClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ProcessServiceClient;
+		};
+		C9285FAA28A15F120071B04B /* ChimeExtensionInterface */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C9285FA928A15F120071B04B /* XCRemoteSwiftPackageReference "ChimeKit" */;
+			productName = ChimeExtensionInterface;
+		};
+		C9285FAC28A15F220071B04B /* ChimeExtensionInterface */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ChimeExtensionInterface;
 		};
 		C97D2153289E757000F007F8 /* ConcurrencyPlus */ = {
 			isa = XCSwiftPackageProductDependency;
