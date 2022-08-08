@@ -12,7 +12,7 @@ public final class ExtensionXPCBridge {
     public init(connection: NSXPCConnection) throws {
         self.connection = connection
         self.docServices = [:]
-        self.queue = DispatchQueue(label: "com.chimehq.Edit.RemoteExtension")
+        self.queue = DispatchQueue(label: "com.chimehq.ChimeKit.RemoteExtension")
 
         precondition(connection.remoteObjectInterface == nil)
         connection.remoteObjectInterface = NSXPCInterface(with: ExtensionXPCProtocol.self)

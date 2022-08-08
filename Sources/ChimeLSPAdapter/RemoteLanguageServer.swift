@@ -67,8 +67,8 @@ public class RemoteLanguageServer {
     private let taskQueue = TaskQueue()
     public var terminationHandler: (() -> Void)? = nil
 
-    init(parameters: Process.ExecutionParameters) throws {
-        self.process = HostedProcess(parameters: parameters)
+    init(named serviceName: String, parameters: Process.ExecutionParameters) throws {
+        self.process = HostedProcess(named: serviceName, parameters: parameters)
         let transport = UnrestrictedProcessTransport(process: process)
         self.wrappedServer = JSONRPCLanguageServer(dataTransport: transport)
 

@@ -37,12 +37,3 @@ extension SemanticDetails: Codable {
 public protocol SemanticDetailsService {
     func semanticDetails(at position: CombinedTextPosition) async throws -> SemanticDetails?
 }
-
-//public struct DefaultSemanticDetailsService: SemanticDetailsService {
-//    public init() {
-//    }
-//
-//    public func semanticDetails(at position: CombinedTextPosition, completionHandler: @escaping (ServiceProviderResult<SemanticDetails?>) -> Void) {
-//        completionHandler(.success(nil))
-//    }
-//}

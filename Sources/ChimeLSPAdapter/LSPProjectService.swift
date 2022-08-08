@@ -22,14 +22,14 @@ actor LSPProjectService {
          serverOptions: any Codable = [:] as [String: String],
          transformers: LSPTransformers = .init(),
          executionParamsProvider: @escaping LSPService.ExecutionParamsProvider,
-         indirectExecution: Bool = true) {
+         serviceName: String? = "com.chimehq.ChimeKit.ProcessService") {
         self.rootURL = url
         self.serverOptions = serverOptions
         self.host = host
         self.documentConnections = [:]
         self.transformers = transformers
         self.executionParamsProvider = executionParamsProvider
-        self.log = OSLog(subsystem: "com.chimehq.Edit", category: "ProjectLSPConnection")
+        self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "ProjectLSPConnection")
 
         let restartingServer = RestartingServer()
 
@@ -38,8 +38,8 @@ actor LSPProjectService {
         let provider: RestartingServer.ServerProvider = {
             let params = try await executionParamsProvider()
 
-            if indirectExecution {
-                let remote = try RemoteLanguageServer(parameters: params)
+            if let serviceName = serviceName {
+                let remote = try RemoteLanguageServer(named: serviceName, parameters: params)
 
                 remote.terminationHandler = { [weak restartingServer] in
                     restartingServer?.serverBecameUnavailable()

@@ -2,9 +2,6 @@ import ExtensionKit
 import Foundation
 import SwiftUI
 
-//import ExtensionInterface
-//import ExtensionXPCInterface
-
 public enum ChimeExtensionPoint: String, CaseIterable, Hashable, Codable, Sendable {
     case nonui = "com.chimehq.Edit.extension"
     case sidebarUI = "com.chimehq.Edit.extension.ui.sidebar"
