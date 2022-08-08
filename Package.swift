@@ -15,6 +15,7 @@ let package = Package(
         .package(url: "https://github.com/ChimeHQ/ProcessEnv", from: "0.3.0"),
         .package(url: "https://github.com/ChimeHQ/LanguageClient", branch: "main"),
         .package(url: "https://github.com/ChimeHQ/LanguageServerProtocol", from: "0.7.3"),
+        .package(name: "ProcessServiceClient", path: "/Users/matt/Chime/Code/ProcessService"),
     ],
     targets: [
         .target(name: "ChimeExtensionInterface",
@@ -24,7 +25,8 @@ let package = Package(
                                "LanguageServerProtocol",
                                "ChimeExtensionInterface",
                                "ConcurrencyPlus",
-                               "ProcessEnv"]),
+                               "ProcessEnv",
+                               "ProcessServiceClient"]),
         .binaryTarget(name: "ChimeKit",
                       path: "ChimeKit.xcframework"),
         .target(name: "ChimeKitWrapper",
