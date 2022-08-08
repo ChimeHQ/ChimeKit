@@ -36,6 +36,7 @@ let package = Package(
                                "LanguageServerProtocol",
                                "ChimeExtensionInterface",
                                "ProcessEnv",
-                               "ChimeKit"]),
+                               "ChimeKit",
+                               .product(name: "ProcessServiceClient", package: "ProcessService")]),
     ]
 )

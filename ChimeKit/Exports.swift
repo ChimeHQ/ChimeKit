@@ -3,3 +3,4 @@
 // as dependencies.
 @_exported import ChimeExtensionInterface
 @_exported import ChimeLSPAdapter
+@_exported import ProcessServiceClient
