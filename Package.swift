@@ -30,6 +30,10 @@ let package = Package(
         .target(name: "ChimeKitWrapper",
                 dependencies: ["ConcurrencyPlus",
                                "ChimeLSPAdapter",
+                               "LanguageClient",
+                               "LanguageServerProtocol",
+                               "ChimeExtensionInterface",
+                               "ProcessEnv"
                                "ChimeKit"]),
     ]
 )
