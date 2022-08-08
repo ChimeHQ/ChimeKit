@@ -33,7 +33,7 @@ let package = Package(
                                "LanguageClient",
                                "LanguageServerProtocol",
                                "ChimeExtensionInterface",
-                               "ProcessEnv"
+                               "ProcessEnv",
                                "ChimeKit"]),
     ]
 )
