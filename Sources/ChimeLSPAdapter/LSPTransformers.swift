@@ -1,0 +1,287 @@
+import Foundation
+
+import ChimeExtensionInterface
+import LanguageServerProtocol
+
+import struct ChimeExtensionInterface.Diagnostic
+import enum ChimeExtensionInterface.TextRange
+import struct ChimeExtensionInterface.Token
+
+public typealias CompletionTranslator = (Int, CompletionResponse) -> [Completion]
+public typealias FormattingTranslator = (FormattingResult) -> [TextChange]
+public typealias TextEditTranslator = (TextEdit) -> TextChange
+public typealias TextEditsTranslator = ([TextEdit]) -> [TextChange]
+public typealias OrganizeImportsTransformer = (DocumentUri, CodeActionResponse) -> [TextChange]
+public typealias DiagnosticTransformer = (LanguageServerProtocol.Diagnostic) -> Diagnostic
+public typealias HoverTransformer = (CombinedTextPosition, HoverResponse) -> SemanticDetails?
+public typealias DefinitionTransformer = (DefinitionResponse) -> [DefinitionLocation]
+public typealias WorkspaceSymbolTransformer = (WorkspaceSymbol) -> Symbol
+public typealias SymbolInformationTransformer = (SymbolInformation) -> Symbol
+public typealias SemanticTokenTransformer = (LanguageServerProtocol.Token) -> Token
+
+public struct LSPTransformers {
+    public let completionTranslator: CompletionTranslator
+    public let textEditTranslator: TextEditTranslator
+    public let diagnosticTransformer: DiagnosticTransformer
+    public let hoverTransformer: HoverTransformer
+    public let definitionTransformer: DefinitionTransformer
+    public let symbolInformationTransformer: SymbolInformationTransformer
+    public let semanticTokenTransformer: SemanticTokenTransformer
+
+    public init(completionTranslator: @escaping CompletionTranslator = LSPTransformers.standardCompletionTranslator,
+                textEditTranslator: @escaping TextEditTranslator = LSPTransformers.standardTextEditTranslator,
+                diagnosticTransformer: @escaping DiagnosticTransformer = LSPTransformers.standardDiagnosticTransformer,
+                hoverTransformer: @escaping HoverTransformer = LSPTransformers.standardHoverTransformer,
+                definitionTransformer: @escaping DefinitionTransformer = LSPTransformers.standardDefinitionTransformer,
+                symbolInformationTransformer: @escaping SymbolInformationTransformer = LSPTransformers.standardSymbolInformationTransformer,
+                semanticTokenTransformer: @escaping SemanticTokenTransformer = LSPTransformers.standardSemanticTokenTransformer) {
+        self.completionTranslator = completionTranslator
+        self.textEditTranslator = textEditTranslator
+        self.diagnosticTransformer = diagnosticTransformer
+        self.hoverTransformer = hoverTransformer
+        self.definitionTransformer = definitionTransformer
+        self.symbolInformationTransformer = symbolInformationTransformer
+        self.semanticTokenTransformer = semanticTokenTransformer
+    }
+}
+
+extension LSPTransformers {
+    public var textEditsTranslator: TextEditsTranslator {
+        return { edits in
+            let applicableEdits = TextEdit.makeApplicable(edits)
+
+            return applicableEdits.map(textEditTranslator)
+        }
+    }
+
+    public var formattingTranslator: FormattingTranslator {
+        return { response in
+            let edits = response ?? []
+
+            return textEditsTranslator(edits)
+        }
+    }
+
+    public var organizeImportsTransformer: OrganizeImportsTransformer {
+        return { uri, response in
+            let actions = (response ?? []).compactMap { twoType -> CodeAction? in
+                switch twoType {
+                case .optionB(let action):
+                    return action
+                default:
+                    return nil
+                }
+            }
+
+            let organizeImportActions = actions.filter({ $0.kind == CodeActionKind.SourceOrganizeImports })
+            let workspaceEdits = organizeImportActions.compactMap({ $0.edit })
+
+            let docChanges = workspaceEdits.compactMap({ $0.documentChanges }).flatMap({ $0 })
+            let documentEdits = docChanges.compactMap({ (change) -> TextDocumentEdit? in
+                if case let .textDocumentEdit(edit) = change {
+                    return edit
+                }
+
+                return nil
+            })
+
+            let plainEdits = workspaceEdits.compactMap({ $0.changes?[uri] }).flatMap({ $0 })
+
+            let edits = plainEdits + documentEdits.flatMap({ $0.edits })
+
+            return textEditsTranslator(edits)
+        }
+    }
+
+    public var workspaceSymbolResponseTransformer: (WorkspaceSymbolResponse) -> [Symbol] {
+        return { response in
+            switch response {
+            case nil:
+                return []
+            case .optionA(let symbolInformationArray):
+                return symbolInformationArray.map({ symbolInformationTransformer($0) })
+            case .optionB:
+                return []
+            }
+        }
+    }
+}
+
+extension LSPTransformers {
+    public static let standardCompletionTranslator: CompletionTranslator = { location, response in
+        guard let response = response else {
+            return []
+        }
+
+        let fallbackRange = TextRange.range(NSRange(location: location, length: 0))
+
+        return response.items.compactMap({ item -> Completion? in
+            let edit = item.textEdit
+
+            guard let text = edit?.newText ?? item.insertText else {
+                return nil
+            }
+
+            let displayString: String
+
+            if let detail = item.detail {
+                displayString = "\(item.label) - \(detail)"
+            } else {
+                displayString = item.label
+            }
+
+            let range = edit?.textRange ?? fallbackRange
+            let fragments = Snippet(value: text).completionFragments
+
+            return Completion(displayString: displayString, range: range, fragments: fragments)
+        })
+    }
+}
+
+extension LSPTransformers {
+    public static let standardTextEditTranslator: TextEditTranslator = { edit in
+        let start = LineRelativeTextPosition(edit.range.start)
+        let end = LineRelativeTextPosition(edit.range.end)
+        let relativeRange = start..<end
+
+        return TextChange(string: edit.newText, textRange: .lineRelativeRange(relativeRange))
+    }
+}
+
+extension LSPTransformers {
+    public static let standardDiagnosticTransformer: DiagnosticTransformer = { diagnostic in
+        let relations = diagnostic.relatedInformation?.compactMap({ (relatedInfo) -> Diagnostic.Relation? in
+            guard let url = URL(string: relatedInfo.location.uri) else {
+                return nil
+            }
+
+            let range = LineRelativeTextRange(relatedInfo.location.range)
+            let message = relatedInfo.message
+
+            return Diagnostic.Relation(message: message, url: url, range: .lineRelativeRange(range))
+        }) ?? []
+
+        let range = LineRelativeTextRange(diagnostic.range)
+
+        let kind: Diagnostic.Kind
+
+        switch diagnostic.severity {
+        case .error?: kind = .error
+        case .warning?: kind = .warning
+        case .information?, nil: kind = .information
+        case .hint?: kind = .hint
+        }
+
+        var qualifiers = Set<Diagnostic.Qualifier>()
+
+        if diagnostic.tags?.contains(.unnecessary) ?? false {
+            qualifiers.insert(.unnecessary)
+        }
+
+        if diagnostic.tags?.contains(.deprecated) ?? false {
+            qualifiers.insert(.deprecated)
+        }
+
+        let diagnostic = Diagnostic(range: .lineRelativeRange(range),
+                                                       message: diagnostic.message,
+                                                       kind: kind,
+                                                       relationships: relations,
+                                                       qualifiers: qualifiers)
+
+        return diagnostic
+    }
+}
+
+extension LSPTransformers {
+    public static let standardHoverTransformer: HoverTransformer = { position, response in
+        guard let response = response else { return nil }
+
+//        let textRange: ExtensionInterface.TextRange
+        let textRange: TextRange
+
+        if let range = response.range {
+            textRange = .lineRelativeRange(LineRelativeTextRange(range))
+        } else {
+            textRange = .range(NSRange(location: position.location, length: 0))
+        }
+
+        switch response.contents {
+        case .optionA(.optionA(let string)):
+            return SemanticDetails(textRange: textRange, documentation: string)
+        case .optionA(.optionB(let pair)):
+            return SemanticDetails(textRange: textRange, documentation: pair.value)
+        case .optionB(let markedStrings):
+            let value = markedStrings.first?.value
+
+            return SemanticDetails(textRange: textRange, documentation: value, containsMarkdown: true)
+        case .optionC(let content):
+            return SemanticDetails(textRange: textRange, documentation: content.value, containsMarkdown: content.kind == .markdown)
+        }
+    }
+}
+
+extension LSPTransformers {
+    public static let standardDefinitionTransformer: DefinitionTransformer = { response in
+        switch response {
+        case nil:
+            return []
+        case .optionA(let loc)?:
+            guard let url = URL(string: loc.uri) else {
+                assertionFailure()
+
+                return []
+            }
+
+            let range = loc.range.textRange
+
+            return [DefinitionLocation(url: url, highlightRange: range, selectionRange: range)]
+        case .optionB(let locs)?:
+            return locs.compactMap { (loc) -> DefinitionLocation? in
+                guard let url = URL(string: loc.uri) else {
+                    return nil
+                }
+
+                let range = loc.range.textRange
+
+                return DefinitionLocation(url: url, highlightRange: range, selectionRange: range)
+            }
+        case .optionC(let links)?:
+            return links.map { (link) -> DefinitionLocation in
+                let url = URL(fileURLWithPath: link.targetUri, isDirectory: false)
+                let highlightRange = link.targetRange.textRange
+                let selectionRange = link.targetSelectionRange.textRange
+
+                return DefinitionLocation(url: url, highlightRange: highlightRange, selectionRange: selectionRange)
+            }
+        }
+
+    }
+}
+
+extension LSPTransformers {
+    public static let standardSymbolInformationTransformer: SymbolInformationTransformer = { info in
+        let kind: Symbol.Kind
+
+        switch info.kind {
+        case .method:
+            kind = .method
+        case .function:
+            kind = .function
+        default:
+            kind = .function
+        }
+
+        let url = URL(string: info.location.uri)!
+        let range = info.location.range.textRange
+
+        return Symbol(name: info.name, containerName: info.containerName, kind: kind, url: url, range: range)
+    }
+}
+
+extension LSPTransformers {
+    public static let standardSemanticTokenTransformer: SemanticTokenTransformer = { token in
+        let range = LineRelativeTextRange(token.range)
+
+        return Token(name: token.tokenType, textRange: .lineRelativeRange(range))
+    }
+}

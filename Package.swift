@@ -7,6 +7,7 @@ let package = Package(
     platforms: [.macOS(.v11)],
     products: [
         .library(name: "ChimeExtensionInterface", targets: ["ChimeExtensionInterface"]),
+        .library(name: "ChimeLSPAdapter", targets: ["ChimeLSPAdapter"]),
         .library(name: "ChimeKitWrapper", targets: ["ChimeKitWrapper"]),
     ],
     dependencies: [
@@ -16,8 +17,18 @@ let package = Package(
         .package(url: "https://github.com/ChimeHQ/LanguageServerProtocol", from: "0.7.3"),
     ],
     targets: [
-        .target(name: "ChimeExtensionInterface", dependencies: ["ConcurrencyPlus"]),
-        .target(name: "ChimeKitWrapper", dependencies: ["ConcurrencyPlus", "ProcessEnv", "LanguageClient", "LanguageServerProtocol", "ChimeKit"]),
-        .binaryTarget(name: "ChimeKit", path: "ChimeKit.xcframework"),
+        .target(name: "ChimeExtensionInterface",
+                dependencies: ["ConcurrencyPlus"]),
+        .target(name: "ChimeLSPAdapter",
+                dependencies: ["LanguageClient",
+                               "LanguageServerProtocol",
+                               "ChimeExtensionInterface",
+                               "ConcurrencyPlus"]),
+        .binaryTarget(name: "ChimeKit",
+                      path: "ChimeKit.xcframework"),
+        .target(name: "ChimeKitWrapper",
+                dependencies: ["ConcurrencyPlus",
+                               "ChimeLSPAdapter",
+                               "ChimeKit"]),
     ]
 )
