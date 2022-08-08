@@ -1,0 +1,13 @@
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+INFOPLIST_KEY_CFBundleDisplayName = $(TARGET_NAME)
+
+INFOPLIST_FILE = $(TARGET_NAME)/Info.plist
+
+PRODUCT_BUNDLE_IDENTIFIER = com.chimehq.ChimeKit.$(TARGET_NAME)
+
+CODE_SIGN_ENTITLEMENTS = $(TARGET_NAME)/$(TARGET_NAME).entitlements
+
+CURRENT_PROJECT_VERSION = 1
+MARKETING_VERSION = 1.0

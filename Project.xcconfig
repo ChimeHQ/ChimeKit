@@ -1,0 +1,9 @@
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+SWIFT_VERSION = 5.0
+
+ENABLE_HARDENED_RUNTIME = YES
+APPLICATION_EXTENSION_API_ONLY = YES
+
+INFOPLIST_KEY_NSHumanReadableCopyright = Copyright © 2022 Chime Systems. All rights reserved.
