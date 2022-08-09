@@ -9,7 +9,7 @@ Chime's extensions are based on [ExtensionKit](https://developer.apple.com/docum
 
 For the most part, ChimeKit abstracts away all of the ExtensionKit details. You program against the ChimeKit APIs, not the ExtensionKit primitives. However, ExtensionKit does impose some requirements related to security and distribution you must be aware of.
 
-⚠️ ChimeKit includes some lower-level private APIs that aren't finished yet. These will not affect the supported extension APIs.
+⚠️ ChimeKit includes some lower-level private APIs that aren't finished yet. These will not affect the supported extension APIs, but will affect binary compatibility.
 
 ### Sandboxing
 
