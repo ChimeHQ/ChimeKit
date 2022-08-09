@@ -11,6 +11,8 @@ For the most part, ChimeKit abstracts away all of the ExtensionKit details. You 
 
 ⚠️ ChimeKit includes some lower-level private APIs that aren't finished yet. These will not affect the supported extension APIs, but will affect binary compatibility.
 
+An [early beta](https://updates.chimehq.com/com.chimehq.Edit/115/Chime.app.zip) of Chime 2.0 available for testing.
+
 ### Sandboxing
 
 ExtensionKit extensions **must** be sandboxed. ChimeKit manages all permissions for user-opened documents and directories transparently. However, running in a sandbox can make it impossible to host LSP servers, which is one of the core use-cases for Chime extensions. ChimeKit includes a system for running executables outside of a sandbox. It is based on [ProcessService](https://github.com/ChimeHQ/ProcessService).
