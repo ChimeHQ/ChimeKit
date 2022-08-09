@@ -5,7 +5,7 @@ Framework for building [Chime](https://www.chimehq.com) extensions.
 
 ## Overview
 
-Chime's extensions are based on [ExtensionKit](https://developer.apple.com/documentation/extensionkit). They are written in Swift and SwiftUI, and use `async` extensively. ChimeKit also includes a system for integrating LSP servers with the extension API.
+Chime's extensions are based on [ExtensionKit](https://developer.apple.com/documentation/extensionkit). They are written in Swift and SwiftUI. ChimeKit also includes a system for integrating (Language Server Protocol)[https://microsoft.github.io/language-server-protocol/] servers with the extension API.
 
 For the most part, ChimeKit abstracts away all of the ExtensionKit details. You program against the ChimeKit APIs, not the ExtensionKit primitives. However, ExtensionKit does impose some requirements related to security and distribution you must be aware of.
 
@@ -13,7 +13,7 @@ For the most part, ChimeKit abstracts away all of the ExtensionKit details. You 
 
 ### Sandboxing
 
-ExtensionKit extensions **must** be sandboxed. ChimeKit manages all permissions for user-opened documents and directories transparently. However, running in a sandbox can make it impossible to host [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) servers, which is one of the core use-cases for Chime extensions. ChimeKit includes a system for running executables outside of a sandbox. It is based on [ProcessService](https://github.com/ChimeHQ/ProcessService).
+ExtensionKit extensions **must** be sandboxed. ChimeKit manages all permissions for user-opened documents and directories transparently. However, running in a sandbox can make it impossible to host LSP servers, which is one of the core use-cases for Chime extensions. ChimeKit includes a system for running executables outside of a sandbox. It is based on [ProcessService](https://github.com/ChimeHQ/ProcessService).
 
 ### Distribution
 
