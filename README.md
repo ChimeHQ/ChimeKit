@@ -33,7 +33,7 @@ We want to provide a simple user experience for extensions, particularly for lan
 
 LSP is pervasive in language support extensions. Many IDEs use a model of one extension per language server. ChimeKit allows for multiple servers per extension. We think of LSP servers as an implementation detail of language support. Coordinating the behaviors of multiple servers is the job of an extension, not the user.
 
-Chime's core Go and Ruby support aren't yet open sourced, yet. But, we will be publishing them. And, going forward, we will **always** begin work on new language support as open source projects.
+Chime's core Go and Ruby support aren't open source, yet. But, we will be publishing them. And, going forward, we will **always** begin work on new language support as open source projects.
 
 ## Integration
 
