@@ -51,7 +51,9 @@ Chime uses the ChimeKit binary xcframework as its own interface to extensions. T
 
 ## Documentation
 
-This is an area of active work. Right now, autocomplete is your friend 🥴. But, don't be shy to reach out to us - we'll help!
+This is an area of active work. Right now, autocomplete is your friend 🥴. We're putting this out there extra-early to try to get some feedback and thoughts on API.
+
+Please don't be shy to (reach out)[https://www.chimehq.com/contact] to us - we'll help!
 
 ### Non-UI Extension
 
