@@ -21,7 +21,7 @@ ExtensionKit extensions **must** be sandboxed. ChimeKit manages all permissions 
 
 ExtensionKit extensions **must** be delivered within a wrapper application. You can definitely build this yourself, or even host a Chime extension within an existing application. You could even put these on the App Store and charge for them!
 
-However, if you don't want to be bothered with this, you have a solution in the works.
+However, if you don't want to be bothered with this, we have a solution in the works.
 
 ## Chime Extension Gallery
 
