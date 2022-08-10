@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/ChimeHQ/ChimeKit",
         "state": {
           "branch": "main",
-          "revision": "8942ab3b6d00eae842c643e418fc4f1994042177",
+          "revision": "53931099673c92119b4b9c08ec73929801687e8e",
           "version": null
         }
       },
@@ -59,9 +59,9 @@
         "package": "LanguageClient",
         "repositoryURL": "https://github.com/ChimeHQ/LanguageClient",
         "state": {
-          "branch": "main",
+          "branch": null,
           "revision": "0b07e46129d2314ef284bb3eccd1ae4f4f6fddd1",
-          "version": null
+          "version": "0.2.4"
         }
       },
       {
