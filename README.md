@@ -25,7 +25,7 @@ However, if you don't want to be bothered with this, we have a solution in the w
 
 ## Chime Extension Gallery
 
-This is a first-party extension hosting application, signed by our Developer ID. It will handle discovery and updates, and all open source extensions will be eligible to apply for inclusion. This app will be open source, but it is forthcoming. The actual details of how the sources will be integrating isn't worked out yet, so if you have thoughts, get in touch.
+This is a first-party extension hosting application, signed by our Developer ID. It will handle discovery and updates, and all open source extensions will be eligible to apply for inclusion. This app will be open source, but it is forthcoming. The actual details of how your sources will be integrated isn't worked out yet, so if you have thoughts, get in touch.
 
 ## Our Philosophy
 
