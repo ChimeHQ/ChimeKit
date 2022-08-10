@@ -9,9 +9,7 @@ Chime's extensions are based on [ExtensionKit](https://developer.apple.com/docum
 
 For the most part, ChimeKit abstracts away all of the ExtensionKit details. You program against the ChimeKit APIs, not the ExtensionKit primitives. However, ExtensionKit does impose some requirements related to security and distribution you must be aware of. ChimeKit development requires Xcode 14, Swift 5.7, and macOS Ventura (13.0).
 
-⚠️ ChimeKit includes some lower-level private APIs that aren't finished yet. These will not affect the supported extension APIs, but will affect binary compatibility.
-
-An [early beta](https://updates.chimehq.com/com.chimehq.Edit/115/Chime.app.zip) of Chime 2.0 available for testing.
+An [early beta](https://updates.chimehq.com/com.chimehq.Edit/116/Chime.app.zip) of Chime 2.0 available for testing.
 
 ### Sandboxing
 
