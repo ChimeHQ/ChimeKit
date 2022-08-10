@@ -12,10 +12,10 @@
       },
       {
         "package": "ChimeKit",
-        "repositoryURL": "/Users/matt/Chime/Code/ChimeKit",
+        "repositoryURL": "https://github.com/ChimeHQ/ChimeKit",
         "state": {
-          "branch": "local",
-          "revision": "44bcbf3314bc7afecf8e3086f436f3d3176d63e9",
+          "branch": "main",
+          "revision": "8942ab3b6d00eae842c643e418fc4f1994042177",
           "version": null
         }
       },
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/ChimeHQ/ConcurrencyPlus.git",
         "state": {
           "branch": null,
-          "revision": "ea44fa0a79a9ca4e6dad0420cf0b9876398bdc75",
-          "version": "0.2.3"
+          "revision": "210b2f506a70724c4273a2403229aa25c19784ba",
+          "version": "0.2.4"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/ChimeHQ/LanguageServerProtocol",
         "state": {
           "branch": null,
-          "revision": "cd30383fbdb63e6aed1f31071d6ff74863b8d6e3",
-          "version": "0.7.3"
+          "revision": "4fb0b0f2f4cb9ac72ef43f5dafb1db2dcaafc496",
+          "version": "0.7.4"
         }
       },
       {

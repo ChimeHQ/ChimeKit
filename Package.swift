@@ -11,10 +11,10 @@ let package = Package(
         .library(name: "ChimeKitWrapper", targets: ["ChimeKitWrapper"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/ChimeHQ/ConcurrencyPlus", from: "0.2.3"),
+        .package(url: "https://github.com/ChimeHQ/ConcurrencyPlus", from: "0.2.4"),
         .package(url: "https://github.com/ChimeHQ/ProcessEnv", from: "0.3.0"),
-        .package(url: "https://github.com/ChimeHQ/LanguageClient", branch: "main"),
-        .package(url: "https://github.com/ChimeHQ/LanguageServerProtocol", from: "0.7.3"),
+        .package(url: "https://github.com/ChimeHQ/LanguageClient", from: "0.2.4"),
+        .package(url: "https://github.com/ChimeHQ/LanguageServerProtocol", from: "0.7.4"),
         .package(url: "https://github.com/ChimeHQ/ProcessService", branch: "main"),
     ],
     targets: [
