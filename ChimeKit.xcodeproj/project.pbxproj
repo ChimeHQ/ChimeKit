@@ -31,6 +31,8 @@
 		C97D21AC289EA73100F007F8 /* ProcessEnv in Frameworks */ = {isa = PBXBuildFile; productRef = C97D21AB289EA73100F007F8 /* ProcessEnv */; };
 		C97D220128A11D0200F007F8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97D21FF28A11D0200F007F8 /* main.swift */; };
 		C97D220E28A11F2900F007F8 /* ProcessEnv in Frameworks */ = {isa = PBXBuildFile; productRef = C97D220D28A11F2900F007F8 /* ProcessEnv */; };
+		C9930B3428A3E623009227E6 /* ChimeExtensionInterface in Frameworks */ = {isa = PBXBuildFile; productRef = C9930B3328A3E623009227E6 /* ChimeExtensionInterface */; };
+		C9930B3828A3E628009227E6 /* ChimeLSPAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = C9930B3728A3E628009227E6 /* ChimeLSPAdapter */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +88,8 @@
 				C97D220E28A11F2900F007F8 /* ProcessEnv in Frameworks */,
 				C97D2154289E757000F007F8 /* ConcurrencyPlus in Frameworks */,
 				C9285FA828A15E910071B04B /* ProcessServiceClient in Frameworks */,
+				C9930B3428A3E623009227E6 /* ChimeExtensionInterface in Frameworks */,
+				C9930B3828A3E628009227E6 /* ChimeLSPAdapter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -188,6 +192,8 @@
 				C97D2153289E757000F007F8 /* ConcurrencyPlus */,
 				C97D220D28A11F2900F007F8 /* ProcessEnv */,
 				C9285FA728A15E910071B04B /* ProcessServiceClient */,
+				C9930B3328A3E623009227E6 /* ChimeExtensionInterface */,
+				C9930B3728A3E628009227E6 /* ChimeLSPAdapter */,
 			);
 			productName = ChimeKit;
 			productReference = C97D212F289E712800F007F8 /* ChimeKit.framework */;
@@ -701,6 +707,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C97D21AA289EA73100F007F8 /* XCRemoteSwiftPackageReference "ProcessEnv" */;
 			productName = ProcessEnv;
+		};
+		C9930B3328A3E623009227E6 /* ChimeExtensionInterface */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C9930B2F28A3C3A1009227E6 /* XCRemoteSwiftPackageReference "ChimeKit" */;
+			productName = ChimeExtensionInterface;
+		};
+		C9930B3728A3E628009227E6 /* ChimeLSPAdapter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C9930B2F28A3C3A1009227E6 /* XCRemoteSwiftPackageReference "ChimeKit" */;
+			productName = ChimeLSPAdapter;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
