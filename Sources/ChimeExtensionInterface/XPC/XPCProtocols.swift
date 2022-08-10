@@ -5,13 +5,13 @@ typealias XPCValueHandler<T> = (T?, Error?) -> Void
 typealias XPCArray<T> = Data
 
 typealias XPCTextChange = Data
-typealias XPCTextRange = CodingTextRange
+typealias XPCTextRange = Data
 typealias XPCTextTarget = Data
-typealias XPCTextContent = CodingCombinedTextContent
-typealias XPCCombinedTextPosition = CodingCombinedTextPosition
-typealias XPCCombinedTextRange = CodingCombinedTextRange
+typealias XPCTextContent = Data
+typealias XPCCombinedTextPosition = Data
+typealias XPCCombinedTextRange = Data
 
-typealias XPCProjectContext = CodingProjectContext
+typealias XPCProjectContext = Data
 typealias XPCDocumentContext = Data
 typealias XPCDocumentConfiguration = Data
 typealias XPCDocumentServiceConfiguration = Data
@@ -19,6 +19,7 @@ typealias XPCDocumentServiceConfiguration = Data
 typealias XPCProjectSymbolsContext = Data
 typealias XPCSemanticDetails = Data
 typealias XPCDefinitionLocation = Data
+typealias XPCCompletionTrigger = Data
 typealias XPCToken = Data
 typealias XPCDiagnostic = Data
 typealias XPCSymbol = Data
@@ -47,7 +48,7 @@ public enum XPCBridgeError: Error {
     func didSave(with xpcContext: XPCDocumentContext, completionHandler: @escaping XPCHandler)
 
     // CompletionService
-    func completions(for xpcContext: XPCDocumentContext, at xpcPosition: XPCCombinedTextPosition, xpcTrigger: String?, completionHandler: @escaping XPCValueHandler<Data>)
+    func completions(for xpcContext: XPCDocumentContext, at xpcPosition: XPCCombinedTextPosition, xpcTrigger: XPCCompletionTrigger, completionHandler: @escaping XPCValueHandler<Data>)
     
     // FormattingService
     func formatting(for xpcContext: XPCDocumentContext, for xpcRanges: XPCArray<XPCCombinedTextRange>, completionHandler: @escaping XPCValueHandler<XPCArray<XPCTextChange>>)

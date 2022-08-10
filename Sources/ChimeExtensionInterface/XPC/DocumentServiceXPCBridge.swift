@@ -73,15 +73,8 @@ extension DocumentServiceXPCBridge: DocumentService {
 
 extension DocumentServiceXPCBridge: CompletionService {
     public func completions(at position: CombinedTextPosition, trigger: CompletionTrigger) async throws -> [Completion] {
-        let xpcPosition = CodingCombinedTextPosition(position)
-        let xpcTrigger: String?
-
-        switch trigger {
-        case .invoked:
-            xpcTrigger = nil
-        case .character(let string):
-            xpcTrigger = string
-        }
+        let xpcPosition = try JSONEncoder().encode(position)
+        let xpcTrigger = try JSONEncoder().encode(trigger)
 
         return try await withCancellingContinuation({ (continuation: CancellingContinuation<[Completion]>) in
             remoteObject.completions(for: xpcContext, at: xpcPosition, xpcTrigger: xpcTrigger) { data, error in
@@ -109,7 +102,7 @@ extension DocumentServiceXPCBridge: SemanticDetailsService {
 
 extension DocumentServiceXPCBridge: DefinitionService {
     public func definitions(at position: CombinedTextPosition) async throws -> [DefinitionLocation] {
-        let xpcPosition = CodingCombinedTextPosition(position)
+        let xpcPosition = try JSONEncoder().encode(position)
 
         return try await withCancellingContinuation({ continuation in
             remoteObject.findDefinition(for: xpcContext, at: xpcPosition) { data, error in
@@ -121,7 +114,7 @@ extension DocumentServiceXPCBridge: DefinitionService {
 
 extension DocumentServiceXPCBridge: TokenService {
     public func tokens(in range: CombinedTextRange) async throws -> [Token] {
-        let xpcRange = CodingCombinedTextRange(range)
+        let xpcRange = try JSONEncoder().encode(range)
 
         return try await withCancellingContinuation({ continuation in
             remoteObject.tokens(for: xpcContext, in: xpcRange) { data, error in

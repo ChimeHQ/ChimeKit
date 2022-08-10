@@ -1,7 +1,6 @@
 import Foundation
 
 @_implementationOnly import ConcurrencyPlus
-//import ExtensionInterface
 
 public final class HostXPCBridge {
     let connection: NSXPCConnection
@@ -46,27 +45,18 @@ extension HostXPCBridge: HostProtocol {
         })
     }
 
-//    public func textContent(for documentId: DocumentIdentity, in range: ExtensionInterface.TextRange) async throws -> CombinedTextContent {
     public func textContent(for documentId: DocumentIdentity, in range: TextRange) async throws -> CombinedTextContent {
 
-        let xpcRange = CodingTextRange(range)
+        let xpcRange = try JSONEncoder().encode(range)
 
         return try await withCancellingContinuation({ continuation in
             self.remoteObject.textContent(for: documentId, xpcRange: xpcRange) { content, error in
-                switch (content, error) {
-                case (nil, nil):
-                    continuation.resume(throwing: XPCBridgeError.missingExpectedValue("textContent"))
-                case (let xpcValue?, nil):
-                    continuation.resume(returning: xpcValue.value)
-                case (_, let error?):
-                    continuation.resume(throwing: error)
-                }
+                continuation.resume(with: content, error: error)
             }
         })
     }
 
-//    public func textBounds(for documentId: DocumentIdentity, in ranges: [ExtensionInterface.TextRange], version: Int) async throws -> [NSRect] {
-        public func textBounds(for documentId: DocumentIdentity, in ranges: [TextRange], version: Int) async throws -> [NSRect] {
+    public func textBounds(for documentId: DocumentIdentity, in ranges: [TextRange], version: Int) async throws -> [NSRect] {
 
         let xpcRanges = try JSONEncoder().encode(ranges)
 

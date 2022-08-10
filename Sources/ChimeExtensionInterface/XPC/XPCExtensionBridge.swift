@@ -40,12 +40,12 @@ public final class XPCExtensionBridge<Extension: ExtensionProtocol>: ExtensionXP
     }
 
     func didOpenProject(with xpcContext: XPCProjectContext, bookmarkData: [Data]) {
-        let context = xpcContext.value
-
         let obj = self.bridgedObject
 
         queue.addOperation {
             do {
+                let context = try JSONDecoder().decode(ProjectContext.self, from: xpcContext)
+
                 self.resolveBookmarkData(bookmarkData)
 
                 try await obj.didOpenProject(with: context)
@@ -56,11 +56,11 @@ public final class XPCExtensionBridge<Extension: ExtensionProtocol>: ExtensionXP
     }
 
     func willCloseProject(with xpcContext: XPCProjectContext) {
-        let context = xpcContext.value
         let obj = self.bridgedObject
 
         queue.addOperation {
             do {
+                let context = try JSONDecoder().decode(ProjectContext.self, from: xpcContext)
                 try await obj.willCloseProject(with: context)
             } catch {
                 os_log("willCloseProject failed: %{public}@", log: self.log, type: .error, String(describing: error))
@@ -225,11 +225,11 @@ public final class XPCExtensionBridge<Extension: ExtensionProtocol>: ExtensionXP
     }
 
     func symbols(forProject xpcContext: XPCProjectContext, matching query: String, completionHandler: @escaping XPCValueHandler<XPCArray<XPCSymbol>>) {
-        let context = xpcContext.value
         let obj = self.bridgedObject
 
         queue.addOperation {
             do {
+                let context = try JSONDecoder().decode(ProjectContext.self, from: xpcContext)
                 let service = try await obj.symbolService(for: context)
                 let symbols = try await service?.symbols(matching: query) ?? []
                 let symbolData = try JSONEncoder().encode(symbols)
@@ -241,30 +241,14 @@ public final class XPCExtensionBridge<Extension: ExtensionProtocol>: ExtensionXP
         }
     }
 
-    func completions(for xpcContext: XPCDocumentContext, at xpcPosition: XPCCombinedTextPosition, xpcTrigger: String?, completionHandler: @escaping XPCValueHandler<Data>) {
-        let context: DocumentContext
-
-        do {
-            context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
-        } catch {
-            completionHandler(nil, error)
-            return
-        }
-
-        let trigger: CompletionTrigger
-
-        if let value = xpcTrigger {
-            trigger = .character(value)
-        } else {
-            trigger = .invoked
-        }
-
-        let position = xpcPosition.value
-
+    func completions(for xpcContext: XPCDocumentContext, at xpcPosition: XPCCombinedTextPosition, xpcTrigger: XPCCompletionTrigger, completionHandler: @escaping XPCValueHandler<Data>) {
         let obj = self.bridgedObject
 
         queue.addOperation {
             do {
+                let context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
+                let position = try JSONDecoder().decode(CombinedTextPosition.self, from: xpcPosition)
+                let trigger = try JSONDecoder().decode(CompletionTrigger.self, from: xpcTrigger)
                 let docService = try await obj.documentService(for: context)
                 let service = try await docService?.completionService
                 let completions = try await service?.completions(at: position, trigger: trigger) ?? []
@@ -291,10 +275,8 @@ public final class XPCExtensionBridge<Extension: ExtensionProtocol>: ExtensionXP
 
     func findDefinition(for xpcContext: XPCDocumentContext, at xpcPosition: XPCCombinedTextPosition, completionHandler: @escaping XPCValueHandler<XPCArray<XPCDefinitionLocation>>) {
         queue.addOperation {
-            let position = xpcPosition.value
-
             do {
-
+                let position = try JSONDecoder().decode(CombinedTextPosition.self, from: xpcPosition)
                 let service = try await self.documentService(for: xpcContext)?.defintionService
                 let defs = try await service?.definitions(at: position) ?? []
                 let data = try JSONEncoder().encode(defs)
@@ -309,9 +291,8 @@ public final class XPCExtensionBridge<Extension: ExtensionProtocol>: ExtensionXP
 
     func tokens(for xpcContext: XPCDocumentContext, in xpcRange: XPCCombinedTextRange, completionHandler: @escaping XPCValueHandler<XPCArray<XPCToken>>) {
         queue.addOperation {
-            let range = xpcRange.value
-
             do {
+                let range = try JSONDecoder().decode(CombinedTextRange.self, from: xpcRange)
                 let service = try await self.documentService(for: xpcContext)?.tokenService
                 let tokens = try await service?.tokens(in: range) ?? []
                 let data = try JSONEncoder().encode(tokens)

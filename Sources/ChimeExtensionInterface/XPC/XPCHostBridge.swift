@@ -1,7 +1,5 @@
 import Foundation
 
-//import ExtensionInterface
-
 /// XPC -> Host
 public final class XPCHostBridge<Host: HostProtocol>: HostXPCProtocol {
     let bridgedObject: Host
@@ -25,9 +23,12 @@ public final class XPCHostBridge<Host: HostProtocol>: HostXPCProtocol {
     func textContent(for id: UUID, xpcRange: XPCTextRange, reply: @escaping XPCValueHandler<XPCTextContent>) {
         Task {
             do {
-                let value = try await self.bridgedObject.textContent(for: id, in: xpcRange.value)
+                let range = try JSONDecoder().decode(TextRange.self, from: xpcRange)
+                let value = try await self.bridgedObject.textContent(for: id, in: range)
 
-                reply(CodingCombinedTextContent(value), nil)
+                let xpcContent = try JSONEncoder().encode(value)
+
+                reply(xpcContent, nil)
             } catch {
                 reply(nil, error)
             }

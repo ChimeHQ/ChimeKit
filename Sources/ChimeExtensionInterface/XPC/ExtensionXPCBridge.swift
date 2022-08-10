@@ -1,7 +1,6 @@
 import Foundation
 
 @_implementationOnly import ConcurrencyPlus
-//import ExtensionInterface
 
 public final class ExtensionXPCBridge {
     private let connection: NSXPCConnection
@@ -45,11 +44,15 @@ extension ExtensionXPCBridge: ExtensionProtocol {
             try context.url.bookmarkData(),
         ]
 
-        remoteObject.didOpenProject(with: CodingProjectContext(context), bookmarkData: bookmarks)
+        let xpcContext = try JSONEncoder().encode(context)
+
+        remoteObject.didOpenProject(with: xpcContext, bookmarkData: bookmarks)
     }
 
     public func willCloseProject(with context: ProjectContext) async throws {
-        remoteObject.willCloseProject(with: CodingProjectContext(context))
+        let xpcContext = try JSONEncoder().encode(context)
+
+        remoteObject.willCloseProject(with: xpcContext)
     }
 
     public func didOpenDocument(with context: DocumentContext) async throws -> URL? {
@@ -73,16 +76,16 @@ extension ExtensionXPCBridge: ExtensionProtocol {
     }
 
     public func didChangeDocumentContext(from oldContext: DocumentContext, to newContext: DocumentContext) async throws {
-//        precondition(oldContext.id == newContext.id)
-//
-//        let xpcOldContext = try JSONEncoder().encode(oldContext)
-//        let xpcNewContext = try JSONEncoder().encode(newContext)
-//
-//        try await withCheckedThrowingContinuation({ (continuation: CheckedContinuation<Void, Error>) in
-//            self.remoteObject.didChangeDocumentContext(from: xpcOldContext, to: xpcNewContext, completionHandler: { error in
-//                continuation.resume(with: error)
-//            })
-//        })
+        precondition(oldContext.id == newContext.id)
+
+        let xpcOldContext = try JSONEncoder().encode(oldContext)
+        let xpcNewContext = try JSONEncoder().encode(newContext)
+
+        try await withCancellingContinuation({ continuation in
+            self.remoteObject.didChangeDocumentContext(from: xpcOldContext, to: xpcNewContext, completionHandler: { error in
+                continuation.resume(with: error)
+            })
+        })
     }
 
     public func willCloseDocument(with context: DocumentContext) async throws {
