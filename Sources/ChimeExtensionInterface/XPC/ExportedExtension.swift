@@ -2,10 +2,9 @@ import Foundation
 import os.log
 
 @_implementationOnly import ConcurrencyPlus
-//import ExtensionInterface
 
 /// XPC -> Extension
-public final class XPCExtensionBridge<Extension: ExtensionProtocol>: ExtensionXPCProtocol {
+public final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPCProtocol {
     private let bridgedObject: Extension
     private let log: OSLog
     private let queue: TaskQueue
@@ -13,13 +12,9 @@ public final class XPCExtensionBridge<Extension: ExtensionProtocol>: ExtensionXP
 
     init(_ object: Extension) {
         self.bridgedObject = object
-        self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "ExtensionXPCBridge")
+        self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "ExportedExtension")
         self.queue = TaskQueue()
         self.documentServices = [:]
-    }
-
-    deinit {
-        os_log("dealloced bridge", log: self.log, type: .info)
     }
 
     private func resolveBookmarkData(_ bookmarkData: [Data]) {
@@ -309,7 +304,7 @@ public final class XPCExtensionBridge<Extension: ExtensionProtocol>: ExtensionXP
     }
 }
 
-extension XPCExtensionBridge {
+extension ExportedExtension {
     private func documentService(for xpcContext: XPCDocumentContext) async throws -> DocumentService? {
         let context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
 

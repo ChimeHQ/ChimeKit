@@ -1,7 +1,7 @@
 import Foundation
 
 /// XPC -> Host
-public final class XPCHostBridge<Host: HostProtocol>: HostXPCProtocol {
+public final class ExportedHost<Host: HostProtocol>: HostXPCProtocol {
     let bridgedObject: Host
 
     init(_ object: Host) {

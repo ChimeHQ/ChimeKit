@@ -17,6 +17,14 @@ extension DocumentContext {
             return .lua
         }
 
+		if uti.conforms(to: .swiftSource) {
+			return .swift
+		}
+
+		if uti.conforms(to: .json) {
+			return .json
+		}
+
         return nil
     }
 }

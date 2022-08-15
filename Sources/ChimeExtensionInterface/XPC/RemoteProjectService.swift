@@ -1,18 +1,16 @@
 import Foundation
 
-//import ExtensionInterface
-
-public actor ProjectServiceXPCBridge {
-    let protocolObject: ExtensionXPCProtocol
+public final class RemoteProjectService {
+	private let connection: NSXPCConnection
     let context: ProjectContext
 
-    init(protocolObject: ExtensionXPCProtocol, context: ProjectContext) {
-        self.protocolObject = protocolObject
+    init(connection: NSXPCConnection, context: ProjectContext) {
+        self.connection = connection
         self.context = context
     }
 }
 
-extension ProjectServiceXPCBridge: SymbolQueryService {
+extension RemoteProjectService: SymbolQueryService {
     public func symbols(matching query: String) async throws -> [Symbol] {
 //        let obj = protocolObject
 //        let xpcContext = CodingProjectContext(context)

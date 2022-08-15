@@ -1,13 +1,11 @@
 import Foundation
 
-//import ExtensionInterface
-
 extension HostProtocol {
     public func export(over connection: NSXPCConnection) {
         precondition(connection.exportedInterface == nil)
 
         connection.exportedInterface = NSXPCInterface(with: HostXPCProtocol.self)
-        connection.exportedObject = XPCHostBridge(self)
+        connection.exportedObject = ExportedHost(self)
     }
 }
 
@@ -16,7 +14,7 @@ extension ExtensionProtocol {
         precondition(connection.exportedInterface == nil)
 
         connection.exportedInterface = NSXPCInterface(with: ExtensionXPCProtocol.self)
-        connection.exportedObject = XPCExtensionBridge(self)
+        connection.exportedObject = ExportedExtension(self)
     }
 }
 
