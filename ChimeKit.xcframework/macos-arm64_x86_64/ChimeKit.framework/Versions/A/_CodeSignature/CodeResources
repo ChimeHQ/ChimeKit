@@ -120,7 +120,7 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			XCl3a3cxeNYfd2sxQ9lpUN0H92s=
+			1MNGrBdpBhGarsznWML761YLg1s=
 			</data>
 			<key>requirement</key>
 			<string>identifier "com.chimehq.ChimeKit.ProcessService" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: Matthew Massicotte (963AZ7H6D8)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
