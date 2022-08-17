@@ -72,7 +72,7 @@ public final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPC
             context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
         } catch {
             os_log("caught failure %{public}@", log: self.log, type: .info, String(describing: error))
-            completionHandler(nil, XPCBridgeError.parameterEncodingError(error))
+            completionHandler(nil, error)
             return
         }
 
@@ -101,7 +101,7 @@ public final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPC
             oldContext = try JSONDecoder().decode(DocumentContext.self, from: xpcOldContext)
             newContext = try JSONDecoder().decode(DocumentContext.self, from: xpcNewContext)
         } catch {
-            completionHandler(XPCBridgeError.parameterEncodingError(error))
+            completionHandler(error)
             return
         }
 
@@ -257,15 +257,50 @@ public final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPC
     }
 
     func formatting(for xpcContext: XPCDocumentContext, for xpcRanges: XPCArray<XPCCombinedTextRange>, completionHandler: @escaping XPCValueHandler<XPCArray<XPCTextChange>>) {
-        completionHandler(nil, XPCBridgeError.unsupported)
+		queue.addOperation {
+			do {
+				let ranges = try JSONDecoder().decode([CombinedTextRange].self, from: xpcRanges)
+				let service = try await self.documentService(for: xpcContext)?.formattingService
+				let value = try await service?.formatting(for: ranges)
+				let data = try JSONEncoder().encode(value)
+
+				completionHandler(data, nil)
+
+			} catch {
+				completionHandler(nil, error)
+			}
+		}
     }
 
     func organizeImports(for xpcContext: XPCDocumentContext, completionHandler: @escaping XPCValueHandler<XPCArray<XPCTextChange>>) {
-        completionHandler(nil, XPCBridgeError.unsupported)
+		queue.addOperation {
+			do {
+				let service = try await self.documentService(for: xpcContext)?.formattingService
+				let value = try await service?.organizeImports()
+				let data = try JSONEncoder().encode(value)
+
+				completionHandler(data, nil)
+
+			} catch {
+				completionHandler(nil, error)
+			}
+		}
     }
 
     func semanticDetails(for xpcContext: XPCDocumentContext, at xpcPosition: XPCCombinedTextPosition, completionHandler: @escaping XPCValueHandler<XPCSemanticDetails>) {
-        completionHandler(nil, XPCBridgeError.unsupported)
+		queue.addOperation {
+			do {
+				let position = try JSONDecoder().decode(CombinedTextPosition.self, from: xpcPosition)
+				let service = try await self.documentService(for: xpcContext)?.semanticDetailsService
+				let value = try await service?.semanticDetails(at: position)
+				let data = try JSONEncoder().encode(value)
+
+				completionHandler(data, nil)
+
+			} catch {
+				completionHandler(nil, error)
+			}
+		}
     }
 
     func findDefinition(for xpcContext: XPCDocumentContext, at xpcPosition: XPCCombinedTextPosition, completionHandler: @escaping XPCValueHandler<XPCArray<XPCDefinitionLocation>>) {
@@ -300,7 +335,17 @@ public final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPC
     }
 
     func symbols(forDocument xpcContext: XPCDocumentContext, matching query: String, completionHandler: @escaping XPCValueHandler<XPCArray<XPCSymbol>>) {
-        completionHandler(nil, XPCBridgeError.unsupported)
+		queue.addOperation {
+			do {
+				let service = try await self.documentService(for: xpcContext)?.symbolService
+				let value = try await service?.symbols(matching: query)
+				let data = try JSONEncoder().encode(value)
+
+				completionHandler(data, nil)
+			} catch {
+				completionHandler(nil, error)
+			}
+		}
     }
 }
 

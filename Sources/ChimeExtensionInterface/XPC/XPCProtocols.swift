@@ -24,13 +24,6 @@ typealias XPCToken = Data
 typealias XPCDiagnostic = Data
 typealias XPCSymbol = Data
 
-public enum XPCBridgeError: Error {
-    case unsupported
-    case invalidInterface
-    case missingExpectedValue(String)
-    case parameterEncodingError(Error)
-}
-
 /// Extension XPC API
 @objc protocol ExtensionXPCProtocol {
     // ApplicationService

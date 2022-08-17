@@ -1,7 +1,5 @@
 import Foundation
 
-//import ExtensionInterface
-
 public final class ExportedSceneHost<Host: ExtensionSceneHostProtocol>: ExtensionSceneHostXPCProtocol {
     let host: Host
 
@@ -10,6 +8,12 @@ public final class ExportedSceneHost<Host: ExtensionSceneHostProtocol>: Extensio
     }
 
     func textBounds(xpcRanges: XPCArray<XPCTextRange>, version: Int, reply: @escaping (XPCArray<NSRect>?, Error?) -> Void) {
-        reply(nil, XPCBridgeError.unsupported)
+		do {
+			let rects = try JSONEncoder().encode([] as [NSRect])
+
+			reply(rects, nil)
+		} catch {
+			reply(nil, error)
+		}
     }
 }
