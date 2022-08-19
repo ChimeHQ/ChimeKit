@@ -7,7 +7,7 @@ public final class RemoteExtension {
     private var docServices: [DocumentIdentity: RemoteDocumentService]
     private let queue: DispatchQueue
 
-    public init(connection: NSXPCConnection) throws {
+    public init(connection: NSXPCConnection) {
         self.connection = connection
         self.docServices = [:]
         self.queue = DispatchQueue(label: "com.chimehq.ChimeKit.RemoteExtension")

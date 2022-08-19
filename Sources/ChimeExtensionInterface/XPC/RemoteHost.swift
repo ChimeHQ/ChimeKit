@@ -5,7 +5,7 @@ import Foundation
 public final class RemoteHost {
     private let connection: NSXPCConnection
 
-    public init(_ connection: NSXPCConnection) throws {
+    public init(_ connection: NSXPCConnection) {
         self.connection = connection
 
         precondition(connection.remoteObjectInterface == nil)
