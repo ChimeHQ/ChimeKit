@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/ChimeHQ/ChimeKit",
         "state": {
           "branch": "main",
-          "revision": "5de0f86e809f6aa0b63d52c603ecee6a36fee6b4",
+          "revision": "3176efe796ce5208458c4f53d4690d0fd8b369f6",
           "version": null
         }
       },
@@ -23,9 +23,9 @@
         "package": "ConcurrencyPlus",
         "repositoryURL": "https://github.com/ChimeHQ/ConcurrencyPlus",
         "state": {
-          "branch": "main",
+          "branch": null,
           "revision": "f8e2d4634b4ea5076172633379d9cef0cff592a3",
-          "version": null
+          "version": "0.2.5"
         }
       },
       {
