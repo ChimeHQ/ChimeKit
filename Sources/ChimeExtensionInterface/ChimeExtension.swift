@@ -22,7 +22,7 @@ public struct ChimeExtensionConfiguration<Extension: ChimeBaseExtension>: AppExt
     /// Determine whether to accept the XPC connection from the host.
     public func accept(connection: NSXPCConnection) -> Bool {
         appExtension.export(over: connection)
-        appExtension.hostApp = try? RemoteHost(connection)
+        appExtension.hostApp = RemoteHost(connection)
 
         connection.activate()
 
