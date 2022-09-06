@@ -61,7 +61,7 @@ Adding support for a new languages has multiple components. Source interactions,
 
 If Chime does not support a language you'd like to use, the first step is to let us know! Our process will look like this:
 
-- Create an SPM-based tree-sitter parser [tree-sitter](https://github.com/ChimeHQ/SwiftTreeSitter#language-parsers)
+- Create an SPM-based [tree-sitter](https://github.com/ChimeHQ/SwiftTreeSitter#language-parsers) parser
 - Ensure that parser has the needed queries defined
 - Encorporate the parser and queries into a new Chime build
 
