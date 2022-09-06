@@ -45,6 +45,12 @@ dependencies: [
 
 This package includes the modules `ChimeExtensionInterface`, `ChimeLSPAdapter` which you can use directly. These do not provide out-of-sandbox-executable support without work from you.
 
+```swift
+targets: [
+    .target(name: "MyExtension", dependencies: [.product(name: "ChimeExtensionInterface", package: "ChimeKit")]),
+]
+```
+
 You can also use the bundled `ChimeKit.xcframework`, which provides the same API and does include the ability to transparently run executables. However, due to an [SPM limitation](https://github.com/apple/swift-package-manager/issues/4449), your extension Xcode target must **depend** on `ChimeKitWrapper` but **link** against the framework. The framework must also be copied into your extension/wrapper app to be found at runtime.
 
 Chime uses the ChimeKit binary xcframework as its own interface to extensions. This means that there could be drift between the app and the extension. We'll do our best to minimize ABI- and API-incompatible changes, and use deprecations, but these kinds of changes are inevitable. Chime cannot make its own copy of ChimeKit available to extensions for runtime linking, but that would help reduce issues here. If you'd like to see that, please file feedback with Apple asking for the feature.
