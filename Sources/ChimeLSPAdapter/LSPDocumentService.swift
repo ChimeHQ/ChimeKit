@@ -10,9 +10,12 @@ enum LSPDocumentServiceError: Error {
 }
 
 final class LSPDocumentService {
+	typealias ContextFilter = (DocumentContext) async -> Bool
+
     private let log: OSLog
     private let server: Server
     let context: DocumentContext
+	let contextFilter: ContextFilter
     private let host: HostProtocol
     let transformers: LSPTransformers
     var serverCapabilities: ServerCapabilities? {
@@ -29,16 +32,19 @@ final class LSPDocumentService {
             invalidateTokens(in: .all)
         }
     }
-    private let textChangeSubject: PassthroughSubject<Void, Never>
-    private var subscriptions: Set<AnyCancellable>
+    private let textChangeSubject = PassthroughSubject<Void, Never>()
+    private var subscriptions = Set<AnyCancellable>()
 
-    init(server: Server, host: HostProtocol, context: DocumentContext, transformers: LSPTransformers) {
+    init(server: Server,
+		 host: HostProtocol,
+		 context: DocumentContext,
+		 transformers: LSPTransformers,
+		 contextFilter: @escaping ContextFilter) {
         self.server = server
         self.host = host
         self.context = context
         self.transformers = transformers
-        self.textChangeSubject = PassthroughSubject()
-        self.subscriptions = Set()
+		self.contextFilter = contextFilter
 
         self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "DocumentLSPConnection")
 
@@ -86,6 +92,8 @@ final class LSPDocumentService {
     }
 
     func openIfNeeded() async throws {
+		guard await contextFilter(context) else { return }
+
         let item = try await textDocumentItem
 
         let params = DidOpenTextDocumentParams(textDocument: item)
@@ -94,6 +102,8 @@ final class LSPDocumentService {
     }
 
     func close() async throws {
+		guard await contextFilter(context) else { return }
+
         guard let uri = uri else {
             throw LSPDocumentServiceError.noURI
         }
@@ -144,6 +154,7 @@ extension LSPDocumentService: DocumentService {
 
     func didApplyChange(_ change: CombinedTextChange) async throws {
         guard uri != nil else { return }
+		guard await contextFilter(context) else { return }
 
         switch documentSyncKind {
         case .none:
@@ -167,6 +178,8 @@ extension LSPDocumentService: DocumentService {
     }
 
     func willSave() async throws {
+		guard await contextFilter(context) else { return }
+
         let textDocId = try textDocumentIdentifier
 
         let params = WillSaveTextDocumentParams(textDocument: textDocId, reason: .manual)
@@ -175,6 +188,8 @@ extension LSPDocumentService: DocumentService {
     }
 
     func didSave() async throws {
+		guard await contextFilter(context) else { return }
+
         let textDocId = try textDocumentIdentifier
 
         let params = DidSaveTextDocumentParams(textDocument: textDocId)
@@ -205,6 +220,8 @@ extension LSPDocumentService: DocumentService {
 
 extension LSPDocumentService: CompletionService {
     func completions(at position: CombinedTextPosition, trigger: CompletionTrigger) async throws -> [Completion] {
+		guard await contextFilter(context) else { return [] }
+
         let textDocId = try textDocumentIdentifier
         let location = position.location
         let lspContext = trigger.completionContext
@@ -220,6 +237,8 @@ extension LSPDocumentService: CompletionService {
 
 extension LSPDocumentService: FormattingService {
     func formatting(for ranges: [CombinedTextRange]) async throws -> [TextChange] {
+		guard await contextFilter(context) else { return [] }
+
         let textDocId = try textDocumentIdentifier
 
         switch serverCapabilities?.documentFormattingProvider {
@@ -241,6 +260,8 @@ extension LSPDocumentService: FormattingService {
     }
 
     func organizeImports() async throws -> [TextChange] {
+		guard await contextFilter(context) else { return [] }
+
         let textDocId = try textDocumentIdentifier
 
         switch serverCapabilities?.codeActionProvider {
@@ -270,6 +291,8 @@ extension LSPDocumentService: FormattingService {
 
 extension LSPDocumentService: SemanticDetailsService {
     func semanticDetails(at position: CombinedTextPosition) async throws -> SemanticDetails? {
+		guard await contextFilter(context) else { return nil }
+
         let textDocId = try textDocumentIdentifier
         let params = TextDocumentPositionParams(textDocument: textDocId, position: position.lspPosition)
 
@@ -281,6 +304,8 @@ extension LSPDocumentService: SemanticDetailsService {
 
 extension LSPDocumentService: DefinitionService {
     func definitions(at position: CombinedTextPosition) async throws -> [DefinitionLocation] {
+		guard await contextFilter(context) else { return [] }
+
         let textDocId = try textDocumentIdentifier
 
         let params = TextDocumentPositionParams(textDocument: textDocId, position: position.lspPosition)
@@ -293,6 +318,8 @@ extension LSPDocumentService: DefinitionService {
 
 extension LSPDocumentService: TokenService {
     func tokens(in range: CombinedTextRange) async throws -> [ChimeExtensionInterface.Token] {
+		guard await contextFilter(context) else { return [] }
+
         guard let rep = tokenRepresentation else {
             return []
         }

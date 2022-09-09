@@ -7,7 +7,7 @@ import LanguageClient
 import LanguageServerProtocol
 
 actor LSPProjectService {
-    let rootURL: URL
+	let context: ProjectContext
     let serverOptions: any Codable
     let server: RestartingServer
     let host: HostProtocol
@@ -16,20 +16,23 @@ actor LSPProjectService {
     private let log: OSLog
     let transformers: LSPTransformers
     let executionParamsProvider: LSPService.ExecutionParamsProvider
+	let contextFilter: LSPService.ContextFilter
 
-    init(url: URL,
+    init(context: ProjectContext,
          host: HostProtocol,
          serverOptions: any Codable = [:] as [String: String],
          transformers: LSPTransformers = .init(),
+		 contextFilter: @escaping LSPService.ContextFilter,
          executionParamsProvider: @escaping LSPService.ExecutionParamsProvider,
          serviceName: String? = "com.chimehq.ChimeKit.ProcessService") {
-        self.rootURL = url
+        self.context = context
         self.serverOptions = serverOptions
         self.host = host
         self.documentConnections = [:]
         self.transformers = transformers
         self.executionParamsProvider = executionParamsProvider
-        self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "ProjectLSPConnection")
+		self.contextFilter = contextFilter
+        self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "LSPProjectService")
 
         let restartingServer = RestartingServer()
 
@@ -70,9 +73,13 @@ actor LSPProjectService {
         restartingServer.serverCapabilitiesChangedHandler = { [weak self] in self?.handleCapabilitiesChanged($0) }
     }
 
-    private func connection(for context: DocumentContext) async throws -> LSPDocumentService {
-        guard let conn = documentConnections[context.id] else {
-            throw LSPServiceError.noDocumentConnection(context)
+	nonisolated var rootURL: URL {
+		return context.url
+	}
+
+    private func connection(for docContext: DocumentContext) async throws -> LSPDocumentService {
+        guard let conn = documentConnections[docContext.id] else {
+            throw LSPServiceError.noDocumentConnection(docContext)
         }
 
         return conn
@@ -80,36 +87,49 @@ actor LSPProjectService {
 }
 
 extension LSPProjectService {
-    func didOpenDocument(with context: DocumentContext) async throws {
-        let id = context.id
+    func didOpenDocument(with docContext: DocumentContext) async throws {
+        let id = docContext.id
 
         assert(documentConnections[id] == nil)
 
+		let filter: LSPDocumentService.ContextFilter = { [weak self] in
+			guard let self = self else { return false }
+
+			return await self.contextFilter(self.context, $0)
+		}
+		
         let docConnection = LSPDocumentService(server: server,
                                                host: host,
-                                               context: context,
-                                               transformers: transformers)
+                                               context: docContext,
+                                               transformers: transformers,
+											   contextFilter: filter)
 
-        try await docConnection.openIfNeeded()
+		try await docConnection.openIfNeeded()
 
         assert(documentConnections[id] == nil)
         
         documentConnections[id] = docConnection
     }
 
-    func willCloseDocument(with context: DocumentContext) async throws {
-        let id = context.id
+    func willCloseDocument(with docContext: DocumentContext) async throws {
+        let id = docContext.id
 
         guard let conn = documentConnections[id] else {
-            throw LSPServiceError.noDocumentConnection(context)
+            throw LSPServiceError.noDocumentConnection(docContext)
         }
 
-        try await conn.close()
+		// This is a little risky, as we could potentially return a different
+		// value here, and not close...
+		if await contextFilter(context, docContext) {
+			try await conn.close()
+		}
 
         self.documentConnections[id] = nil
     }
 
     func shutdown() async throws {
+		// always try to really shutdown, as we really don't want to leak
+		// server processes
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             self.server.shutdownAndExit { error in
                 if let error = error {
@@ -121,13 +141,15 @@ extension LSPProjectService {
         }
     }
 
-    func documentService(for context: DocumentContext) async throws -> DocumentService? {
-        return try await connection(for: context)
+    func documentService(for docContext: DocumentContext) async throws -> DocumentService? {
+        return try await connection(for: docContext)
     }
 }
 
 extension LSPProjectService: SymbolQueryService {
     func symbols(matching query: String) async throws -> [Symbol] {
+		guard await contextFilter(context, nil) == true else { return [] }
+
         switch serverCapabilities?.workspaceSymbolProvider {
         case nil:
             throw LSPServiceError.unsupported
@@ -150,21 +172,23 @@ extension LSPProjectService {
     private nonisolated func provideInitializeParams(block: @escaping (Result<InitializeParams, Error>) -> Void) {
         let processId = Int(ProcessInfo.processInfo.processIdentifier)
         let capabilities = LSPService.clientCapabilities
-        let uri = rootURL.absoluteString
-        let workspaceFolder = WorkspaceFolder(uri: uri, name: "unnamed")
 
-        let bridgedData = (try? JSONEncoder().encode(serverOptions)) ?? Data()
-        let anyCodable = try? JSONDecoder().decode(AnyCodable.self, from: bridgedData)
+		let uri = rootURL.absoluteString
+		let path = rootURL.path
+		let workspaceFolder = WorkspaceFolder(uri: uri, name: "unnamed")
 
-        let params = InitializeParams(processId: processId,
-                                      rootPath: rootURL.path,
-                                      rootURI: uri,
-                                      initializationOptions: anyCodable,
-                                      capabilities: capabilities,
-                                      trace: .verbose,
-                                      workspaceFolders: [workspaceFolder])
+		let bridgedData = (try? JSONEncoder().encode(serverOptions)) ?? Data()
+		let anyCodable = try? JSONDecoder().decode(AnyCodable.self, from: bridgedData)
 
-        block(.success(params))
+		let params = InitializeParams(processId: processId,
+									  rootPath: path,
+									  rootURI: uri,
+									  initializationOptions: anyCodable,
+									  capabilities: capabilities,
+									  trace: .verbose,
+									  workspaceFolders: [workspaceFolder])
+
+		block(.success(params))
     }
 
     private nonisolated func provideTextDocumentItem(for uri: DocumentUri, block: @escaping (Result<TextDocumentItem, Error>) -> Void) {

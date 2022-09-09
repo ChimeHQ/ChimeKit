@@ -15,10 +15,11 @@ public enum LSPServiceError: Error {
 
 public actor LSPService {
     public typealias ExecutionParamsProvider = () async throws -> Process.ExecutionParameters
-    public typealias DocumentFilter = (DocumentContext) -> Bool
+	public typealias ContextFilter = (ProjectContext, DocumentContext?) async -> Bool
 
     private let serverOptions: any Codable
     private let executionParamsProvider: ExecutionParamsProvider
+	private let contextFilter: ContextFilter
     private var projectServices: [URL: LSPProjectService]
     private let log: OSLog
 
@@ -28,16 +29,17 @@ public actor LSPService {
     public init(host: HostProtocol,
                 serverOptions: any Codable = [:] as [String: String],
                 transformers: LSPTransformers = .init(),
-                documentFilter: DocumentFilter,
+				contextFilter: @escaping ContextFilter,
                 executionParamsProvider: @escaping ExecutionParamsProvider) {
         self.host = host
         self.transformers = transformers
         self.projectServices = [:]
         self.serverOptions = serverOptions
         self.executionParamsProvider = executionParamsProvider
+		self.contextFilter = contextFilter
         self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "LSPService")
     }
-
+	
     private func connection(for context: DocumentContext) -> LSPProjectService? {
         guard let projContext = context.projectContext else {
             return nil
@@ -57,10 +59,11 @@ extension LSPService: ExtensionProtocol {
 
         precondition(projectServices[url] == nil)
 
-        let conn = LSPProjectService(url: url,
+        let conn = LSPProjectService(context: context,
                                      host: host,
                                      serverOptions: serverOptions,
                                      transformers: transformers,
+									 contextFilter: contextFilter,
                                      executionParamsProvider: executionParamsProvider)
 
         self.projectServices[url] = conn
