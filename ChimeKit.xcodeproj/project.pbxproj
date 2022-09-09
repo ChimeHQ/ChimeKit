@@ -633,7 +633,7 @@
 			repositoryURL = "https://github.com/ChimeHQ/ConcurrencyPlus.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.3;
+				minimumVersion = 0.3.1;
 			};
 		};
 		C97D21AA289EA73100F007F8 /* XCRemoteSwiftPackageReference "ProcessEnv" */ = {
@@ -648,8 +648,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ChimeHQ/ChimeKit";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = revision;
+				revision = c8a05c7710858ea0f9fc4e2620332424d2f3dbcb;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
