@@ -62,8 +62,21 @@ actor LSPProjectService {
 
         restartingServer.serverProvider = provider
             
-        restartingServer.initializeParamsProvider = { [weak self] in self?.provideInitializeParams(block: $0)}
-        restartingServer.textDocumentItemProvider = { [weak self] in self?.provideTextDocumentItem(for: $0, block: $1) }
+        restartingServer.initializeParamsProvider = { [weak self] in
+			guard let self = self else {
+				throw LSPServiceError.providerUnavailable
+			}
+
+			return try await self.provideInitializeParams()
+		}
+
+        restartingServer.textDocumentItemProvider = { [weak self] in
+			guard let self = self else {
+				throw LSPServiceError.providerUnavailable
+			}
+
+			return try await self.textDocumentItem(for: $0)
+		}
             
         // This is subtle. While shutting down, it is possible for some notifications in come in
         // such that they arrive after this instance has been deallocated but before
@@ -169,7 +182,7 @@ extension LSPProjectService: SymbolQueryService {
 }
 
 extension LSPProjectService {
-    private nonisolated func provideInitializeParams(block: @escaping (Result<InitializeParams, Error>) -> Void) {
+    private func provideInitializeParams() throws -> InitializeParams {
         let processId = Int(ProcessInfo.processInfo.processIdentifier)
         let capabilities = LSPService.clientCapabilities
 
@@ -180,27 +193,13 @@ extension LSPProjectService {
 		let bridgedData = (try? JSONEncoder().encode(serverOptions)) ?? Data()
 		let anyCodable = try? JSONDecoder().decode(AnyCodable.self, from: bridgedData)
 
-		let params = InitializeParams(processId: processId,
-									  rootPath: path,
-									  rootURI: uri,
-									  initializationOptions: anyCodable,
-									  capabilities: capabilities,
-									  trace: .verbose,
-									  workspaceFolders: [workspaceFolder])
-
-		block(.success(params))
-    }
-
-    private nonisolated func provideTextDocumentItem(for uri: DocumentUri, block: @escaping (Result<TextDocumentItem, Error>) -> Void) {
-        Task {
-            do {
-                let item = try await textDocumentItem(for: uri)
-
-                block(.success(item))
-            } catch {
-                block(.failure(error))
-            }
-        }
+		return InitializeParams(processId: processId,
+								rootPath: path,
+								rootURI: uri,
+								initializationOptions: anyCodable,
+								capabilities: capabilities,
+								trace: .verbose,
+								workspaceFolders: [workspaceFolder])
     }
 
     private func textDocumentItem(for uri: DocumentUri) async throws -> TextDocumentItem {

@@ -8,6 +8,7 @@ import LanguageServerProtocol
 
 public enum LSPServiceError: Error {
     case unsupported
+	case providerUnavailable
     case noProjectConnection(URL)
     case noDocumentConnection(DocumentContext)
     case documentURLInvalid(DocumentContext)
