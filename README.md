@@ -5,11 +5,9 @@ Framework for building [Chime](https://www.chimehq.com) extensions.
 
 ## Overview
 
-Chime's extensions are based on [ExtensionKit](https://developer.apple.com/documentation/extensionkit). They are written in Swift and SwiftUI. ChimeKit also includes a system for integrating [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) servers with the extension API.
+Chime's extensions are based on [ExtensionKit](https://developer.apple.com/documentation/extensionkit). They are written in Swift and SwiftUI. ChimeKit also includes a system for integrating [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) servers with the extension API. For the most part, ChimeKit abstracts away all of the ExtensionKit details. You program against the ChimeKit APIs, not the ExtensionKit primitives. However, ExtensionKit does impose some requirements related to security and distribution you must be aware of.
 
-For the most part, ChimeKit abstracts away all of the ExtensionKit details. You program against the ChimeKit APIs, not the ExtensionKit primitives. However, ExtensionKit does impose some requirements related to security and distribution you must be aware of. ChimeKit development requires Xcode 14, Swift 5.7, and macOS Ventura (13.0).
-
-An [early beta](https://updates.chimehq.com/com.chimehq.Edit/117/Chime.app.zip) of Chime 2.0 available for testing.
+ChimeKit development requires [Chime 2.0](https://www.chimehq.com/download), Xcode 14, and macOS Ventura (13.0).
 
 ### Sandboxing
 
@@ -175,4 +173,4 @@ We'd love to hear from you! Get in touch via [twitter](https://twitter.com/chime
 Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
 
 [license]: https://opensource.org/licenses/BSD-3-Clause
-[license badge]: https://img.shields.io/github/license/ChimeHQ/SwiftTreeSitter
+[license badge]: https://img.shields.io/github/license/ChimeHQ/ChimeKit
