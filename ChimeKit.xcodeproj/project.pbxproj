@@ -301,7 +301,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -uxo pipefail\n\nrm -rf ${SRCROOT}/ChimeKit.xcframework\nxcodebuild -create-xcframework -framework ${BUILT_PRODUCTS_DIR}/ChimeKit.framework -output ${SRCROOT}/ChimeKit.xcframework\n";
+			shellScript = "set -uxo pipefail\n\nif [ \"$CONFIGURATION\" != \"Release\" ] ; then\n\techo \"error: must be built for release\"\n\texit 1\nfi\n\nrm -rf ${SRCROOT}/ChimeKit.xcframework\nxcodebuild -create-xcframework -framework ${BUILT_PRODUCTS_DIR}/ChimeKit.framework -debug-symbols ${BUILT_PRODUCTS_DIR}/ChimeKit.framework.dSYM -output ${SRCROOT}/ChimeKit.xcframework\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
