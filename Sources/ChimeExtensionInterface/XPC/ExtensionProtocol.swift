@@ -43,7 +43,10 @@ public extension DocumentService {
     }
 }
 
+/// Root protocol that all Chime extensions conform to.
 public protocol ExtensionProtocol: AnyObject {
+
+	/// Called when a project/directory is opened by the editor.
     func didOpenProject(with context: ProjectContext) async throws
     func willCloseProject(with context: ProjectContext) async throws
 
