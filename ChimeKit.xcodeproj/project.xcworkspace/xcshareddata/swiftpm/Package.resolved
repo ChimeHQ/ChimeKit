@@ -10,20 +10,21 @@
       }
     },
     {
-      "identity" : "chimekit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/ChimeKit",
-      "state" : {
-        "revision" : "bb94575c4df1f84c73640f782eaaef4d8ad17d41"
-      }
-    },
-    {
       "identity" : "concurrencyplus",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ConcurrencyPlus",
       "state" : {
         "revision" : "fb4d31826c4c46a0d39451b9c911dfde8fbcc2bd",
         "version" : "0.3.1"
+      }
+    },
+    {
+      "identity" : "extendable",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/Extendable",
+      "state" : {
+        "revision" : "ee747745ba456034ce1fe99a86302c63bc2eb37c",
+        "version" : "0.1.0"
       }
     },
     {
@@ -94,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ProcessService",
       "state" : {
-        "revision" : "17cfe72723748abeacd3bbd3a2f089318927daa0",
-        "version" : "0.1.0"
+        "revision" : "ac757f19da4b152ebe77e0b9bb5510dc55917d3e",
+        "version" : "0.1.1"
       }
     }
   ],

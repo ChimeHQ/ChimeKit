@@ -10,7 +10,7 @@ extension HostProtocol {
 }
 
 extension ExtensionProtocol {
-    public func export(over connection: NSXPCConnection) {
+    func export(over connection: NSXPCConnection) {
         precondition(connection.exportedInterface == nil)
 
         connection.exportedInterface = NSXPCInterface(with: ExtensionXPCProtocol.self)
@@ -19,7 +19,7 @@ extension ExtensionProtocol {
 }
 
 extension ExtensionSceneProtocol {
-    public func export(over connection: NSXPCConnection) {
+    func export(over connection: NSXPCConnection) {
         precondition(connection.exportedInterface == nil)
 
         connection.exportedInterface = NSXPCInterface(with: ExtensionSceneXPCProtocol.self)

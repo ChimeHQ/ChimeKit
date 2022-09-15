@@ -1,11 +1,9 @@
 import Foundation
 
-//import ExtensionInterface
-
-public final class ExportedScene<Scene: ExtensionSceneProtocol>: ExtensionSceneXPCProtocol {
+final class ExportedScene<Scene: ExtensionSceneProtocol>: ExtensionSceneXPCProtocol {
     let scene: Scene
 
-    public init(_ scene: Scene) {
+    init(_ scene: Scene) {
         self.scene = scene
     }
 

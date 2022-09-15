@@ -1,43 +1,29 @@
-import Foundation
 import ExtensionKit
+import Foundation
 import SwiftUI
-import os.log
 
-//import ExtensionXPCInterface
+import Extendable
 
-public enum ChimeExtensionSceneName: String, CaseIterable, Hashable, Codable, Sendable {
-    case sidebar
-    case documentSynced
+public enum ChimeExtensionSceneIdentifier: String, CaseIterable, Hashable, Codable, Sendable {
+    case main
 }
 
 @available(macOS 13.0, *)
-struct BaseExtensionScene<Content: View>: AppExtensionScene {
-    let sceneName: ChimeExtensionSceneName
-    private let content: () -> Content
-    private let contextView: SceneContextView<Content>
-
-    init(sceneName: ChimeExtensionSceneName, content: @escaping () -> Content) {
-        self.sceneName = sceneName
-        self.content = content
-        self.contextView = SceneContextView(content: content)
-    }
-
-    var body: some AppExtensionScene {
-        PrimitiveAppExtensionScene(id: sceneName.rawValue) {
-            contextView
-        } onConnection: { connection in
-            self.contextView.docModel.export(over: connection)
-
-            connection.activate()
-
-            return true
-        }
-    }
+public protocol ChimeExtensionScene: AppExtensionScene {
 }
 
 @available(macOS 13.0, *)
-public protocol ChimeExtensionScene: AppExtensionScene {}
+extension AppExtensionSceneGroup: ChimeExtensionScene {
+}
 
+/// A fixed editor sidebar view.
+///
+/// This scene will be displayed for all document/project combinations,
+/// including ones where no document and/or project is defined.
+///
+/// This scene will define two values available in the SwiftUI Environment,
+/// `documentContext` and `projectContext`. It uses the scene id
+/// corresponding to `ChimeExtensionSceneIdentifier.main`.
 @available(macOS 13.0, *)
 public struct SidebarScene<Content: View>: ChimeExtensionScene {
     private let content: () -> Content
@@ -47,19 +33,31 @@ public struct SidebarScene<Content: View>: ChimeExtensionScene {
     }
 
     public var body: some AppExtensionScene {
-        BaseExtensionScene(sceneName: .sidebar, content: content)
+		ConnectingAppExtensionScene(sceneID: ChimeExtensionSceneIdentifier.main.rawValue) { _, connection in
+			SceneContextView(connection: connection, content)
+		}
     }
 }
 
+/// An editor sidebar view with a horizontal size kept in sync with the current document.
+///
+/// This scene will be displayed for all document/project combinations,
+/// including ones where no document and/or project is defined.
+///
+/// This scene will define two values available in the SwiftUI Environment,
+/// `documentContext` and `projectContext`. It uses the scene id
+/// corresponding to `ChimeExtensionSceneIdentifier.main`.
 @available(macOS 13.0, *)
 public struct DocumentSyncedScene<Content: View>: ChimeExtensionScene {
-    private let content: () -> Content
+	private let content: () -> Content
 
-    public init(content: @escaping () ->  Content) {
-        self.content = content
-    }
+	public init(content: @escaping () ->  Content) {
+		self.content = content
+	}
 
-    public var body: some AppExtensionScene {
-        BaseExtensionScene(sceneName: .documentSynced, content: content)
-    }
+	public var body: some AppExtensionScene {
+		ConnectingAppExtensionScene(sceneID: ChimeExtensionSceneIdentifier.main.rawValue) { _, connection in
+			SceneContextView(connection: connection, content)
+		}
+	}
 }

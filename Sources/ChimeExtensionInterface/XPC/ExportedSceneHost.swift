@@ -1,9 +1,9 @@
 import Foundation
 
-public final class ExportedSceneHost<Host: ExtensionSceneHostProtocol>: ExtensionSceneHostXPCProtocol {
+final class ExportedSceneHost<Host: ExtensionSceneHostProtocol>: ExtensionSceneHostXPCProtocol {
     let host: Host
 
-    public init(_ host: Host) {
+    init(_ host: Host) {
         self.host = host
     }
 

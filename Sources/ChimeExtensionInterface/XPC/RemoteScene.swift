@@ -1,13 +1,15 @@
 import Foundation
 
 @_implementationOnly import ConcurrencyPlus
-//import ExtensionInterface
 
 public final class RemoteScene {
     private let connection: NSXPCConnection
 
     public init(connection: NSXPCConnection) {
         self.connection = connection
+
+		precondition(connection.remoteObjectInterface == nil)
+		connection.remoteObjectInterface = NSXPCInterface(with: ExtensionSceneXPCProtocol.self)
     }
 }
 

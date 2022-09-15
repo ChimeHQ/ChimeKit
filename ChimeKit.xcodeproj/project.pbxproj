@@ -77,6 +77,8 @@
 		C97D21FF28A11D0200F007F8 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		C97D220328A11D0B00F007F8 /* ProcessService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ProcessService.entitlements; sourceTree = "<group>"; };
 		C97D220428A11D4400F007F8 /* Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
+		C989A1FB28D3771B00F6494B /* ChimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChimeKit; sourceTree = "<group>"; };
+		C989A1FC28D3774D00F6494B /* ChimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ChimeKit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,8 @@
 		C97D2125289E712800F007F8 = {
 			isa = PBXGroup;
 			children = (
+				C989A1FB28D3771B00F6494B /* ChimeKit */,
+				C989A1FC28D3774D00F6494B /* ChimeKit */,
 				C97D220428A11D4400F007F8 /* Project.xcconfig */,
 				C97D2131289E712800F007F8 /* ChimeKit */,
 				C97D2188289E898A00F007F8 /* ProcessService */,
