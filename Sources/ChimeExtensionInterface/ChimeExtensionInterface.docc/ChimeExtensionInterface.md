@@ -1,13 +1,14 @@
 # ``ChimeExtensionInterface``
 
-This is the core library used for communication between the Chime application and an extension.
+Communication between the Chime application and an extension.
 
 ## Overview
 
 Text
 
-## Topics
+## Scenes
 
-### <!--@START_MENU_TOKEN@-->Group<!--@END_MENU_TOKEN@-->
+UI-based extensions define their view in terms of scenes which conform to ``ChimeExtensionScene``. ChimeKit includes predefined scenes that you can use. 
 
-- ``Symbol``
+- ``SidebarScene``: Used with fixed-sidebar extensions. See <doc:SidebarExtension>.
+- ``DocumentSyncedScene``: Used with document-synced extensions. 

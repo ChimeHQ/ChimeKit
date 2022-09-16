@@ -78,7 +78,7 @@
 		C97D220328A11D0B00F007F8 /* ProcessService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ProcessService.entitlements; sourceTree = "<group>"; };
 		C97D220428A11D4400F007F8 /* Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
 		C989A1FB28D3771B00F6494B /* ChimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChimeKit; sourceTree = "<group>"; };
-		C989A1FC28D3774D00F6494B /* ChimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ChimeKit; sourceTree = "<group>"; };
+		C989A1FC28D3774D00F6494B /* ChimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChimeKit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -653,7 +653,7 @@
 			repositoryURL = "https://github.com/ChimeHQ/ChimeKit";
 			requirement = {
 				kind = revision;
-				revision = bb94575c4df1f84c73640f782eaaef4d8ad17d41;
+				revision = 4ccf62380c705a216625cfb77bfaec4abcb24e16;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
