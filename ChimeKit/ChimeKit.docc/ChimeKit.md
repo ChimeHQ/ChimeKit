@@ -1,7 +1,0 @@
-# ``ChimeKit``
-
-Summary
-
-## Overview
-
-stuff
