@@ -653,7 +653,7 @@
 			repositoryURL = "https://github.com/ChimeHQ/ChimeKit";
 			requirement = {
 				kind = revision;
-				revision = 4ccf62380c705a216625cfb77bfaec4abcb24e16;
+				revision = ebc31cc0c3cd4c12399558cf65acec3eef186c8b;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
