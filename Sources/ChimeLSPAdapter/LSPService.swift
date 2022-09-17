@@ -1,5 +1,6 @@
 import Foundation
 import os.log
+import UniformTypeIdentifiers
 
 import AnyCodable
 import ChimeExtensionInterface
@@ -111,5 +112,42 @@ extension LSPService: ExtensionProtocol {
 
     public func documentService(for context: DocumentContext) async throws -> DocumentService? {
         return try await connection(for: context)?.documentService(for: context)
+    }
+}
+
+extension LSPService {
+    /// Produce a simple `ContextFilter` that examines file UTIs
+    ///
+    /// The returned function will return true if the supplied document conforms
+    /// to one of the UTIs within `types`, or if the project root contains at least
+    /// one conforming file.
+    public static func contextFilter(for types: [UTType]) -> ContextFilter {
+        return { (projectContext: ProjectContext, documentContext: DocumentContext?) async -> Bool in
+            if let uti = documentContext?.uti {
+                if types.contains(where: { uti.conforms(to: $0) }) {
+                    return true
+                }
+            }
+
+            return LSPService.projectRoot(at: projectContext.url, types: types)
+        }
+    }
+
+    private static func projectRoot(at url: URL, types: [UTType]) -> Bool {
+        let enumerator = FileManager.default.enumerator(at: url,
+                                                        includingPropertiesForKeys: [.contentTypeKey],
+                                                        options: [.skipsSubdirectoryDescendants, .skipsHiddenFiles])
+
+        while let item = enumerator?.nextObject() as? URL {
+            let values = try? item.resourceValues(forKeys: [.contentTypeKey])
+
+            guard let uti = values?.contentType else { continue }
+
+            if types.contains(where: { uti.conforms(to: $0) }) {
+                return true
+            }
+        }
+
+        return false
     }
 }
