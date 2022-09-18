@@ -2,7 +2,7 @@ import Foundation
 
 @_implementationOnly import ConcurrencyPlus
 
-public actor RemoteDocumentService {
+actor RemoteDocumentService {
 	private let connection: NSXPCConnection
     private(set) var context: DocumentContext
 

@@ -4,10 +4,16 @@ import SwiftUI
 
 import Extendable
 
+/// Identifier used to distinuish scenes provided by an extension.
+///
+/// <doc:Extensions>
 public enum ChimeExtensionSceneIdentifier: String, CaseIterable, Hashable, Codable, Sendable {
     case main
 }
 
+/// Base protocol used by all Chime extension scenes.
+///
+/// <doc:Extensions>
 @available(macOS 13.0, *)
 public protocol ChimeExtensionScene: AppExtensionScene {
 }
@@ -24,6 +30,8 @@ extension AppExtensionSceneGroup: ChimeExtensionScene {
 /// This scene will define two values available in the SwiftUI Environment,
 /// `documentContext` and `projectContext`. It uses the scene id
 /// corresponding to `ChimeExtensionSceneIdentifier.main`.
+///
+/// <doc:Extensions>
 @available(macOS 13.0, *)
 public struct SidebarScene<Content: View>: ChimeExtensionScene {
     private let content: () -> Content
@@ -47,6 +55,8 @@ public struct SidebarScene<Content: View>: ChimeExtensionScene {
 /// This scene will define two values available in the SwiftUI Environment,
 /// `documentContext` and `projectContext`. It uses the scene id
 /// corresponding to `ChimeExtensionSceneIdentifier.main`.
+///
+/// <doc:Extensions>
 @available(macOS 13.0, *)
 public struct DocumentSyncedScene<Content: View>: ChimeExtensionScene {
 	private let content: () -> Content

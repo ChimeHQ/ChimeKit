@@ -1,0 +1,224 @@
+@Tutorial(time: 10) {
+    @XcodeRequirement(title: "Xcode 14 (with macOS Ventura SDK)", destination: "https://developer.apple.com/download/")
+    
+    @Intro(title: "Project Structure") {
+        Learn how to set up and structure an extension for flexible development, integration, and distribution.
+    }
+    
+    @Section(title: "Making a Package") {
+        @ContentAndMedia {
+            The most flexible way to structure an extension is by starting with a package. This will provide an convenient and familar way to pull the core functionality into another project for final distribution.
+        }
+        
+        @Steps {
+            @Step {
+                Create a new Package.swift file.
+                
+                @Code(name: "Package.swift", file: "extensions-project-1-1-package.swift")
+            }
+            
+            @Step {
+                Add the reference to `ChimeKit`.
+                
+                @Code(name: "Package.swift", file: "extensions-project-1-2-package.swift")
+            }
+            
+            @Step {
+                Add a dependency on `ChimeKitWrapper` to the target.
+                
+                This is needed to work around an SPM limitation and provide access to both ChimeKit and its bundled packages.
+                
+                @Code(name: "Package.swift", file: "extensions-project-1-3-package.swift")
+            }
+            
+            @Step {
+                Adjust our minimum OS requirement.
+                
+                This should be macOS 12 or higher.
+                
+                @Code(name: "Package.swift", file: "extensions-project-1-4-package.swift")
+            }
+        }
+    }
+    
+    @Section(title: "Extension Class") {
+        @ContentAndMedia {
+            With our package in place, we can build a simple class that conforms to the `ExtensionProtocol` interface. We'll use this to build an ExtensionKit target later on.
+        }
+        
+        @Steps {
+            @Step {
+                Define the `SwiftExtension` class.
+                
+                Note that this class is public.
+                
+                @Code(name: "Sources/ChimeSwift/SwiftExtension.swift", file: "extensions-project-2-1-definition.swift")
+            }
+            
+            @Step {
+                Import `ChimeKit`.
+                
+                @Code(name: "Sources/ChimeSwift/SwiftExtension.swift", file: "extensions-project-2-2-definition.swift")
+            }
+            
+            @Step {
+                Create an `init` method that accepts a `HostProtocol` argument.
+
+                @Code(name: "Sources/ChimeSwift/SwiftExtension.swift", file: "extensions-project-2-3-definition.swift")
+            }
+            
+            @Step {
+                Add an instance variable to hold a reference to the `HostProtocol` object.
+
+                @Code(name: "Sources/ChimeSwift/SwiftExtension.swift", file: "extensions-project-2-4-definition.swift")
+            }
+            
+            @Step {
+                Add conformance to `ExtensionProtocol`.
+                
+                This protocol has default implemenations, so there's no need to fill in more to start.
+
+                @Code(name: "Sources/ChimeSwift/SwiftExtension.swift", file: "extensions-project-2-5-definition.swift")
+            }
+        }
+    }
+    
+    @Section(title: "Create a Container App") {
+        @ContentAndMedia {
+            ExtensionKit extensions can only be discovered when built into a container application. We'll make an Xcode project to build our extension, along with a container app to install it.
+        }
+        
+        @Steps {
+            @Step {
+                Create a new Xcode project.
+                
+                Select the macOS > App target template.
+                
+                @Image(source: "project-new.png", alt: "A screenshot of Xcode's new project window, with the macOS app template selected.")
+            }
+            
+            @Step {
+                Configure the target.
+                
+                For testing purposes, you can keep things simple. Use the name `SwiftExtensionContainer` to match the package, SwiftUI interface, and a default bundle identifier.
+                
+                @Image(source: "project-config.png", alt: "A screenshot of Xcode's new project configuration, with the name SwiftExtensionContainer used, and SwiftUI interface selected.")
+            }
+            
+            @Step {
+                Create it in a temporary location.
+                
+                We'll be moving the files later to keep things more organized.
+            }
+            
+            @Step {
+                Close the project.
+            }
+            
+            @Step {
+                Move the **contents** of `SwiftExtensionContainer` that Xcode created into our package root directory.
+                
+                Moving `SwiftExtensionContainer.xcodeproj` and `SwiftExtensionContainer` keeps everything needed for extension development together into one place.
+            }
+        }
+    }
+    
+        
+    @Section(title: "Configure the Extension Target") {
+        @ContentAndMedia {
+            We now have all of the infrastructure done, and we can create a real ExtensionKit target. We do have a little more work to do here to make sure things are structured as we'll need.
+        }
+        
+        @Steps {
+            @Step {
+                Create a new Target
+                
+                Select the "Generic Extension" template
+                
+                @Image(source: "project-target.png", alt: "A screenshot of Xcode's new target guide, with the Generic Extension template selected.")
+            }
+            
+            @Step {
+                Configure the target.
+                
+                @Image(source: "project-target-config.png", alt: "A screenshot of Xcode's Generic Extension configuration. Name is SwiftExtension, and supports user interface is unselected.")
+            }
+            
+            @Step {
+                Delete the generated `SwiftExtension.swift` file.
+                
+                We'll make our own soon.
+            }
+            
+            @Step {
+                Add the existing source file "Sources/SwiftExtension/SwiftExtension.swift" to the `SwiftExtension` target.
+                
+                References the package itself would be better, but Xcode does not support *local* package paths.
+            }
+                        
+            @Step {
+                Create a new file within the `SwiftExtension` group. 
+            }
+            
+            @Step {
+                Set the extension point.
+                
+                @Code(name: "SwiftExtension/Info.plist", file: "extensions-project-target-1-info.plist")
+            }
+        }
+    }
+            
+    @Section(title: "Create the Extension source") {
+        @ContentAndMedia {
+            Our last step is to create a real ExtensionKit entry point class. We'll use this to connect our package source up to the installable extension. There is a little bit of boilerplate involved, but the end result gives us a project with lots of flexibilty for testing and distribution.
+        }
+        
+        @Steps {
+            @Step {
+                Create the `SwiftStandaloneExtension` class file.
+                
+                @Code(name: "SwiftExtension/SwiftStandalongExtension.swift", file: "extensions-project-extension-1-standalone.swift")
+            }
+            
+            @Step {
+                Import `ChimeKit`.
+                
+                @Code(name: "SwiftExtension/SwiftStandalongExtension.swift", file: "extensions-project-extension-2-standalone.swift")
+            }
+
+            @Step {
+                Declare conformance to `ChimeExtension`.
+                
+                @Code(name: "SwiftExtension/SwiftStandalongExtension.swift", file: "extensions-project-extension-3-standalone.swift")
+            }
+
+            @Step {
+                Implemented the required methods.
+                
+                @Code(name: "SwiftExtension/SwiftStandalongExtension.swift", file: "extensions-project-extension-4-standalone.swift")
+            }
+
+            @Step {
+                Add an instance variable that references our `SwiftExtension` type.
+                
+                This is where all the functionality actually lives. We create it when the Chime app makes a connection to our extension.
+                
+                @Code(name: "SwiftExtension/SwiftStandalongExtension.swift", file: "extensions-project-extension-5-standalone.swift")
+            }
+
+            @Step {
+                Add implemenations for all of the `ExtensionProtocol` methods.
+                
+                The defaults will not work here.
+                
+                @Code(name: "SwiftExtension/SwiftStandalongExtension.swift", file: "extensions-project-extension-6-standalone.swift")
+            }
+
+            @Step {
+                Forward all the calls to the `SwiftExtension` instance.
+                
+                @Code(name: "SwiftExtension/SwiftStandalongExtension.swift", file: "extensions-project-extension-7-standalone.swift")
+            }
+        }
+    }
+}

@@ -1,14 +1,30 @@
 # ``ChimeExtensionInterface``
 
-Communication between the Chime application and an extension.
+ChimeKit is framework used to add capabilities to the Chime editor. Do more with extensions.
 
 ## Overview
 
-Text
+ChimeKit provides the functionality needed to build extensions, provide semantic features, display views, and integrate with [ExtensionKit](https://developer.apple.com/documentation/extensionkit).  
 
-## Scenes
+## Topics
 
-UI-based extensions define their view in terms of scenes which conform to ``ChimeExtensionScene``. ChimeKit includes predefined scenes that you can use. 
+### Fundamentals
 
-- ``SidebarScene``: Used with fixed-sidebar extensions. See <doc:SidebarExtension>.
-- ``DocumentSyncedScene``: Used with document-synced extensions. 
+- <doc:Understanding>
+- <doc:Languages>
+- <doc:ExtensionKit>
+- <doc:BuildingExtension>
+
+### Building Extensions
+
+- <doc:Sandboxing>
+- <doc:Context>
+- <doc:Text>
+- <doc:UserInterfaces>
+
+### Communication
+
+- ``ExtensionProtocol``
+- ``HostProtocol``
+- ``ExportedHost``
+- ``RemoteScene``

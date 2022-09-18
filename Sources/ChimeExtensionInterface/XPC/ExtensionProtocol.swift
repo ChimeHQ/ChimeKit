@@ -1,5 +1,14 @@
 import Foundation
 
+/// Provides behaviors and functionality scoped to a specific document.
+///
+/// A significant portion of the functionality within the extension interface is implicitly scoped
+/// to a particular document context, via a `DocumentService`. Chime can request a new `DocumentService`
+/// from all extensions via ``ExtensionProtocol/documentService(for:)-a5ry`` after changes have been
+/// processed.
+///
+/// - Important: The **type** of a document can change. If your extension only operates on certain
+/// kinds of documents, be sure to pay attention the ``DocumentContext/uti`` property.
 public protocol DocumentService {
     func willApplyChange(_ change: CombinedTextChange) async throws
     func didApplyChange(_ change: CombinedTextChange) async throws
@@ -43,7 +52,14 @@ public extension DocumentService {
     }
 }
 
-/// Root protocol that all Chime extensions conform to.
+/// Root functionality used to interface with the Chime application.
+///
+/// Chime manages the association of documents and projects. However, it has to respect platform
+/// conventions and user interaction. This means that sometimes the relationship between document
+/// and project can be unintuitive.
+///
+/// - Important: Do not make any assumptions about open/close order. A document may be opened
+/// **before** a project, and only associated later.
 public protocol ExtensionProtocol: AnyObject {
 
 	/// Called when a project/directory is opened by the editor.

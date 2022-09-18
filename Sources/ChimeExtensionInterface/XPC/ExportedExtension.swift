@@ -4,7 +4,7 @@ import os.log
 @_implementationOnly import ConcurrencyPlus
 
 /// XPC -> Extension
-public final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPCProtocol {
+final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPCProtocol {
     private let bridgedObject: Extension
     private let log: OSLog
     private let queue: TaskQueue

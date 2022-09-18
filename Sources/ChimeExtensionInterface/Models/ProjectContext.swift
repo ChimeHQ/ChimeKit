@@ -11,7 +11,3 @@ public struct ProjectContext: Codable, Hashable, Sendable {
         self.url = url
     }
 }
-
-public protocol ProjectContextual {
-    var projectContext: ProjectContext { get async }
-}

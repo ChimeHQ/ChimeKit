@@ -2,7 +2,7 @@ import Foundation
 
 @_implementationOnly import ConcurrencyPlus
 
-public final class RemoteHost {
+final class RemoteHost {
     private let connection: NSXPCConnection
 
     public init(_ connection: NSXPCConnection) {

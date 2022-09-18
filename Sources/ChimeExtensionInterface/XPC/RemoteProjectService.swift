@@ -1,6 +1,6 @@
 import Foundation
 
-public final class RemoteProjectService {
+final class RemoteProjectService {
 	private let connection: NSXPCConnection
     let context: ProjectContext
 
@@ -12,14 +12,10 @@ public final class RemoteProjectService {
 
 extension RemoteProjectService: SymbolQueryService {
     public func symbols(matching query: String) async throws -> [Symbol] {
-//        let obj = protocolObject
-//        let xpcContext = CodingProjectContext(context)
-//
-//        return try await withCheckedThrowingContinuation({ continuation in
-//            obj.symbols(forProject: xpcContext, matching: query) { data, error in
-//                continuation.resume(with: data, error: error)
-//            }
-//        })
-        return []
+        let xpcContext = try JSONEncoder().encode(context)
+
+        return try await connection.withContinuation { (service: ExtensionXPCProtocol, continuation) in
+            service.symbols(forProject: xpcContext, matching: query, completionHandler: continuation.resumingHandler)
+        }
     }
 }
