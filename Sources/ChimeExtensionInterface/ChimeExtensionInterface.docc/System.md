@@ -1,10 +1,10 @@
 # The Extension System
 
-Learn about what extension can do, the environment they run in, and how they are built.
+Learn about what extension can do, the environment they run in, and how they are built with ChimeKit.
 
 ## Overview
 
-ExtensionKit vs ExtensionProtocol.
+Chime's extensions are based on [ExtensionKit](https://developer.apple.com/documentation/extensionkit). They are written in Swift and SwiftUI. ChimeKit also includes a system for integrating [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) servers with the extension API. For the most part, ChimeKit abstracts away all of the ExtensionKit details. You program against the ChimeKit APIs, not the ExtensionKit primitives. However, ExtensionKit does impose some requirements related to security and distribution you must be aware of.
 
 ## Using ExtensionKit
 

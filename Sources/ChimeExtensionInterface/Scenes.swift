@@ -6,14 +6,14 @@ import Extendable
 
 /// Identifier used to distinuish scenes provided by an extension.
 ///
-/// <doc:Extensions>
+/// Learn more about ChimeKit User Interfaces: <doc:UserInterfaces>
 public enum ChimeExtensionSceneIdentifier: String, CaseIterable, Hashable, Codable, Sendable {
     case main
 }
 
 /// Base protocol used by all Chime extension scenes.
 ///
-/// <doc:Extensions>
+/// Learn more about ChimeKit User Interfaces: <doc:UserInterfaces>
 @available(macOS 13.0, *)
 public protocol ChimeExtensionScene: AppExtensionScene {
 }
@@ -31,7 +31,7 @@ extension AppExtensionSceneGroup: ChimeExtensionScene {
 /// `documentContext` and `projectContext`. It uses the scene id
 /// corresponding to `ChimeExtensionSceneIdentifier.main`.
 ///
-/// <doc:Extensions>
+/// Learn more about ChimeKit User Interfaces: <doc:UserInterfaces>
 @available(macOS 13.0, *)
 public struct SidebarScene<Content: View>: ChimeExtensionScene {
     private let content: () -> Content
@@ -56,7 +56,7 @@ public struct SidebarScene<Content: View>: ChimeExtensionScene {
 /// `documentContext` and `projectContext`. It uses the scene id
 /// corresponding to `ChimeExtensionSceneIdentifier.main`.
 ///
-/// <doc:Extensions>
+/// Learn more about ChimeKit User Interfaces: <doc:UserInterfaces>
 @available(macOS 13.0, *)
 public struct DocumentSyncedScene<Content: View>: ChimeExtensionScene {
 	private let content: () -> Content

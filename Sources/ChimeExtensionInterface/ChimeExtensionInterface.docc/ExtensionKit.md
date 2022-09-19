@@ -1,6 +1,6 @@
-# ExtensionKit
+# ExtensionKit Support
 
-ChimeKit provides a pre-built system for buildig ExtensionKit extensions.
+Pre-built components for building ExtensionKit extensions.
 
 ## Overview
 

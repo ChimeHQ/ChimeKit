@@ -2,6 +2,7 @@ import Foundation
 
 @_implementationOnly import ConcurrencyPlus
 
+/// Connect to a `ChimeExtensionScene` over XPC.
 public final class RemoteScene {
     private let connection: NSXPCConnection
 

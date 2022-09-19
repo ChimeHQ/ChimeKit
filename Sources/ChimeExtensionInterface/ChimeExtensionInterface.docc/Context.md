@@ -1,6 +1,6 @@
 # Editing Context
 
-<!--@START_MENU_TOKEN@-->Summary<!--@END_MENU_TOKEN@-->
+Integrate with Chime's document and project model.
 
 ## Overview
 

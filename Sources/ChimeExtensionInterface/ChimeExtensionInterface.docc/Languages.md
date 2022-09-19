@@ -1,6 +1,6 @@
 # Adding Languages
 
-ChimeKit makes it possible to add semantic-level features for new programming languages.
+Add semantic-level features for new programming languages.
 
 ## Overview
 

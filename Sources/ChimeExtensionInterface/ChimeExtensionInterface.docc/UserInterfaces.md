@@ -1,6 +1,6 @@
 # Views
 
-Summary
+Build views with SwiftUI and display them within the editor.
 
 ## Overview
 

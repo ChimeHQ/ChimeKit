@@ -1,10 +1,10 @@
 # Text
 
-Summary
+Structures for working with text, ranges, and positions.
 
 ## Overview
 
-Text
+Many of the ChimeKit APIs involve text.
 
 ## Topics
 

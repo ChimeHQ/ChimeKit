@@ -1,5 +1,8 @@
 import Foundation
 
+/// Application-level functionality provided by Chime to extensions.
+///
+/// This protocol provides access to functionality of the Chime application.
 public protocol HostProtocol {
     // this exists to avoid having to calculate a TextRange param
     // and especially the CombinedTextContent return value which can be

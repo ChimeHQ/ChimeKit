@@ -1,6 +1,9 @@
 import Foundation
 
-/// XPC -> Host
+/// Export a `HostProtocol`-conforming type over XPC.
+///
+/// This type is used internally by Chime's extension system, and should not be used by
+/// 3rd-parties.
 public final class ExportedHost<Host: HostProtocol>: HostXPCProtocol {
     let bridgedObject: Host
 
