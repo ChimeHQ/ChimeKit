@@ -25,7 +25,6 @@
 		C9285FA428A155B70071B04B /* ProcessServiceServer in Frameworks */ = {isa = PBXBuildFile; productRef = C9285FA328A155B70071B04B /* ProcessServiceServer */; };
 		C9285FA828A15E910071B04B /* ProcessServiceClient in Frameworks */ = {isa = PBXBuildFile; productRef = C9285FA728A15E910071B04B /* ProcessServiceClient */; };
 		C9285FB428A168270071B04B /* Exports.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9285FB328A168270071B04B /* Exports.swift */; };
-		C97D2134289E712800F007F8 /* ChimeKit.docc in Sources */ = {isa = PBXBuildFile; fileRef = C97D2133289E712800F007F8 /* ChimeKit.docc */; };
 		C97D2154289E757000F007F8 /* ConcurrencyPlus in Frameworks */ = {isa = PBXBuildFile; productRef = C97D2153289E757000F007F8 /* ConcurrencyPlus */; };
 		C97D2192289E898A00F007F8 /* ProcessService.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = C97D2187289E898A00F007F8 /* ProcessService.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C97D21AC289EA73100F007F8 /* ProcessEnv in Frameworks */ = {isa = PBXBuildFile; productRef = C97D21AB289EA73100F007F8 /* ProcessEnv */; };
@@ -69,7 +68,6 @@
 /* Begin PBXFileReference section */
 		C9285FB328A168270071B04B /* Exports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exports.swift; sourceTree = "<group>"; };
 		C97D212F289E712800F007F8 /* ChimeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ChimeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C97D2133289E712800F007F8 /* ChimeKit.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = ChimeKit.docc; sourceTree = "<group>"; };
 		C97D2182289E85F300F007F8 /* ChimeKit.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ChimeKit.xcconfig; sourceTree = "<group>"; };
 		C97D2187289E898A00F007F8 /* ProcessService.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = ProcessService.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
 		C97D218F289E898A00F007F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -77,8 +75,6 @@
 		C97D21FF28A11D0200F007F8 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		C97D220328A11D0B00F007F8 /* ProcessService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ProcessService.entitlements; sourceTree = "<group>"; };
 		C97D220428A11D4400F007F8 /* Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
-		C989A1FB28D3771B00F6494B /* ChimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChimeKit; sourceTree = "<group>"; };
-		C989A1FC28D3774D00F6494B /* ChimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = ChimeKit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,8 +105,6 @@
 		C97D2125289E712800F007F8 = {
 			isa = PBXGroup;
 			children = (
-				C989A1FB28D3771B00F6494B /* ChimeKit */,
-				C989A1FC28D3774D00F6494B /* ChimeKit */,
 				C97D220428A11D4400F007F8 /* Project.xcconfig */,
 				C97D2131289E712800F007F8 /* ChimeKit */,
 				C97D2188289E898A00F007F8 /* ProcessService */,
@@ -131,7 +125,6 @@
 		C97D2131289E712800F007F8 /* ChimeKit */ = {
 			isa = PBXGroup;
 			children = (
-				C97D2133289E712800F007F8 /* ChimeKit.docc */,
 				C97D2182289E85F300F007F8 /* ChimeKit.xcconfig */,
 				C9285FB328A168270071B04B /* Exports.swift */,
 			);
@@ -314,7 +307,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C97D2134289E712800F007F8 /* ChimeKit.docc in Sources */,
 				C9285FB428A168270071B04B /* Exports.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
