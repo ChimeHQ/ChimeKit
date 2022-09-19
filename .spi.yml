@@ -1,4 +1,6 @@
 version: 1
 builder:
   configs:
+    - platform: macos
+      scheme: ChimeKit
     - documentation_targets: [ChimeExtensionInterface, ChimeLSPAdapter]
