@@ -29,7 +29,7 @@ public struct LSPTransformers {
     public let semanticTokenTransformer: SemanticTokenTransformer
 
     public init(completionTransformer: @escaping CompletionTransformer = LSPTransformers.standardCompletionTransformer,
-                textEditTransformer: @escaping TextEditTransformer = LSPTransformers.standardTextEditTranslator,
+                textEditTransformer: @escaping TextEditTransformer = LSPTransformers.standardTextEditTransformer,
                 diagnosticTransformer: @escaping DiagnosticTransformer = LSPTransformers.standardDiagnosticTransformer,
                 hoverTransformer: @escaping HoverTransformer = LSPTransformers.standardHoverTransformer,
                 definitionTransformer: @escaping DefinitionTransformer = LSPTransformers.standardDefinitionTransformer,
@@ -46,7 +46,7 @@ public struct LSPTransformers {
 }
 
 extension LSPTransformers {
-    public var textEditsTranslator: TextEditsTransformer {
+    public var textEditsTransformer: TextEditsTransformer {
         return { edits in
             let applicableEdits = TextEdit.makeApplicable(edits)
 
@@ -81,7 +81,7 @@ extension LSPTransformers {
 
             let edits = plainEdits + documentEdits.flatMap({ $0.edits })
 
-            return textEditsTranslator(edits)
+            return textEditsTransformer(edits)
         }
     }
 
@@ -123,7 +123,7 @@ extension LSPTransformers {
 }
 
 extension LSPTransformers {
-    public static let standardTextEditTranslator: TextEditTransformer = { edit in
+    public static let standardTextEditTransformer: TextEditTransformer = { edit in
         let start = LineRelativeTextPosition(edit.range.start)
         let end = LineRelativeTextPosition(edit.range.end)
         let relativeRange = start..<end

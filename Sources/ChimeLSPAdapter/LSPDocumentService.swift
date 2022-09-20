@@ -259,7 +259,7 @@ extension LSPDocumentService: FormattingService {
 
         let response = try await server.formatting(params: params)
 
-        let transformer = transformers.textEditsTranslator
+        let transformer = transformers.textEditsTransformer
 
         return response.map({ transformer($0) }) ?? []
     }
