@@ -80,7 +80,7 @@ typealias XPCSymbol = Data
 
 /// Extension Scene XPC API
 @objc protocol ExtensionSceneXPCProtocol {
-    func setActiveContext(project xpcProjectContext: XPCProjectContext?, document xpcDocumentContext: XPCDocumentContext, reply: @escaping (Error?) -> Void)
+    func setActiveContext(project xpcProjectContext: XPCProjectContext?, document xpcDocumentContext: XPCDocumentContext?, reply: @escaping (Error?) -> Void)
 }
 
 /// Scene Host XPC API

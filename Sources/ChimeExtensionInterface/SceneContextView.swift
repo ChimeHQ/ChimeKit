@@ -12,7 +12,7 @@ final class SceneContextViewModel: ObservableObject {
 }
 
 extension SceneContextViewModel: ExtensionSceneProtocol {
-    public func setActiveContext(project: ProjectContext?, document: DocumentContext) {
+    public func setActiveContext(project: ProjectContext?, document: DocumentContext?) {
         self.projectContext = project
         self.documentContext = document
     }

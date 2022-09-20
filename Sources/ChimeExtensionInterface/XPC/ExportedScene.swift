@@ -7,11 +7,11 @@ final class ExportedScene<Scene: ExtensionSceneProtocol>: ExtensionSceneXPCProto
         self.scene = scene
     }
 
-    func setActiveContext(project xpcProjectContext: XPCProjectContext?, document xpcDocumentContext: XPCDocumentContext, reply: @escaping (Error?) -> Void) {
+    func setActiveContext(project xpcProjectContext: XPCProjectContext?, document xpcDocumentContext: XPCDocumentContext?, reply: @escaping (Error?) -> Void) {
         Task {
             do {
                 let projectContext = try xpcProjectContext.map { try JSONDecoder().decode(ProjectContext.self, from: $0) }
-                let documentContext = try JSONDecoder().decode(DocumentContext.self, from: xpcDocumentContext)
+                let documentContext = try xpcDocumentContext.map { try JSONDecoder().decode(DocumentContext.self, from: $0) }
 
                 try await self.scene.setActiveContext(project: projectContext, document: documentContext)
 
