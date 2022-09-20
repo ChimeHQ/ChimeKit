@@ -59,6 +59,7 @@ extension UnrestrictedProcessTransport: DataTransport {
     }
 }
 
+/// Provides an interface to a LSP language server hosted by an intermediary process.
 public class RemoteLanguageServer {
     public let wrappedServer: JSONRPCLanguageServer
     private var subscription: AnyCancellable? = nil

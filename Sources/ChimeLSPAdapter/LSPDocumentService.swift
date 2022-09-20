@@ -231,7 +231,10 @@ extension LSPDocumentService: CompletionService {
 
         let response = try await server.completion(params: params)
 
-        return transformers.completionTranslator(location, response)
+        let fallbackRange = TextRange.range(NSRange(location: location, length: 0))
+        let transformer = transformers.completionTransformer
+
+        return response?.items.compactMap({ transformer(fallbackRange, $0) }) ?? []
     }
 }
 
@@ -256,7 +259,9 @@ extension LSPDocumentService: FormattingService {
 
         let response = try await server.formatting(params: params)
 
-        return transformers.formattingTranslator(response)
+        let transformer = transformers.textEditsTranslator
+
+        return response.map({ transformer($0) }) ?? []
     }
 
     func organizeImports() async throws -> [TextChange] {

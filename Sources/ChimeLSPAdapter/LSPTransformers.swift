@@ -7,10 +7,9 @@ import struct ChimeExtensionInterface.Diagnostic
 import enum ChimeExtensionInterface.TextRange
 import struct ChimeExtensionInterface.Token
 
-public typealias CompletionTranslator = (Int, CompletionResponse) -> [Completion]
-public typealias FormattingTranslator = (FormattingResult) -> [TextChange]
-public typealias TextEditTranslator = (TextEdit) -> TextChange
-public typealias TextEditsTranslator = ([TextEdit]) -> [TextChange]
+public typealias CompletionTransformer = (TextRange, CompletionItem) -> Completion?
+public typealias TextEditTransformer = (TextEdit) -> TextChange
+public typealias TextEditsTransformer = ([TextEdit]) -> [TextChange]
 public typealias OrganizeImportsTransformer = (DocumentUri, CodeActionResponse) -> [TextChange]
 public typealias DiagnosticTransformer = (LanguageServerProtocol.Diagnostic) -> Diagnostic
 public typealias HoverTransformer = (CombinedTextPosition, HoverResponse) -> SemanticDetails?
@@ -19,24 +18,25 @@ public typealias WorkspaceSymbolTransformer = (WorkspaceSymbol) -> Symbol
 public typealias SymbolInformationTransformer = (SymbolInformation) -> Symbol
 public typealias SemanticTokenTransformer = (LanguageServerProtocol.Token) -> Token
 
+/// A collection of functions that transform LSP result objects.
 public struct LSPTransformers {
-    public let completionTranslator: CompletionTranslator
-    public let textEditTranslator: TextEditTranslator
+    public let completionTransformer: CompletionTransformer
+    public let textEditTransformer: TextEditTransformer
     public let diagnosticTransformer: DiagnosticTransformer
     public let hoverTransformer: HoverTransformer
     public let definitionTransformer: DefinitionTransformer
     public let symbolInformationTransformer: SymbolInformationTransformer
     public let semanticTokenTransformer: SemanticTokenTransformer
 
-    public init(completionTranslator: @escaping CompletionTranslator = LSPTransformers.standardCompletionTranslator,
-                textEditTranslator: @escaping TextEditTranslator = LSPTransformers.standardTextEditTranslator,
+    public init(completionTransformer: @escaping CompletionTransformer = LSPTransformers.standardCompletionTransformer,
+                textEditTransformer: @escaping TextEditTransformer = LSPTransformers.standardTextEditTranslator,
                 diagnosticTransformer: @escaping DiagnosticTransformer = LSPTransformers.standardDiagnosticTransformer,
                 hoverTransformer: @escaping HoverTransformer = LSPTransformers.standardHoverTransformer,
                 definitionTransformer: @escaping DefinitionTransformer = LSPTransformers.standardDefinitionTransformer,
                 symbolInformationTransformer: @escaping SymbolInformationTransformer = LSPTransformers.standardSymbolInformationTransformer,
                 semanticTokenTransformer: @escaping SemanticTokenTransformer = LSPTransformers.standardSemanticTokenTransformer) {
-        self.completionTranslator = completionTranslator
-        self.textEditTranslator = textEditTranslator
+        self.completionTransformer = completionTransformer
+        self.textEditTransformer = textEditTransformer
         self.diagnosticTransformer = diagnosticTransformer
         self.hoverTransformer = hoverTransformer
         self.definitionTransformer = definitionTransformer
@@ -46,19 +46,11 @@ public struct LSPTransformers {
 }
 
 extension LSPTransformers {
-    public var textEditsTranslator: TextEditsTranslator {
+    public var textEditsTranslator: TextEditsTransformer {
         return { edits in
             let applicableEdits = TextEdit.makeApplicable(edits)
 
-            return applicableEdits.map(textEditTranslator)
-        }
-    }
-
-    public var formattingTranslator: FormattingTranslator {
-        return { response in
-            let edits = response ?? []
-
-            return textEditsTranslator(edits)
+            return applicableEdits.map(textEditTransformer)
         }
     }
 
@@ -108,38 +100,30 @@ extension LSPTransformers {
 }
 
 extension LSPTransformers {
-    public static let standardCompletionTranslator: CompletionTranslator = { location, response in
-        guard let response = response else {
-            return []
+    public static let standardCompletionTransformer: CompletionTransformer = { fallbackRange, item in
+        let edit = item.textEdit
+
+        guard let text = edit?.newText ?? item.insertText else {
+            return nil
         }
 
-        let fallbackRange = TextRange.range(NSRange(location: location, length: 0))
+        let displayString: String
 
-        return response.items.compactMap({ item -> Completion? in
-            let edit = item.textEdit
+        if let detail = item.detail {
+            displayString = "\(item.label) - \(detail)"
+        } else {
+            displayString = item.label
+        }
 
-            guard let text = edit?.newText ?? item.insertText else {
-                return nil
-            }
+        let range = edit?.textRange ?? fallbackRange
+        let fragments = Snippet(value: text).completionFragments
 
-            let displayString: String
-
-            if let detail = item.detail {
-                displayString = "\(item.label) - \(detail)"
-            } else {
-                displayString = item.label
-            }
-
-            let range = edit?.textRange ?? fallbackRange
-            let fragments = Snippet(value: text).completionFragments
-
-            return Completion(displayString: displayString, range: range, fragments: fragments)
-        })
+        return Completion(displayString: displayString, range: range, fragments: fragments)
     }
 }
 
 extension LSPTransformers {
-    public static let standardTextEditTranslator: TextEditTranslator = { edit in
+    public static let standardTextEditTranslator: TextEditTransformer = { edit in
         let start = LineRelativeTextPosition(edit.range.start)
         let end = LineRelativeTextPosition(edit.range.end)
         let relativeRange = start..<end

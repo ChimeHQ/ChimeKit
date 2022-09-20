@@ -6,7 +6,11 @@ Core communication and interfaces for Chime's extension system
 
 ChimeKit provides the functionality needed to build extensions, provide semantic features, display views, and integrate with [ExtensionKit](https://developer.apple.com/documentation/extensionkit). Chime can do a lot more with extensions.
 
-ChimeKit is a collection of modules. They can be used individually, or all together via a bundled XCFramework. 
+ChimeKit is a collection of modules.
+
+- `ChimeExtensionInterface`: Core communication and interfaces for Chime's extension system
+- `ChimeLSPAdapter`: Integrate Language Server Protocol with Chime extensions.
+- `ChimeKit.xcframework`: All of ChimeKit's functionality and services, bundled into one framework.
 
 ## Topics
 

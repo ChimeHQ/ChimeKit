@@ -31,6 +31,7 @@ let package = Package(
                                "ConcurrencyPlus",
                                "ProcessEnv",
                                .product(name: "ProcessServiceClient", package: "ProcessService")]),
+        .testTarget(name: "ChimeLSPAdapterTests", dependencies: ["ChimeLSPAdapter"]),
         .binaryTarget(name: "ChimeKit",
                       path: "ChimeKit.xcframework"),
         .target(name: "ChimeKitWrapper",

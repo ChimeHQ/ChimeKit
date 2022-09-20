@@ -15,6 +15,7 @@ public enum LSPServiceError: Error {
     case documentURLInvalid(DocumentContext)
 }
 
+/// Connect a language server to `ExtensionProtocol`.
 public actor LSPService {
     public typealias ExecutionParamsProvider = () async throws -> Process.ExecutionParameters
 	public typealias ContextFilter = (ProjectContext, DocumentContext?) async -> Bool
