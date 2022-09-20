@@ -1,5 +1,6 @@
 import Foundation
 import ChimeKit
+import ChimeSwift
 
 @main
 final class SwiftStandaloneExtension: ChimeExtension {
