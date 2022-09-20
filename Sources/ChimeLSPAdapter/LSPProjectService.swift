@@ -14,6 +14,7 @@ actor LSPProjectService {
     private var documentConnections: [DocumentIdentity: LSPDocumentService]
     private var serverCapabilities: ServerCapabilities?
     private let log: OSLog
+	private var watchers = [FileWatcher]()
     let transformers: LSPTransformers
     let executionParamsProvider: LSPService.ExecutionParamsProvider
 	let contextFilter: LSPService.ContextFilter
@@ -224,11 +225,10 @@ extension LSPProjectService {
 
             for registration in params.serverRegistrations {
                 switch registration {
-                    // TOOD: need to make this work again
-//                case .workspaceDidChangeWatchedFiles(let options):
-//                    OperationQueue.main.addOperation {
-//                        self.setupWatchers(options.watchers)
-//                    }
+                case .workspaceDidChangeWatchedFiles(let options):
+					Task {
+						await self.setupWatchers(options.watchers)
+					}
                 default:
                     os_log("registration: %{public}@", log: self.log, type: .info, String(describing: registration))
                 }
@@ -313,33 +313,30 @@ extension LSPProjectService {
         host.publishDiagnostics(diagnostics, for: url, version: params.version)
     }
 
-//    private func setupWatchers(_ watchers: [FileSystemWatcher]) {
-//        OperationQueue.preconditionMain()
-//
-//        let rootPath = self.rootURL.path
-//        self.watchers = watchers.map({ FileWatcher(root: rootPath, params: $0) })
-//
-//        self.watchers.forEach({
-//            $0.start()
-//            $0.handler = { [weak self] events in
-//                self?.handleWatcherEvents(events)
-//            }
-//        })
-//    }
-//
-//    private func handleWatcherEvents(_ events: [FileEvent]) {
-//        let params = DidChangeWatchedFilesParams(changes: events)
-//
-//        server.didChangeWatchedFiles(params: params) { [weak self] error in
-//            guard let error = error else {
-//                return
-//            }
-//
-//            if let log = self?.log {
-//                os_log("failed to deliver DidChangeWatchedFiles: %{public}@", log: log, type: .error, String(describing: error))
-//            } else {
-//                print("failed to deliver DidChangeWatchedFiles", error)
-//            }
-//        }
-//    }
+    private func setupWatchers(_ fsWatchers: [FileSystemWatcher]) {
+        let rootPath = self.rootURL.path
+
+		for watcher in watchers {
+			watcher.stop()
+		}
+
+        self.watchers = fsWatchers.map({ FileWatcher(root: rootPath, params: $0) })
+
+		for watcher in watchers {
+			watcher.start()
+			watcher.handler = { [weak self] in self?.handleWatcherEvents($0) }
+		}
+    }
+
+    private nonisolated func handleWatcherEvents(_ events: [FileEvent]) {
+        let params = DidChangeWatchedFilesParams(changes: events)
+
+		Task {
+			do {
+				try await self.server.didChangeWatchedFiles(params: params)
+			} catch {
+				os_log("failed to deliver DidChangeWatchedFiles: %{public}@", log: self.log, type: .error, String(describing: error))
+			}
+		}
+    }
 }
