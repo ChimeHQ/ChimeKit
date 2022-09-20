@@ -20,7 +20,7 @@ extension SwiftStandaloneExtension {
     }
 
     func willCloseProject(with context: ProjectContext) async throws {
-        try await chimeExt?.didOpenProject(with: context)
+        try await chimeExt?.willCloseProject(with: context)
     }
 
     func didOpenDocument(with context: DocumentContext) async throws -> URL? {
