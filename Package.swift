@@ -9,7 +9,6 @@ let package = Package(
         .library(name: "ChimeExtensionInterface", targets: ["ChimeExtensionInterface"]),
         .library(name: "ChimeLSPAdapter", targets: ["ChimeLSPAdapter"]),
         .library(name: "ChimeKitWrapper", targets: ["ChimeKitWrapper"]),
-        .library(name: "ChimeKit", targets: ["ChimeKit"]),
     ],
     dependencies: [
 		.package(url: "https://github.com/ChimeHQ/ConcurrencyPlus", from: "0.3.1"),
