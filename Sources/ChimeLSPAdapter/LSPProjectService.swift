@@ -25,7 +25,7 @@ actor LSPProjectService {
          transformers: LSPTransformers = .init(),
 		 contextFilter: @escaping LSPService.ContextFilter,
          executionParamsProvider: @escaping LSPService.ExecutionParamsProvider,
-         serviceName: String? = "com.chimehq.ChimeKit.ProcessService") {
+		 processHostServiceName: String?) {
         self.context = context
         self.serverOptions = serverOptions
         self.host = host
@@ -42,7 +42,7 @@ actor LSPProjectService {
         let provider: RestartingServer.ServerProvider = {
             let params = try await executionParamsProvider()
 
-            if let serviceName = serviceName {
+            if let serviceName = processHostServiceName {
                 let remote = try RemoteLanguageServer(named: serviceName, parameters: params)
 
                 remote.terminationHandler = { [weak restartingServer] in

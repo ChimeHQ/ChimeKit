@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		F7sgOyw5V96L8MyLwQFRatn+Dt4=
+		0AKr6BJDEH06jXQtHqSqpy1/14A=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -113,14 +113,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			woZlmCsDdVefZTk/Aa3O6T+Y3khhMpVdX10AEkY0o7g=
+			mzetwhC19fRjnMk0Br9K5K+zZ2ZQhBf4WZHU1bcWBiI=
 			</data>
 		</dict>
 		<key>XPCServices/ProcessService.xpc</key>
 		<dict>
 			<key>cdhash</key>
 			<data>
-			2vpIRySXZXf2SMo46tSG2x8i6aA=
+			2mkQE/hP4Y/Zz1vWVC6oQMyr7zU=
 			</data>
 			<key>requirement</key>
 			<string>identifier "com.chimehq.ChimeKit.ProcessService" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: Matthew Massicotte (963AZ7H6D8)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>

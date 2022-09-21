@@ -69,6 +69,7 @@
 		C9285FB328A168270071B04B /* Exports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exports.swift; sourceTree = "<group>"; };
 		C96A0B4E28D8F15700120D88 /* ChimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ChimeKit; path = ..; sourceTree = "<group>"; };
 		C96A0B4F28D8F65600120D88 /* build_xcframework.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_xcframework.sh; sourceTree = "<group>"; };
+		C97473EC28DBA3B2005CE8DE /* ConcurrencyPlus */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ConcurrencyPlus; path = ../../ConcurrencyPlus; sourceTree = "<group>"; };
 		C97D212F289E712800F007F8 /* ChimeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ChimeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C97D2182289E85F300F007F8 /* ChimeKit.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ChimeKit.xcconfig; sourceTree = "<group>"; };
 		C97D2187289E898A00F007F8 /* ProcessService.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = ProcessService.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +78,7 @@
 		C97D21FF28A11D0200F007F8 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		C97D220328A11D0B00F007F8 /* ProcessService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ProcessService.entitlements; sourceTree = "<group>"; };
 		C97D220428A11D4400F007F8 /* Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
+		C9A7674928DB63A800EEC260 /* ProcessService */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ProcessService; path = ../../ProcessService; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,8 @@
 		C97D2125289E712800F007F8 = {
 			isa = PBXGroup;
 			children = (
+				C97473EC28DBA3B2005CE8DE /* ConcurrencyPlus */,
+				C9A7674928DB63A800EEC260 /* ProcessService */,
 				C96A0B4F28D8F65600120D88 /* build_xcframework.sh */,
 				C96A0B4E28D8F15700120D88 /* ChimeKit */,
 				C97D220428A11D4400F007F8 /* Project.xcconfig */,

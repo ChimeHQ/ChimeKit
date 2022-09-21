@@ -13,7 +13,7 @@ final class UnrestrictedProcessTransport {
     private let process: HostedProcess
     private let taskQueue = TaskQueue()
     private var subscription: AnyCancellable? = nil
-    private let log = OSLog(subsystem: "com.chime.Edit.LSP", category: "RemoteLanguageServer")
+    private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "UnrestrictedProcessTransport")
 
     init(process: HostedProcess) {
         self.process = process
@@ -30,9 +30,7 @@ final class UnrestrictedProcessTransport {
                     case .stderr(let data):
                         let output = String(data: data, encoding: .utf8) ?? ""
 
-                        if let log = self?.log {
-                            os_log("stderr: %{public}@", log: log, type: .info, output)
-                        }
+                        self?.logger.info("stderr: \(output, privacy: .public)")
                     default:
                         break
                     }
@@ -63,6 +61,7 @@ extension UnrestrictedProcessTransport: DataTransport {
 public class RemoteLanguageServer {
     public let wrappedServer: JSONRPCLanguageServer
     private var subscription: AnyCancellable? = nil
+    private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "RemoteLanguageServer")
 
     private let process: HostedProcess
     private let taskQueue = TaskQueue()
@@ -91,9 +90,20 @@ public class RemoteLanguageServer {
 
                 try await transport.beginMonitoringProcess()
             } catch {
-                print("failed to launch: ", String(describing: error))
+                self.logger.error("failed to launch: \(String(describing: error), privacy: .public)")
             }
         }
+    }
+
+    private func stopProcess() {
+        self.taskQueue.addOperation {
+            do {
+                try await self.process.terminate()
+            } catch {
+                self.logger.error("failed to terminate: \(String(describing: error), privacy: .public)")
+            }
+        }
+
     }
 }
 
@@ -116,7 +126,13 @@ extension RemoteLanguageServer: LanguageServerProtocol.Server {
 
     public func sendRequest<Response: Codable>(_ request: ClientRequest, completionHandler: @escaping (ServerResult<Response>) -> Void) {
         taskQueue.addOperation {
-            self.wrappedServer.sendRequest(request, completionHandler: completionHandler)
+            self.wrappedServer.sendRequest(request, completionHandler: { (result: ServerResult<Response>) in
+                if case .success = result, case .shutdown = request {
+                    self.stopProcess()
+                }
+
+                completionHandler(result)
+            })
         }
     }
 }

@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ConcurrencyPlus",
       "state" : {
-        "revision" : "fb4d31826c4c46a0d39451b9c911dfde8fbcc2bd",
-        "version" : "0.3.1"
+        "revision" : "b5cd06e9be22de9e5d379fe496a666647a6717ef",
+        "version" : "0.3.2"
       }
     },
     {
@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ProcessService",
       "state" : {
-        "revision" : "ac757f19da4b152ebe77e0b9bb5510dc55917d3e",
-        "version" : "0.1.1"
+        "revision" : "8481508879714dafeb1c460c93aee180430ada35",
+        "version" : "0.1.2"
       }
     }
   ],

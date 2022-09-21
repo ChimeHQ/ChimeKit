@@ -29,11 +29,23 @@ public actor LSPService {
     let host: HostProtocol
     let transformers: LSPTransformers
 
+	/// The name of the XPC service used to launch and run the language server executable.
+	public let processHostServiceName: String?
+
+	/// Create an LSPService object.
+	///
+	/// - Parameter host: The `HostProtocol`-conforming object the service will communicate with.
+	/// - Parameter serverOptions: A generic JSON object relayed to the language server as part of the initializatio procedure.
+	/// - Parameter transformers: The structure of functions that is used to transformer the language server results to `ExtensionProtocol`-compatible types. Defaults to the standard transformers.
+	/// - Parameter contextFilter: A function that determines which directories and files this server should interact with.
+	/// - Parameter executionParamsProvider: A function that produces the configuration required to launch the language server executable.
+	/// - Parameter processHostServiceName: The name of the XPC service used to launch and run the language server executable. Defaults to "com.chimehq.ChimeKit.ProcessService", which is bundled within ChimeKit.framework.
     public init(host: HostProtocol,
                 serverOptions: any Codable = [:] as [String: String],
                 transformers: LSPTransformers = .init(),
 				contextFilter: @escaping ContextFilter,
-                executionParamsProvider: @escaping ExecutionParamsProvider) {
+                executionParamsProvider: @escaping ExecutionParamsProvider,
+				processHostServiceName: String? = "com.chimehq.ChimeKit.ProcessService") {
         self.host = host
         self.transformers = transformers
         self.projectServices = [:]
@@ -41,6 +53,7 @@ public actor LSPService {
         self.executionParamsProvider = executionParamsProvider
 		self.contextFilter = contextFilter
         self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "LSPService")
+		self.processHostServiceName = processHostServiceName
     }
 	
     private func connection(for context: DocumentContext) -> LSPProjectService? {
@@ -67,7 +80,8 @@ extension LSPService: ExtensionProtocol {
                                      serverOptions: serverOptions,
                                      transformers: transformers,
 									 contextFilter: contextFilter,
-                                     executionParamsProvider: executionParamsProvider)
+                                     executionParamsProvider: executionParamsProvider,
+									 processHostServiceName: processHostServiceName)
 
         self.projectServices[url] = conn
     }

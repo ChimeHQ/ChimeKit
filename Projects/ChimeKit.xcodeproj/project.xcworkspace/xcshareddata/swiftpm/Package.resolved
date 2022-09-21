@@ -1,104 +1,88 @@
 {
-  "pins" : [
-    {
-      "identity" : "anycodable",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Flight-School/AnyCodable",
-      "state" : {
-        "revision" : "b1a7a8a6186f2fcb28f7bda67cfc545de48b3c80",
-        "version" : "0.6.2"
+  "object": {
+    "pins": [
+      {
+        "package": "AnyCodable",
+        "repositoryURL": "https://github.com/Flight-School/AnyCodable",
+        "state": {
+          "branch": null,
+          "revision": "b1a7a8a6186f2fcb28f7bda67cfc545de48b3c80",
+          "version": "0.6.2"
+        }
+      },
+      {
+        "package": "Extendable",
+        "repositoryURL": "https://github.com/ChimeHQ/Extendable",
+        "state": {
+          "branch": null,
+          "revision": "1e5f8b3b4e64fcfca4bfd5b0b38679cac7ea14c9",
+          "version": "0.1.1"
+        }
+      },
+      {
+        "package": "FSEventsWrapper",
+        "repositoryURL": "https://github.com/Frizlab/FSEventsWrapper",
+        "state": {
+          "branch": null,
+          "revision": "e0c59a2ce2775e5f6642da6d19207445f10112d0",
+          "version": "1.0.2"
+        }
+      },
+      {
+        "package": "Glob",
+        "repositoryURL": "https://github.com/Bouke/Glob",
+        "state": {
+          "branch": null,
+          "revision": "deda6e163d2ff2a8d7e138e2c3326dbd71157faf",
+          "version": "1.0.5"
+        }
+      },
+      {
+        "package": "JSONRPC",
+        "repositoryURL": "https://github.com/ChimeHQ/JSONRPC",
+        "state": {
+          "branch": null,
+          "revision": "55071da13d109e61584750f39c0941d49711b962",
+          "version": "0.5.0"
+        }
+      },
+      {
+        "package": "LanguageClient",
+        "repositoryURL": "https://github.com/ChimeHQ/LanguageClient",
+        "state": {
+          "branch": null,
+          "revision": "abe7f2d74623af92a68d3f18a0cb31ed11ce965f",
+          "version": "0.2.5"
+        }
+      },
+      {
+        "package": "LanguageServerProtocol",
+        "repositoryURL": "https://github.com/ChimeHQ/LanguageServerProtocol",
+        "state": {
+          "branch": null,
+          "revision": "2da23020efce0a092a1f26fb519059800e8ce233",
+          "version": "0.7.6"
+        }
+      },
+      {
+        "package": "OperationPlus",
+        "repositoryURL": "https://github.com/ChimeHQ/OperationPlus",
+        "state": {
+          "branch": null,
+          "revision": "1340f95dce3e93d742497d88db18f8676f4badf4",
+          "version": "1.6.0"
+        }
+      },
+      {
+        "package": "ProcessEnv",
+        "repositoryURL": "https://github.com/ChimeHQ/ProcessEnv.git",
+        "state": {
+          "branch": null,
+          "revision": "7bcb6c11593be08456f48042fad1a7bf875f217a",
+          "version": "0.3.0"
+        }
       }
-    },
-    {
-      "identity" : "concurrencyplus",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/ConcurrencyPlus",
-      "state" : {
-        "revision" : "fb4d31826c4c46a0d39451b9c911dfde8fbcc2bd",
-        "version" : "0.3.1"
-      }
-    },
-    {
-      "identity" : "extendable",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/Extendable",
-      "state" : {
-        "revision" : "1e5f8b3b4e64fcfca4bfd5b0b38679cac7ea14c9",
-        "version" : "0.1.1"
-      }
-    },
-    {
-      "identity" : "fseventswrapper",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Frizlab/FSEventsWrapper",
-      "state" : {
-        "revision" : "e0c59a2ce2775e5f6642da6d19207445f10112d0",
-        "version" : "1.0.2"
-      }
-    },
-    {
-      "identity" : "glob",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Bouke/Glob",
-      "state" : {
-        "revision" : "deda6e163d2ff2a8d7e138e2c3326dbd71157faf",
-        "version" : "1.0.5"
-      }
-    },
-    {
-      "identity" : "jsonrpc",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/JSONRPC",
-      "state" : {
-        "revision" : "55071da13d109e61584750f39c0941d49711b962",
-        "version" : "0.5.0"
-      }
-    },
-    {
-      "identity" : "languageclient",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/LanguageClient",
-      "state" : {
-        "revision" : "abe7f2d74623af92a68d3f18a0cb31ed11ce965f",
-        "version" : "0.2.5"
-      }
-    },
-    {
-      "identity" : "languageserverprotocol",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
-      "state" : {
-        "revision" : "2da23020efce0a092a1f26fb519059800e8ce233",
-        "version" : "0.7.6"
-      }
-    },
-    {
-      "identity" : "operationplus",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/OperationPlus",
-      "state" : {
-        "revision" : "1340f95dce3e93d742497d88db18f8676f4badf4",
-        "version" : "1.6.0"
-      }
-    },
-    {
-      "identity" : "processenv",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/ProcessEnv.git",
-      "state" : {
-        "revision" : "7bcb6c11593be08456f48042fad1a7bf875f217a",
-        "version" : "0.3.0"
-      }
-    },
-    {
-      "identity" : "processservice",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/ProcessService",
-      "state" : {
-        "revision" : "ac757f19da4b152ebe77e0b9bb5510dc55917d3e",
-        "version" : "0.1.1"
-      }
-    }
-  ],
-  "version" : 2
+    ]
+  },
+  "version": 1
 }
