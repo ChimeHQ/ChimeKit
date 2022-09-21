@@ -1,5 +1,6 @@
 [![License][license badge]][license]
 [![Platforms][platforms badge]][platforms]
+[![Documentation][docs badge]][documentation]
 
 # ChimeKit
 Framework for building [Chime][chime] extensions.
@@ -50,5 +51,6 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 [license badge]: https://img.shields.io/github/license/ChimeHQ/ChimeKit
 [platforms]: https://swiftpackageindex.com/ChimeHQ/ChimeKit
 [platforms badge]: https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FChimeHQ%2FChimeKit%2Fbadge%3Ftype%3Dplatforms
+[docs badge]: https://img.shields.io/badge/Documentation-DocC-blue
 [chime]: https://www.chimehq.com
 [documentation]: https://swiftpackageindex.com/ChimeHQ/ChimeKit/main/documentation
