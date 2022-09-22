@@ -1,8 +1,10 @@
-@Tutorial(time: 10) {
+@Tutorial(time: 20) {
     @XcodeRequirement(title: "Xcode 14 (with macOS Ventura SDK)", destination: "https://developer.apple.com/download/")
     
     @Intro(title: "Project Structure") {
-        Learn how to set up and structure an extension for flexible development, integration, and distribution.
+		Chime's extensions can be built and distributed in a number of ways. Extensions can be standalone ExtensionKit bundles, incorporated into Chime's Extension Gallery application, or even the main app itself. To take advantage of this flexibility, a little more care has to be put into project structure.
+		
+		Let's build an extension that adds Swift language support to Chime, powered by `sourcekit-lsp`. We'll start by setting up a project structure that supports all of the distribution options.		
     }
     
     @Section(title: "Making a Package") {

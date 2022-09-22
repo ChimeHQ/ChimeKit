@@ -1,0 +1,59 @@
+@Tutorial(time: 5) {
+    @XcodeRequirement(title: "Xcode 14 (with macOS Ventura SDK)", destination: "https://developer.apple.com/download/")
+    
+    @Intro(title: "Language Server Integration") {
+        This tutorial guides you though building a Chime extension that exposes the features of a [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) server to the editor.
+        
+        The Swift team maintains a Language Server Protocol server, called [sourcekit-lsp](https://github.com/apple/sourcekit-lsp). ChimeKit has built-in support for LSP, and sourcekit-lsp is installed with Xcode. So, we're going to build an extension that wraps up sourcekit-lsp in an extension.
+    }
+    
+    @Section(title: "Integrating LSPService") {
+        @ContentAndMedia {
+            The LSPService class can be used to connect a language server to the `ExtensionProtocol` interface. It requires very minimal configuration for most servers.
+        }
+        
+        @Steps {
+            @Step {
+                Open the `SwiftExtension` file created in the previous tutorial.
+                
+                @Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-1-definition.swift")
+            }
+            
+            @Step {
+                Return the data needed to run the server executable.
+                
+                We're just hard-coding the path. But, `ProcessService` has APIs to help examine the user's environment to provide a more robust search.
+                
+                @Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-2-definition.swift")
+            }
+            
+            @Step {
+                Create a filter for the server.
+                
+                Language servers are extremely expensive. A `ContextFilter` indicates if a server supports the current project/document. 
+                
+                @Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-3-definition.swift")
+            }
+            
+            @Step {
+                Add an instance variable for the `LSPService`.
+                
+                We use our `filter` and `provideParams()` function to initialize it.
+                
+                @Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-4-definition.swift")
+            }
+            
+            @Step {
+                Fill in the functions from `ExtensionProtocol`
+                
+                @Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-5-definition.swift")
+            }
+            
+            @Step {
+                Forward calls to the `lspService` instance.
+                
+                @Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-6-definition.swift")
+            }
+        }
+    }
+}

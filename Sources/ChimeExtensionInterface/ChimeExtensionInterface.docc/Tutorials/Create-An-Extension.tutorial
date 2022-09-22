@@ -1,0 +1,12 @@
+@Tutorials(name: "Creating Extensions") {
+    @Intro(title: "Creating Extensions") {
+		Extensions allow others to add capabilities to Chime. They can add semantic features for a language, modify editor behavior, and build and display views.
+    }
+    
+    @Chapter(name: "Basic Extension") {
+        Learn how to set up an extension project, expose semantic features, and integrate a language server.
+        
+        @TutorialReference(tutorial: "doc:Project")
+        @TutorialReference(tutorial: "doc:LanguageServer")
+    }
+}

@@ -20,7 +20,7 @@ ChimeKit is a collection of modules.
 - <doc:Integration>
 - <doc:Languages>
 - <doc:ExtensionKit>
-- <doc:BuildingExtension>
+- <doc:Create-An-Extension>
 
 ### Building Extensions
 
