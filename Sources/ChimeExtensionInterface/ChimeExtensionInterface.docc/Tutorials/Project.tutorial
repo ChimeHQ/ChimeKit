@@ -4,7 +4,7 @@
     @Intro(title: "Project Structure") {
 		Chime's extensions can be built and distributed in a number of ways. Extensions can be standalone ExtensionKit bundles, incorporated into Chime's Extension Gallery application, or even the main app itself. To take advantage of this flexibility, a little more care has to be put into project structure.
 		
-		Let's build an extension that adds Swift language support to Chime, powered by `sourcekit-lsp`. We'll start by setting up a project structure that supports all of the distribution options.		
+		We'll start by setting up a project that supports all of the distribution options.		
     }
     
     @Section(title: "Making a Package") {

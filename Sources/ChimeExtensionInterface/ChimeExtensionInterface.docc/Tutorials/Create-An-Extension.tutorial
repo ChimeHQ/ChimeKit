@@ -4,7 +4,7 @@
     }
     
     @Chapter(name: "Basic Extension") {
-        Learn how to set up an extension project, expose semantic features, and integrate a language server.
+        Learn how to set up an extension project, expose semantic features, and integrate Swift's' sourcekit-lsp language server.
         
         @TutorialReference(tutorial: "doc:Project")
         @TutorialReference(tutorial: "doc:LanguageServer")

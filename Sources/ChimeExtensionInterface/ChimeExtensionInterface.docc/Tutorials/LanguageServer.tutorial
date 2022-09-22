@@ -4,12 +4,12 @@
     @Intro(title: "Language Server Integration") {
         This tutorial guides you though building a Chime extension that exposes the features of a [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) server to the editor.
         
-        The Swift team maintains a Language Server Protocol server, called [sourcekit-lsp](https://github.com/apple/sourcekit-lsp). ChimeKit has built-in support for LSP, and sourcekit-lsp is installed with Xcode. So, we're going to build an extension that wraps up sourcekit-lsp in an extension.
+        The Swift team maintains a Language Server Protocol server, called [`sourcekit-lsp`](https://github.com/apple/sourcekit-lsp). ChimeKit has built-in support for LSP, and `sourcekit-lsp` is installed with Xcode. So, we're going to build an extension that wraps up `sourcekit-lsp` in an extension.
     }
     
     @Section(title: "Integrating LSPService") {
         @ContentAndMedia {
-            The LSPService class can be used to connect a language server to the `ExtensionProtocol` interface. It requires very minimal configuration for most servers.
+            The `LSPService` class can be used to connect a language server to the `ExtensionProtocol` interface. It requires very minimal configuration for most servers.
         }
         
         @Steps {
