@@ -1,4 +1,4 @@
-@Tutorial(time: 20) {
+@Tutorial(time: 45) {
     @XcodeRequirement(title: "Xcode 14 (with macOS Ventura SDK)", destination: "https://developer.apple.com/download/")
     
     @Intro(title: "Project Structure") {
