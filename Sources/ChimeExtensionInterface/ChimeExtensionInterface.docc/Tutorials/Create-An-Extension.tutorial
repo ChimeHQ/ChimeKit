@@ -1,14 +1,38 @@
 @Tutorials(name: "Creating Extensions") {
-    @Intro(title: "Creating Extensions") {
+	@Intro(title: "Creating Extensions") {
 		Extensions can add new capabilities to Chime. Support a new language, modify editor behavior, and build and display views.
 		
 		@Image(source: "chimekit-banner.png", alt: "ChimeKit logo: Two overlapping hexagons connected by a puzzle-peice cut-out.")
-    }
-    
-    @Chapter(name: "Basic Extension") {
-        Learn how to set up an extension project, expose semantic features, and integrate Swift's' sourcekit-lsp language server.
-        
-        @TutorialReference(tutorial: "doc:Project")
-        @TutorialReference(tutorial: "doc:LanguageServer")
-    }
+	}
+	
+	@Chapter(name: "Basic Extension") {
+		Learn how to set up an extension project, expose semantic features, and integrate Swift's' sourcekit-lsp language server.
+		
+		@TutorialReference(tutorial: "doc:Project")
+		@TutorialReference(tutorial: "doc:LanguageServer")
+	}
+	
+	@Resources {
+		Find what you need to get started building extensions for Chime.
+		
+		@Documentation(destination: "https://swiftpackageindex.com/ChimeHQ/ChimeKit/main/documentation/chimeextensioninterface") {
+			Browse and search ChimeKit's documentation.
+			
+			- [ChimeExtensionInterface](https://swiftpackageindex.com/ChimeHQ/ChimeKit/main/documentation/chimeextensioninterface)
+			- [ChimeLSPAdapter](https://swiftpackageindex.com/ChimeHQ/ChimeKit/main/documentation/chimelspadapter)
+		}
+
+		@Forums(destination: "https://github.com/ChimeHQ/ChimeKit") {
+			Collaborate and ask questions.
+					
+			- [Open issues](https://github.com/ChimeHQ/ChimeKit/issues)
+			- [Contact Us](https://www.chimehq.com/contact)
+		}
+				
+		@SampleCode(destination: "https://github.com/ChimeHQ") {
+			Check out open source extensions.
+
+			- [chime-swift](https://github.com/ChimeHQ/chime-swift)
+		}
+	}
 }
