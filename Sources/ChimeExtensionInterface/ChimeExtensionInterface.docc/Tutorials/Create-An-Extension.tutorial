@@ -1,6 +1,8 @@
 @Tutorials(name: "Creating Extensions") {
     @Intro(title: "Creating Extensions") {
-		Extensions allow others to add capabilities to Chime. They can add semantic features for a language, modify editor behavior, and build and display views.
+		Extensions can add new capabilities to Chime. Support a new language, modify editor behavior, and build and display views.
+		
+		@Image(source: "chimekit-banner.png", alt: "ChimeKit logo: Two overlapping hexagons connected by a puzzle-peice cut-out.")
     }
     
     @Chapter(name: "Basic Extension") {
