@@ -2,6 +2,14 @@
 [![Platforms][platforms badge]][platforms]
 [![Documentation][documentation badge]][documentation]
 
+<p align="center">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="chimekit-banner~dark@2x.png 2x">
+        <source media="(prefers-color-scheme: light)" srcset="chimekit-banner@2x.png 2x"> 
+        <img alt="ChimeKit logo: a green hexagon connected to a grey hexagon with a puzzle-piece cutout." src="chimekit-banner@2x.png">
+    </picture>
+</p>
+
 # ChimeKit
 Framework for building [Chime][chime] extensions.
 
