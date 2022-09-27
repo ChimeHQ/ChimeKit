@@ -3,7 +3,7 @@
 [![Documentation][documentation badge]][documentation]
 
 # ChimeKit
-Framework for building [Chime][chime] extensions.
+ChimeKit provides the functionality needed to build extensions for [Chime][chime], the editor for macOS. You can use it to provide semantic features, display views, and integrate with [ExtensionKit](https://developer.apple.com/documentation/extensionkit). Chime can do a lot more with extensions.
 
 <p align="center">
     <picture>
