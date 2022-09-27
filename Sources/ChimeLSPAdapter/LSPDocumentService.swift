@@ -23,9 +23,9 @@ final class LSPDocumentService {
             handleCapabilitiesChanged()
         }
     }
-    private var tokenRepresentation: SemanticTokenRepresentation? {
+    private var tokenClient: SemanticTokensClient? {
         didSet {
-            if oldValue == nil && tokenRepresentation == nil {
+            if oldValue == nil && tokenClient == nil {
                 return
             }
 
@@ -135,9 +135,9 @@ final class LSPDocumentService {
         let textDocId = try? textDocumentIdentifier
 
         if let legend, let textDocId {
-            self.tokenRepresentation = SemanticTokenRepresentation(legend: legend, textDocument: textDocId, server: server)
+            self.tokenClient = SemanticTokensClient(legend: legend, textDocument: textDocId, server: server)
         } else {
-            self.tokenRepresentation = nil
+            self.tokenClient = nil
         }
 
         let strings = serverCapabilities?.completionProvider?.triggerCharacters ?? []
@@ -325,12 +325,12 @@ extension LSPDocumentService: TokenService {
     func tokens(in range: CombinedTextRange) async throws -> [ChimeExtensionInterface.Token] {
 		guard await contextFilter(context) else { return [] }
 
-        guard let rep = tokenRepresentation else {
+        guard let client = tokenClient else {
             return []
         }
 
         let deltas = serverCapabilities?.semanticTokensProvider?.effectiveOptions.full.deltaSupported ?? false
-        let response = try await rep.tokens(in: range.lspRange, supportsDeltas: deltas)
+        let response = try await client.tokens(in: range.lspRange, supportsDeltas: deltas)
 
         let transformer = transformers.semanticTokenTransformer
 
