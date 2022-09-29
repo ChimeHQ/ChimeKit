@@ -22,8 +22,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		C9285FA428A155B70071B04B /* ProcessServiceServer in Frameworks */ = {isa = PBXBuildFile; productRef = C9285FA328A155B70071B04B /* ProcessServiceServer */; };
-		C9285FA828A15E910071B04B /* ProcessServiceClient in Frameworks */ = {isa = PBXBuildFile; productRef = C9285FA728A15E910071B04B /* ProcessServiceClient */; };
 		C9285FB428A168270071B04B /* Exports.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9285FB328A168270071B04B /* Exports.swift */; };
 		C97D2154289E757000F007F8 /* ConcurrencyPlus in Frameworks */ = {isa = PBXBuildFile; productRef = C97D2153289E757000F007F8 /* ConcurrencyPlus */; };
 		C97D2192289E898A00F007F8 /* ProcessService.xpc in Embed XPC Services */ = {isa = PBXBuildFile; fileRef = C97D2187289E898A00F007F8 /* ProcessService.xpc */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -32,6 +30,7 @@
 		C97D220E28A11F2900F007F8 /* ProcessEnv in Frameworks */ = {isa = PBXBuildFile; productRef = C97D220D28A11F2900F007F8 /* ProcessEnv */; };
 		C9930B3428A3E623009227E6 /* ChimeExtensionInterface in Frameworks */ = {isa = PBXBuildFile; productRef = C9930B3328A3E623009227E6 /* ChimeExtensionInterface */; };
 		C9930B3828A3E628009227E6 /* ChimeLSPAdapter in Frameworks */ = {isa = PBXBuildFile; productRef = C9930B3728A3E628009227E6 /* ChimeLSPAdapter */; };
+		C9C5E15028E5D9E0007EC3DE /* ProcessServiceServer in Frameworks */ = {isa = PBXBuildFile; productRef = C9C5E14F28E5D9E0007EC3DE /* ProcessServiceServer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,7 +68,6 @@
 		C9285FB328A168270071B04B /* Exports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exports.swift; sourceTree = "<group>"; };
 		C96A0B4E28D8F15700120D88 /* ChimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ChimeKit; path = ..; sourceTree = "<group>"; };
 		C96A0B4F28D8F65600120D88 /* build_xcframework.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = build_xcframework.sh; sourceTree = "<group>"; };
-		C97473EC28DBA3B2005CE8DE /* ConcurrencyPlus */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ConcurrencyPlus; path = ../../ConcurrencyPlus; sourceTree = "<group>"; };
 		C97D212F289E712800F007F8 /* ChimeKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ChimeKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C97D2182289E85F300F007F8 /* ChimeKit.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ChimeKit.xcconfig; sourceTree = "<group>"; };
 		C97D2187289E898A00F007F8 /* ProcessService.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = ProcessService.xpc; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,7 +76,6 @@
 		C97D21FF28A11D0200F007F8 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		C97D220328A11D0B00F007F8 /* ProcessService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ProcessService.entitlements; sourceTree = "<group>"; };
 		C97D220428A11D4400F007F8 /* Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
-		C9A7674928DB63A800EEC260 /* ProcessService */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ProcessService; path = ../../ProcessService; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,7 +85,6 @@
 			files = (
 				C97D220E28A11F2900F007F8 /* ProcessEnv in Frameworks */,
 				C97D2154289E757000F007F8 /* ConcurrencyPlus in Frameworks */,
-				C9285FA828A15E910071B04B /* ProcessServiceClient in Frameworks */,
 				C9930B3428A3E623009227E6 /* ChimeExtensionInterface in Frameworks */,
 				C9930B3828A3E628009227E6 /* ChimeLSPAdapter in Frameworks */,
 			);
@@ -99,7 +95,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C97D21AC289EA73100F007F8 /* ProcessEnv in Frameworks */,
-				C9285FA428A155B70071B04B /* ProcessServiceServer in Frameworks */,
+				C9C5E15028E5D9E0007EC3DE /* ProcessServiceServer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,8 +105,6 @@
 		C97D2125289E712800F007F8 = {
 			isa = PBXGroup;
 			children = (
-				C97473EC28DBA3B2005CE8DE /* ConcurrencyPlus */,
-				C9A7674928DB63A800EEC260 /* ProcessService */,
 				C96A0B4F28D8F65600120D88 /* build_xcframework.sh */,
 				C96A0B4E28D8F15700120D88 /* ChimeKit */,
 				C97D220428A11D4400F007F8 /* Project.xcconfig */,
@@ -194,7 +188,6 @@
 			packageProductDependencies = (
 				C97D2153289E757000F007F8 /* ConcurrencyPlus */,
 				C97D220D28A11F2900F007F8 /* ProcessEnv */,
-				C9285FA728A15E910071B04B /* ProcessServiceClient */,
 				C9930B3328A3E623009227E6 /* ChimeExtensionInterface */,
 				C9930B3728A3E628009227E6 /* ChimeLSPAdapter */,
 			);
@@ -218,7 +211,7 @@
 			name = ProcessService;
 			packageProductDependencies = (
 				C97D21AB289EA73100F007F8 /* ProcessEnv */,
-				C9285FA328A155B70071B04B /* ProcessServiceServer */,
+				C9C5E14F28E5D9E0007EC3DE /* ProcessServiceServer */,
 			);
 			productName = ProcessService;
 			productReference = C97D2187289E898A00F007F8 /* ProcessService.xpc */;
@@ -258,6 +251,7 @@
 				C97D2152289E757000F007F8 /* XCRemoteSwiftPackageReference "ConcurrencyPlus" */,
 				C97D21AA289EA73100F007F8 /* XCRemoteSwiftPackageReference "ProcessEnv" */,
 				C9930B2F28A3C3A1009227E6 /* XCRemoteSwiftPackageReference "ChimeKit" */,
+				C9C5E14E28E5D9E0007EC3DE /* XCRemoteSwiftPackageReference "ProcessService" */,
 			);
 			productRefGroup = C97D2130289E712800F007F8 /* Products */;
 			projectDirPath = "";
@@ -654,6 +648,14 @@
 				revision = ebc31cc0c3cd4c12399558cf65acec3eef186c8b;
 			};
 		};
+		C9C5E14E28E5D9E0007EC3DE /* XCRemoteSwiftPackageReference "ProcessService" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ChimeHQ/ProcessService.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -661,15 +663,7 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = ProcessServiceServer;
 		};
-		C9285FA328A155B70071B04B /* ProcessServiceServer */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ProcessServiceServer;
-		};
 		C9285FA528A15E8B0071B04B /* ProcessServiceClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ProcessServiceClient;
-		};
-		C9285FA728A15E910071B04B /* ProcessServiceClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ProcessServiceClient;
 		};
@@ -715,6 +709,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C9930B2F28A3C3A1009227E6 /* XCRemoteSwiftPackageReference "ChimeKit" */;
 			productName = ChimeLSPAdapter;
+		};
+		C9C5E14F28E5D9E0007EC3DE /* ProcessServiceServer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C9C5E14E28E5D9E0007EC3DE /* XCRemoteSwiftPackageReference "ProcessService" */;
+			productName = ProcessServiceServer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
