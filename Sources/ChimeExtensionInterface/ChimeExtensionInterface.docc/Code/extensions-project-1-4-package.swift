@@ -12,7 +12,7 @@ let package = Package(
         .package(url: "https://github.com/ChimeHQ/ChimeKit", branch: "main"),
     ],
     targets: [
-        .target(name: "ChimeSwift", dependencies: [.product(name: "ChimeKitWrapper", package: "ChimeKit")]),
+        .target(name: "ChimeSwift", dependencies: ["ChimeKit"]),
         .testTarget(name: "ChimeSwiftTests", dependencies: ["ChimeSwift"]),
     ]
 )

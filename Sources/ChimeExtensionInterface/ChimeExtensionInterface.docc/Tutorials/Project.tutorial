@@ -26,9 +26,9 @@
             }
             
             @Step {
-                Add a dependency on `ChimeKitWrapper` to the target.
+                Add a dependency on `ChimeKit` to the target.
                 
-                This is needed to work around an SPM limitation and provide access to both ChimeKit and its bundled packages.
+                Note that ChimeKit has multiple integration options. While this is the simplest, it does come with some trade-offs. More details are available here: <doc:Integration>.
                 
                 @Code(name: "Package.swift", file: "extensions-project-1-3-package.swift")
             }
@@ -109,6 +109,8 @@
             
             @Step {
                 Save it to the package root directory.
+				
+				Relative positioning is important here, because Xcode does not support local package dependencies from the same directory as a `.xcodeproj` file.
                 
                 @Code(name: "chime-swift/", file: "extensions-project-container-1-files.txt")
             }

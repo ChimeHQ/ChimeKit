@@ -1,6 +1,6 @@
 import Foundation
 
-@_implementationOnly import ConcurrencyPlus
+import ConcurrencyPlus
 
 final class RemoteHost {
     private let connection: NSXPCConnection

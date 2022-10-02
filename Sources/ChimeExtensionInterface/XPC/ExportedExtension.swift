@@ -1,7 +1,7 @@
 import Foundation
 import os.log
 
-@_implementationOnly import ConcurrencyPlus
+import ConcurrencyPlus
 
 /// XPC -> Extension
 final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPCProtocol {

@@ -22,14 +22,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			cMscZkKbUYgX9z1lSPbhtRXCKI5Bw8Negz6c2BMkbxY=
+			BHlXbfLBMhY9d494T7cD2KjPjR2Ekfqh+sBBz4wss5w=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/Project/x86_64-apple-macos.swiftsourceinfo</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			NjqzrxkptkYXm9O+pucstaJ9IIRDMsB8dtrFX33Jgew=
+			pgQMICXpbeybRgAiPqNoEwy8DZ//TkBVOdgZox1CPPI=
 			</data>
 		</dict>
 		<key>Modules/ChimeKit.swiftmodule/arm64-apple-macos.abi.json</key>
@@ -120,7 +120,7 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			9fDy7mMGUdc1MfWhbx3NxPG6sbU=
+			jtD/80t8+T2DAdKZ6TzjuI/QJXY=
 			</data>
 			<key>requirement</key>
 			<string>identifier "com.chimehq.ChimeKit.ProcessService" and anchor apple generic and certificate leaf[subject.CN] = "Apple Development: Matthew Massicotte (963AZ7H6D8)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>

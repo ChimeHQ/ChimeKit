@@ -1,6 +1,6 @@
 import Foundation
 
-@_implementationOnly import ConcurrencyPlus
+import ConcurrencyPlus
 
 actor RemoteDocumentService {
 	private let connection: NSXPCConnection

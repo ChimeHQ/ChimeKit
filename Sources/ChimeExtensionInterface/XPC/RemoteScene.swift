@@ -1,6 +1,6 @@
 import Foundation
 
-@_implementationOnly import ConcurrencyPlus
+import ConcurrencyPlus
 
 /// Connect to a `ChimeExtensionScene` over XPC.
 public final class RemoteScene {

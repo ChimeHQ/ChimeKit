@@ -21,9 +21,15 @@ ChimeKit development requires [Chime 2.0](https://www.chimehq.com/download), Xco
 
 📖 [Documentation][documentation] is available in DocC format. But, please don't be shy to [reach out](https://www.chimehq.com/contact) to us - we'll help!
 
-## Chime Extension Gallery
+## Integration
 
-This is a first-party extension hosting application, signed by our Developer ID. It will handle discovery and updates, and all open source extensions will be eligible to apply for inclusion. This app will be open source, but it is forthcoming. The actual details of how your sources will be integrated isn't worked out yet, so if you have thoughts, get in touch.
+ChimeKit supports different integration options, all available via SPM. Be sure to read more in the [documentation][documentation], as it isn't as straightforward as a typical SPM package.
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/ChimeHQ/ChimeKit")
+]
+```
 
 ## Our Philosophy
 
@@ -33,21 +39,9 @@ LSP is pervasive in language support extensions. Many IDEs use a model of one ex
 
 Chime's core Go and Ruby support aren't open source, yet. But, we will be publishing them. And, going forward, we will **always** begin work on new language support as open source projects.
 
-## Integration
+## Chime Extension Gallery
 
-ChimeKit supports two different integration options, both available via SPM. Read more in the [documentation][documentation].
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/ChimeHQ/ChimeKit")
-]
-```
-
-```swift
-targets: [
-    .target(name: "MyExtension", dependencies: [.product(name: "ChimeExtensionInterface", package: "ChimeKit")]),
-]
-```
+This is a first-party extension hosting application, signed by our Developer ID. It will handle discovery and updates, and all open source extensions will be eligible to apply for inclusion. This app will be open source, but it is forthcoming. The actual details of how your sources will be integrated isn't worked out yet, so if you have thoughts, get in touch.
 
 ## Suggestions or Feedback
 
