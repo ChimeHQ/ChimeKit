@@ -36,6 +36,7 @@ public extension UTType {
 	static let scalaSource = UTType(importedAs: "org.scala-lang.scala-source")
 	static let sqlSource = UTType(importedAs: "org.iso.sql")
 	static let tclSource = UTType(importedAs: "tk.tcl.tcl")
+	static let treeSitterQuerySource = UTType(importedAs: "io.github.tree-sitter.query-source")
 	static let toml = UTType(importedAs: "public.toml")
 	static let typescriptSource = UTType(importedAs: "org.typescriptlang.source")
 	static let zigSource = UTType(importedAs: "org.ziglang.zig")

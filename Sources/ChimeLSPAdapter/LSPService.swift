@@ -13,6 +13,7 @@ public enum LSPServiceError: Error {
     case noProjectConnection(URL)
     case noDocumentConnection(DocumentContext)
     case documentURLInvalid(DocumentContext)
+	case serverNotFound
 }
 
 /// Connect a language server to `ExtensionProtocol`.
@@ -32,6 +33,9 @@ public actor LSPService {
 	/// The name of the XPC service used to launch and run the language server executable.
 	public let processHostServiceName: String?
 
+	/// Write raw LSP mesages to the console.
+	public let logMessages: Bool
+
 	/// Create an LSPService object.
 	///
 	/// - Parameter host: The `HostProtocol`-conforming object the service will communicate with.
@@ -45,7 +49,8 @@ public actor LSPService {
                 transformers: LSPTransformers = .init(),
 				contextFilter: @escaping ContextFilter,
                 executionParamsProvider: @escaping ExecutionParamsProvider,
-				processHostServiceName: String? = "com.chimehq.ChimeKit.ProcessService") {
+				processHostServiceName: String? = "com.chimehq.ChimeKit.ProcessService",
+				logMessages: Bool = false) {
         self.host = host
         self.transformers = transformers
         self.projectServices = [:]
@@ -54,6 +59,7 @@ public actor LSPService {
 		self.contextFilter = contextFilter
         self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "LSPService")
 		self.processHostServiceName = processHostServiceName
+		self.logMessages = logMessages
     }
 	
     private func connection(for context: DocumentContext) -> LSPProjectService? {
@@ -81,7 +87,8 @@ extension LSPService: ExtensionProtocol {
                                      transformers: transformers,
 									 contextFilter: contextFilter,
                                      executionParamsProvider: executionParamsProvider,
-									 processHostServiceName: processHostServiceName)
+									 processHostServiceName: processHostServiceName,
+									 logMessages: logMessages)
 
         self.projectServices[url] = conn
     }
@@ -131,12 +138,12 @@ extension LSPService: ExtensionProtocol {
 }
 
 extension LSPService {
-    /// Produce a simple `ContextFilter` that examines file UTIs
+    /// Produce a simple `ContextFilter` that examines file UTIs and marker files
     ///
     /// The returned function will return true if the supplied document conforms
     /// to one of the UTIs within `types`, or if the project root contains at least
-    /// one conforming file.
-    public static func contextFilter(for types: [UTType]) -> ContextFilter {
+    /// one conforming file or file matching `projectFiles`.
+	public static func contextFilter(for types: [UTType], projectFiles: Set<String> = []) -> ContextFilter {
         return { (projectContext: ProjectContext, documentContext: DocumentContext?) async -> Bool in
             if let uti = documentContext?.uti {
                 if types.contains(where: { uti.conforms(to: $0) }) {
@@ -144,16 +151,20 @@ extension LSPService {
                 }
             }
 
-            return LSPService.projectRoot(at: projectContext.url, types: types)
+			return LSPService.projectRoot(at: projectContext.url, types: types, projectFiles: projectFiles)
         }
     }
 
-    private static func projectRoot(at url: URL, types: [UTType]) -> Bool {
+	private static func projectRoot(at url: URL, types: [UTType], projectFiles: Set<String>) -> Bool {
         let enumerator = FileManager.default.enumerator(at: url,
                                                         includingPropertiesForKeys: [.contentTypeKey],
                                                         options: [.skipsSubdirectoryDescendants, .skipsHiddenFiles])
 
         while let item = enumerator?.nextObject() as? URL {
+			if projectFiles.contains(item.lastPathComponent) {
+				return true
+			}
+
             let values = try? item.resourceValues(forKeys: [.contentTypeKey])
 
             guard let uti = values?.contentType else { continue }

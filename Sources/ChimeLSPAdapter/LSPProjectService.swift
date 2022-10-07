@@ -25,7 +25,8 @@ actor LSPProjectService {
          transformers: LSPTransformers = .init(),
 		 contextFilter: @escaping LSPService.ContextFilter,
          executionParamsProvider: @escaping LSPService.ExecutionParamsProvider,
-		 processHostServiceName: String?) {
+		 processHostServiceName: String?,
+		 logMessages: Bool) {
         self.context = context
         self.serverOptions = serverOptions
         self.host = host
@@ -49,6 +50,8 @@ actor LSPProjectService {
                     restartingServer?.serverBecameUnavailable()
                 }
 
+				remote.logMessages = logMessages
+
                 return remote
             }
 
@@ -57,6 +60,8 @@ actor LSPProjectService {
             local.terminationHandler = { [weak restartingServer] in
                 restartingServer?.serverBecameUnavailable()
             }
+
+			local.logMessages = logMessages
 
             return local
         }

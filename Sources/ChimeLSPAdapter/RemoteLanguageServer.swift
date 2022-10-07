@@ -59,7 +59,7 @@ extension UnrestrictedProcessTransport: DataTransport {
 
 /// Provides an interface to a LSP language server hosted by an intermediary process.
 public class RemoteLanguageServer {
-    public let wrappedServer: JSONRPCLanguageServer
+    private let wrappedServer: JSONRPCLanguageServer
     private var subscription: AnyCancellable? = nil
     private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "RemoteLanguageServer")
 
@@ -103,8 +103,12 @@ public class RemoteLanguageServer {
                 self.logger.error("failed to terminate: \(String(describing: error), privacy: .public)")
             }
         }
-
     }
+
+	public var logMessages: Bool {
+		get { return wrappedServer.logMessages }
+		set { wrappedServer.logMessages = newValue }
+	}
 }
 
 extension RemoteLanguageServer: LanguageServerProtocol.Server {
