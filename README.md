@@ -27,7 +27,7 @@ ChimeKit supports different integration options, all available via SPM. Be sure 
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/ChimeHQ/ChimeKit")
+    .package(url: "https://github.com/ChimeHQ/ChimeKit", branch: "main")
 ]
 ```
 

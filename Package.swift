@@ -8,10 +8,7 @@ let package = Package(
     products: [
         .library(name: "ChimeExtensionInterface", targets: ["ChimeExtensionInterface"]),
         .library(name: "ChimeLSPAdapter", targets: ["ChimeLSPAdapter"]),
-		// These libraries exists to provide more explicit linking control to ChimeKit consumers
-		.library(name: "ChimeKitStatic", targets: ["ChimeKitStatic"]),
-		.library(name: "ChimeKitDynamic", targets: ["ChimeKit"]),
-		.library(name: "ChimeKit", targets: ["ChimeKitStatic", "ChimeKit"]),
+		.library(name: "ChimeKit", targets: ["ChimeKit"]),
     ],
     dependencies: [
 		.package(url: "https://github.com/ChimeHQ/ConcurrencyPlus", from: "0.3.3"),
@@ -23,27 +20,30 @@ let package = Package(
     ],
     targets: [
         .target(name: "ChimeExtensionInterface",
-				dependencies: ["ConcurrencyPlus",
-							   "Extendable"]),
-		.testTarget(name: "ChimeExtensionInterfaceTests", dependencies: ["ChimeExtensionInterface"]),
+				dependencies: [
+					"ConcurrencyPlus",
+					"Extendable"]),
+		.testTarget(name: "ChimeExtensionInterfaceTests",
+					dependencies: [
+						"ChimeExtensionInterface"
+					]),
         .target(name: "ChimeLSPAdapter",
-                dependencies: ["LanguageClient",
-                               "LanguageServerProtocol",
-                               "ChimeExtensionInterface",
-                               "ConcurrencyPlus",
-                               "ProcessEnv",
-                               .product(name: "ProcessServiceClient", package: "ProcessService")]),
-        .testTarget(name: "ChimeLSPAdapterTests", dependencies: ["ChimeLSPAdapter"]),
-        .binaryTarget(name: "ChimeKit",
-                      path: "ChimeKit.xcframework"),
-		.target(name: "ChimeKitStatic",
-				dependencies: ["ChimeExtensionInterface",
-							   "ChimeLSPAdapter",
-							   "ConcurrencyPlus",
-							   "Extendable",
-							   "LanguageClient",
-							   "LanguageServerProtocol",
-							   "ProcessEnv",
-							   .product(name: "ProcessServiceClient", package: "ProcessService")]),
+                dependencies: [
+					"LanguageClient",
+                    "LanguageServerProtocol",
+                    "ChimeExtensionInterface",
+                    "ConcurrencyPlus",
+                    "ProcessEnv",
+                    .product(name: "ProcessServiceClient", package: "ProcessService")
+				]),
+        .testTarget(name: "ChimeLSPAdapterTests",
+					dependencies: [
+						"ChimeLSPAdapter"
+					]),
+		.target(name: "ChimeKit",
+				dependencies: [
+					"ChimeExtensionInterface",
+					"ChimeLSPAdapter",
+				]),
     ]
 )
