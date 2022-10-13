@@ -1,6 +1,7 @@
 [![License][license badge]][license]
 [![Platforms][platforms badge]][platforms]
 [![Documentation][documentation badge]][documentation]
+[![Discord Badge](https://img.shields.io/discord/1024397734800785510?color=5865F2&label=Discord&logo=discord&logoColor=white)](https://discord.gg/6qM9uMRA)
 
 # ChimeKit
 ChimeKit provides the functionality needed to build extensions for [Chime][chime], the editor for macOS. You can use it to provide semantic features, display views, and integrate with [ExtensionKit](https://developer.apple.com/documentation/extensionkit). Chime can do a lot more with extensions.
