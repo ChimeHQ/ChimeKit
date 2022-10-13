@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ProcessService",
       "state" : {
-        "revision" : "954097a09372303fc13ec1243cfc716efd14df17",
-        "version" : "0.2.0"
+        "revision" : "43819b09db194d255737a30f24b44474de5c9171",
+        "version" : "0.2.1"
       }
     }
   ],
