@@ -11,7 +11,7 @@ public extension UTType {
 	static let clojureSource = UTType(importedAs: "org.clojure.source")
 	static let cmakeSource = UTType(importedAs: "org.cmake.cmake")
 	static let elixirSource = UTType(importedAs: "org.elixir-lang.source")
-	static let elmSource = UTType(importedAs: "org.elm-lang.elm")
+	static let elmSource = UTType(importedAs: "org.elm-lang.source")
 	static let erlangSource = UTType(importedAs: "org.erlang.erlang")
 	static let fortranSource = UTType(importedAs: "public.fortran-source")
 	static let gitattributesFile = UTType(importedAs: "com.git-scm.attributes")
