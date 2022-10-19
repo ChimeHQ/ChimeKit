@@ -10,6 +10,10 @@ public extension UTType {
 		switch url.lastPathComponent.lowercased() {
 		case "gemfile", "fastfile", "podfile", "rakefile":
 			return UTType.rubyScript.identifier
+		case "config":
+			if url.absoluteString.hasSuffix(".ssh/config") {
+				return UTType.sshConfigurationFile.identifier
+			}
 		default:
 			break
 		}
