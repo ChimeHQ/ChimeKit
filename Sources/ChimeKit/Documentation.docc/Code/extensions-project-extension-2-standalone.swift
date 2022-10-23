@@ -2,5 +2,5 @@ import Foundation
 import ChimeKit
 
 @main
-final class SwiftStandaloneExtension {
+final class SwiftStandaloneExtension: ChimeExtension {
 }

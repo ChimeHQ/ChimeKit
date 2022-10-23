@@ -43,13 +43,13 @@ public actor LSPService {
 	/// - Parameter transformers: The structure of functions that is used to transformer the language server results to `ExtensionProtocol`-compatible types. Defaults to the standard transformers.
 	/// - Parameter contextFilter: A function that determines which directories and files this server should interact with.
 	/// - Parameter executionParamsProvider: A function that produces the configuration required to launch the language server executable.
-	/// - Parameter processHostServiceName: The name of the XPC service used to launch and run the language server executable. Defaults to "com.chimehq.ChimeKit.ProcessService", which is bundled within ChimeKit.framework.
+	/// - Parameter processHostServiceName: The name of the XPC service used to launch and run the language server executable.
     public init(host: HostProtocol,
                 serverOptions: any Codable = [:] as [String: String],
                 transformers: LSPTransformers = .init(),
 				contextFilter: @escaping ContextFilter,
                 executionParamsProvider: @escaping ExecutionParamsProvider,
-				processHostServiceName: String? = "com.chimehq.ChimeKit.ProcessService",
+				processHostServiceName: String?,
 				logMessages: Bool = false) {
         self.host = host
         self.transformers = transformers

@@ -1,5 +1,5 @@
 @Tutorial(time: 20) {
-    @XcodeRequirement(title: "Xcode 14 (with macOS Ventura SDK)", destination: "https://developer.apple.com/download/")
+    @XcodeRequirement(title: "Xcode 14.1", destination: "https://developer.apple.com/download/")
     
     @Intro(title: "Language Server Integration") {
         This tutorial guides you though building a Chime extension that exposes the features of a [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) server to the editor.

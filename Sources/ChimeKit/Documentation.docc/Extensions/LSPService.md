@@ -10,7 +10,7 @@ Text
 
 ### Controlling Server Processes
 
-- ``LSPService/contextFilter(for:)``
+- ``LSPService/contextFilter(for:projectFiles:)``
 - ``LSPService/ContextFilter``
 - ``LSPService/ExecutionParamsProvider``
 - ``RemoteLanguageServer``

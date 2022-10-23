@@ -2,6 +2,6 @@ import Foundation
 import ChimeKit
 
 public final class SwiftExtension {
-    public init(host: any HostProtocol) {
+    public init(host: any HostProtocol, processHostServiceName: String?) {
     }
 }

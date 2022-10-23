@@ -5,14 +5,14 @@ public final class SwiftExtension {
     let host: any HostProtocol
     private let lspService: LSPService
 
-    public init(host: any HostProtocol) {
+    public init(host: any HostProtocol, processHostServiceName: String?) {
         self.host = host
-        self.logger = Logger(subsystem: "com.chimehq.ChimeSwift", category: "SwiftExtension")
 
         let filter = LSPService.contextFilter(for: [.swiftSource])
         self.lspService = LSPService(host: host,
                                      contextFilter: filter,
-                                     executionParamsProvider: SwiftExtension.provideParams)
+                                     executionParamsProvider: SwiftExtension.provideParams,
+                                     processHostServiceName: processHostServiceName)
     }
 }
 

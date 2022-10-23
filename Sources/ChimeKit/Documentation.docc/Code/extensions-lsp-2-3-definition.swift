@@ -4,7 +4,7 @@ import ChimeKit
 public final class SwiftExtension {
     let host: any HostProtocol
 
-    public init(host: any HostProtocol) {
+    public init(host: any HostProtocol, processHostServiceName: String?) {
         self.host = host
 
         let filter = LSPService.contextFilter(for: [.swiftSource])
