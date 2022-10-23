@@ -1,4 +1,4 @@
-# ``ChimeExtensionInterface/SymbolQueryService``
+# ``ChimeKit/SymbolQueryService``
 
 Summary
 

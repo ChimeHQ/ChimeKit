@@ -1,4 +1,4 @@
-# ``ChimeExtensionInterface/CompletionService``
+# ``ChimeKit/CompletionService``
 
 Summary
 

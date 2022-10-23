@@ -1,4 +1,4 @@
-# ``ChimeExtensionInterface/SemanticDetailsService``
+# ``ChimeKit/SemanticDetailsService``
 
 Summary
 

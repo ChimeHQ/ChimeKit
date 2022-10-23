@@ -1,4 +1,4 @@
-# ``ChimeExtensionInterface/DefinitionService``
+# ``ChimeKit/DefinitionService``
 
 Summary
 

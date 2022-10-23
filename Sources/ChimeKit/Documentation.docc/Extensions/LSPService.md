@@ -1,4 +1,4 @@
-# ``ChimeLSPAdapter/LSPService``
+# ``ChimeKit/LSPService``
 
 Summary
 

@@ -1,4 +1,4 @@
-# ``ChimeExtensionInterface/ExtensionProtocol``
+# ``ChimeKit/ExtensionProtocol``
 
 Summary
 

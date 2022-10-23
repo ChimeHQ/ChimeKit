@@ -1,4 +1,4 @@
-# ``ChimeExtensionInterface/TokenService``
+# ``ChimeKit/TokenService``
 
 Summary
 
