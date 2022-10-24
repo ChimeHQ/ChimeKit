@@ -56,6 +56,6 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 [platforms badge]: https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FChimeHQ%2FChimeKit%2Fbadge%3Ftype%3Dplatforms
 [documentation]: https://swiftpackageindex.com/ChimeHQ/ChimeKit/main/documentation
 [documentation badge]: https://img.shields.io/badge/Documentation-DocC-blue
-[discord]: https://discord.gg/6qM9uMRA
+[discord]: https://discord.gg/z2sRJd5RTB
 [discord badge]: https://img.shields.io/discord/1024397734800785510?color=5865F2&label=Discord&logo=discord&logoColor=white
 [chime]: https://www.chimehq.com
