@@ -22,6 +22,7 @@ public extension UTType {
 	static let goWorkFile = UTType(importedAs: "dev.go.go-work")
 	static let hackSource = UTType(importedAs: "org.hacklang.source")
 	static let haskellSource = UTType(importedAs: "org.haskell.source")
+	static let hclSource = UTType(importedAs: "com.hashicorp.hcl")
 	static let javaSource = UTType(importedAs: "com.sun.java-source")
 	static let juliaSource = UTType(importedAs: "org.julialang.source")
 	static let kotlinSource = UTType(importedAs: "org.kotlinlang.source")
