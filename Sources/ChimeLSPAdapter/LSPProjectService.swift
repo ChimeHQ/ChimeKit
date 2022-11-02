@@ -12,7 +12,6 @@ actor LSPProjectService {
     let server: RestartingServer
     let host: HostProtocol
     private var documentConnections: [DocumentIdentity: LSPDocumentService]
-    private var serverCapabilities: ServerCapabilities?
     private let log: OSLog
 	private var watchers = [FileWatcher]()
     let transformers: LSPTransformers
@@ -167,9 +166,15 @@ extension LSPProjectService {
 
 extension LSPProjectService: SymbolQueryService {
     func symbols(matching query: String) async throws -> [Symbol] {
+		// this check is important, to ensure that we do not start up a server
+		// unless there is a reasonable expectation we could get results
 		guard await contextFilter(context, nil) == true else { return [] }
 
-        switch serverCapabilities?.workspaceSymbolProvider {
+		// we have to request capabilities here, as the server may not be started at this
+		// point
+		let caps = try await server.capabilities
+
+        switch caps.workspaceSymbolProvider {
         case nil:
             throw LSPServiceError.unsupported
         case .optionA(let value):
@@ -180,10 +185,10 @@ extension LSPProjectService: SymbolQueryService {
             break
         }
 
-        let params = WorkspaceSymbolParams(query: query)
-        let result = try await server.workspaceSymbol(params: params)
+		let params = WorkspaceSymbolParams(query: query)
+		let result = try await server.workspaceSymbol(params: params)
 
-        return transformers.workspaceSymbolResponseTransformer(result)
+		return transformers.workspaceSymbolResponseTransformer(result)
     }
 }
 
@@ -286,8 +291,6 @@ extension LSPProjectService {
 
     private func updateServerCapabilities(_ capabilities: ServerCapabilities?) {
         os_log("capabilities changed", log: self.log, type: .info)
-
-        self.serverCapabilities = capabilities
 
         for conn in self.documentConnections.values {
             conn.serverCapabilities = capabilities
