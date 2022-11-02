@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageClient",
       "state" : {
-        "revision" : "f38654cb46d0d8fdc5cfab10d4d05bf4400ea7eb",
-        "version" : "0.2.6"
+        "revision" : "289a24fdd1cc2ca91202c72181d495444c7b4e43",
+        "version" : "0.2.7"
       }
     },
     {
