@@ -202,12 +202,14 @@ extension LSPProjectService {
 		let workspaceFolder = WorkspaceFolder(uri: uri, name: "unnamed")
 
 		let bridgedData = (try? JSONEncoder().encode(serverOptions)) ?? Data()
-		let anyCodable = try? JSONDecoder().decode(AnyCodable.self, from: bridgedData)
+		let opts = try? JSONDecoder().decode(AnyCodable.self, from: bridgedData)
+		let locale = Locale.current.identifier
 
 		return InitializeParams(processId: processId,
+								locale: locale,
 								rootPath: path,
-								rootURI: uri,
-								initializationOptions: anyCodable,
+								rootUri: uri,
+								initializationOptions: opts,
 								capabilities: capabilities,
 								trace: .verbose,
 								workspaceFolders: [workspaceFolder])
