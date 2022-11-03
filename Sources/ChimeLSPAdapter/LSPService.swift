@@ -6,6 +6,7 @@ import AnyCodable
 import ChimeExtensionInterface
 import LanguageClient
 import LanguageServerProtocol
+import ProcessServiceClient
 
 public enum LSPServiceError: Error {
     case unsupported
@@ -61,7 +62,28 @@ public actor LSPService {
 		self.processHostServiceName = processHostServiceName
 		self.logMessages = logMessages
     }
-	
+
+	public init(host: HostProtocol,
+				serverOptions: any Codable = [:] as [String: String],
+				transformers: LSPTransformers = .init(),
+				contextFilter: @escaping ContextFilter,
+				executableName: String,
+				processHostServiceName: String,
+				logMessages: Bool = false) {
+		let provider: ExecutionParamsProvider = {
+			try await LSPService.pathExecutableParamsProvider(name: executableName,
+															  processServiceHostName: processHostServiceName)
+		}
+
+		self.init(host: host,
+				  serverOptions: serverOptions,
+				  transformers: transformers,
+				  contextFilter: contextFilter,
+				  executionParamsProvider: provider,
+				  processHostServiceName: processHostServiceName,
+				  logMessages: logMessages)
+	}
+
     private func connection(for context: DocumentContext) -> LSPProjectService? {
         guard let projContext = context.projectContext else {
             return nil
@@ -176,4 +198,27 @@ extension LSPService {
 
         return false
     }
+}
+
+extension LSPService {
+	public static func pathExecutableParamsProvider(name: String, processServiceHostName: String) async throws -> Process.ExecutionParameters {
+		let userEnv = try await HostedProcess.userEnvironment(with: processServiceHostName)
+
+		let whichParams = Process.ExecutionParameters(path: "/usr/bin/which", arguments: [name], environment: userEnv)
+
+		let data = try await HostedProcess(named: processServiceHostName, parameters: whichParams)
+			.runAndReadStdout()
+
+		guard let output = String(data: data, encoding: .utf8) else {
+			throw LSPServiceError.serverNotFound
+		}
+
+		if output.isEmpty {
+			throw LSPServiceError.serverNotFound
+		}
+
+		let path = output.trimmingCharacters(in: .whitespacesAndNewlines)
+
+		return .init(path: path, environment: userEnv)
+	}
 }
