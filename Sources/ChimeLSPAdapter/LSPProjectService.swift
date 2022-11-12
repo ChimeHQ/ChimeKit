@@ -1,8 +1,8 @@
 import Foundation
 import os.log
 
-import AnyCodable
 import ChimeExtensionInterface
+import JSONRPC
 import LanguageClient
 import LanguageServerProtocol
 
@@ -202,7 +202,7 @@ extension LSPProjectService {
 		let workspaceFolder = WorkspaceFolder(uri: uri, name: "unnamed")
 
 		let bridgedData = (try? JSONEncoder().encode(serverOptions)) ?? Data()
-		let opts = try? JSONDecoder().decode(AnyCodable.self, from: bridgedData)
+		let opts = try? JSONDecoder().decode(LSPAny.self, from: bridgedData)
 		let locale = Locale.current.identifier
 
 		return InitializeParams(processId: processId,
@@ -223,15 +223,15 @@ extension LSPProjectService {
         return try await docConnection.textDocumentItem
     }
 
-    private nonisolated func handleRequest(_ request: ServerRequest, block: @escaping (ServerResult<AnyCodable>) -> Void) {
+    private nonisolated func handleRequest(_ request: ServerRequest, block: @escaping (ServerResult<LSPAny>) -> Void) {
         switch request {
         case .workspaceConfiguration(let params):
-            let emptyObject = Dictionary<String, String>()
-            let responseItems = Array(repeating: emptyObject, count: params.items.count)
+			let count = params.items.count
 
-            let responseParam = AnyCodable(arrayLiteral: responseItems)
+			let emptyObject = JSONValue.hash([:])
+			let responseItems = JSONValue.array(Array(repeating: emptyObject, count: count))
 
-            block(.success(responseParam))
+            block(.success(responseItems))
         case .clientRegisterCapability(let params):
             os_log("register capability", log: self.log, type: .info)
 
