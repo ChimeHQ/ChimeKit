@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "anycodable",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Flight-School/AnyCodable",
-      "state" : {
-        "revision" : "b1a7a8a6186f2fcb28f7bda67cfc545de48b3c80",
-        "version" : "0.6.2"
-      }
-    },
-    {
       "identity" : "concurrencyplus",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ConcurrencyPlus",
@@ -50,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/JSONRPC",
       "state" : {
-        "revision" : "55071da13d109e61584750f39c0941d49711b962",
-        "version" : "0.5.0"
+        "revision" : "5da978702aece6ba5c7879b0d253c180d61e4ef3",
+        "version" : "0.6.0"
       }
     },
     {
@@ -59,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageClient",
       "state" : {
-        "revision" : "289a24fdd1cc2ca91202c72181d495444c7b4e43",
-        "version" : "0.2.7"
+        "revision" : "f0198ee0a102d266078f7d9c28f086f2989f988a",
+        "version" : "0.3.1"
       }
     },
     {
@@ -68,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
       "state" : {
-        "revision" : "5f74d0574f0b56d36ed810b04322329527679219",
-        "version" : "0.7.8"
+        "revision" : "6e97f943dc024307c5524a80bd33cdbd1cc621de",
+        "version" : "0.8.0"
       }
     },
     {
