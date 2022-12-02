@@ -2,7 +2,6 @@ import Foundation
 import os.log
 import UniformTypeIdentifiers
 
-import AnyCodable
 import ChimeExtensionInterface
 import LanguageClient
 import LanguageServerProtocol
