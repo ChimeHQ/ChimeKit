@@ -14,6 +14,8 @@ public extension UTType {
 			if url.absoluteString.hasSuffix(".ssh/config") {
 				return UTType.sshConfigurationFile.identifier
 			}
+		case "dockerfile":
+			return UTType.dockerfile.identifier
 		default:
 			break
 		}
