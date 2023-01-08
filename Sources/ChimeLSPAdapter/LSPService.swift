@@ -33,13 +33,13 @@ public actor LSPService {
 	/// The name of the XPC service used to launch and run the language server executable.
 	public let processHostServiceName: String?
 
-	/// Write raw LSP mesages to the console.
+	/// Write raw LSP messages to the console.
 	public let logMessages: Bool
 
 	/// Create an LSPService object.
 	///
 	/// - Parameter host: The `HostProtocol`-conforming object the service will communicate with.
-	/// - Parameter serverOptions: A generic JSON object relayed to the language server as part of the initializatio procedure.
+	/// - Parameter serverOptions: A generic JSON object relayed to the language server as part of the initialization procedure.
 	/// - Parameter transformers: The structure of functions that is used to transformer the language server results to `ExtensionProtocol`-compatible types. Defaults to the standard transformers.
 	/// - Parameter contextFilter: A function that determines which directories and files this server should interact with.
 	/// - Parameter executionParamsProvider: A function that produces the configuration required to launch the language server executable.
