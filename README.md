@@ -17,7 +17,7 @@ ChimeKit provides the functionality needed to build extensions for [Chime][chime
 
 Chime's extensions are based on [ExtensionKit][extensionkit]. They are written in Swift and SwiftUI. ChimeKit also includes a system for integrating [Language Server Protocol](https://microsoft.github.io/language-server-protocol/) servers with the extension API. For the most part, ChimeKit abstracts away all of the ExtensionKit details. You program against the ChimeKit APIs, not the ExtensionKit primitives. However, ExtensionKit does impose some requirements related to security and distribution you must be aware of.
 
-ChimeKit development requires [Chime 2.0](https://www.chimehq.com/download), Xcode 14, and macOS Venutra (13.0). However, extensions should try to match ChimeKit's macOS Monterey (12.0) requirement.
+ChimeKit development requires [Chime 2.0](https://www.chimehq.com/download), Xcode 14, and macOS Ventura (13.0). However, extensions should try to match ChimeKit's macOS Monterey (12.0) requirement.
 
 📖 [Documentation][documentation] is available in DocC format. But, please don't be shy to [reach out](https://www.chimehq.com/contact) to us - we'll help!
 
