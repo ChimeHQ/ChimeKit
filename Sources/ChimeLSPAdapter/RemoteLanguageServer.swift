@@ -112,15 +112,9 @@ public class RemoteLanguageServer {
 }
 
 extension RemoteLanguageServer: LanguageServerProtocol.Server {
-    public var requestHandler: RequestHandler? {
-        get { return wrappedServer.requestHandler }
-        set { wrappedServer.requestHandler = newValue }
-    }
-
-    public var notificationHandler: NotificationHandler? {
-        get { wrappedServer.notificationHandler }
-        set { wrappedServer.notificationHandler = newValue }
-    }
+	public func setHandlers(_ handlers: ServerHandlers, completionHandler: @escaping (ServerError?) -> Void) {
+		wrappedServer.setHandlers(handlers, completionHandler: completionHandler)
+	}
 
     public func sendNotification(_ notif: ClientNotification, completionHandler: @escaping (ServerError?) -> Void) {
         taskQueue.addOperation {
