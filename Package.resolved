@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageClient",
       "state" : {
-        "revision" : "209d6070439e1703e381c37dfd1da6b39fd280e0",
-        "version" : "0.4.0"
+        "revision" : "7c12bb6884a7e5d801dbce68f2f627bb7d94d1f4",
+        "version" : "0.5.0"
       }
     },
     {
@@ -61,15 +61,6 @@
       "state" : {
         "revision" : "9293fd8a3b4298bab12475ff46f793a6d4055f0e",
         "version" : "0.9.0"
-      }
-    },
-    {
-      "identity" : "operationplus",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/OperationPlus",
-      "state" : {
-        "revision" : "1340f95dce3e93d742497d88db18f8676f4badf4",
-        "version" : "1.6.0"
       }
     },
     {

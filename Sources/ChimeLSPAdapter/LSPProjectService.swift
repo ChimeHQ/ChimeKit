@@ -9,7 +9,49 @@ import LanguageServerProtocol
 actor LSPProjectService {
 	let context: ProjectContext
     let serverOptions: any Codable
-    let server: RestartingServer
+	let logMessages: Bool
+	let processHostServiceName: String?
+
+	private lazy var server: RestartingServer = {
+		let initializeParamsProvider: InitializingServer.InitializeParamsProvider = { [weak self] in
+			guard let self = self else {
+				throw LSPServiceError.providerUnavailable
+			}
+
+			return try await self.provideInitializeParams()
+		}
+
+		let textDocumentItemProvider: RestartingServer.TextDocumentItemProvider = { [weak self] in
+			guard let self = self else {
+				throw LSPServiceError.providerUnavailable
+			}
+
+			return try await self.textDocumentItem(for: $0)
+		}
+
+		let provider: RestartingServer.ServerProvider = { [weak self] in
+			guard let self = self else {
+				throw LSPServiceError.providerUnavailable
+			}
+
+			return try await self.serverProvider()
+		}
+
+		// This is subtle. While shutting down, it is possible for some notifications in come in
+		// such that they arrive after this instance has been deallocated but before
+		// the actual process has been cleaned up.
+		let handlers = ServerHandlers(requestHandler: { [weak self] in self?.handleRequest($0, block: $1) },
+									  notificationHandler: { [weak self] in self?.handleNotification($0, block: $1) })
+
+		let config = RestartingServer.Configuration(serverProvider: provider,
+													textDocumentItemProvider: textDocumentItemProvider,
+													initializeParamsProvider: initializeParamsProvider,
+													serverCapabilitiesChangedHandler: { [weak self] in self?.handleCapabilitiesChanged($0) },
+													handlers: handlers)
+
+		return RestartingServer(configuration: config)
+	}()
+
     let host: HostProtocol
     private var documentConnections: [DocumentIdentity: LSPDocumentService]
     private let log: OSLog
@@ -34,61 +76,8 @@ actor LSPProjectService {
         self.executionParamsProvider = executionParamsProvider
 		self.contextFilter = contextFilter
         self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "LSPProjectService")
-
-        let restartingServer = RestartingServer()
-
-        self.server = restartingServer
-
-        let provider: RestartingServer.ServerProvider = {
-            let params = try await executionParamsProvider()
-
-            if let serviceName = processHostServiceName {
-                let remote = try RemoteLanguageServer(named: serviceName, parameters: params)
-
-                remote.terminationHandler = { [weak restartingServer] in
-                    restartingServer?.serverBecameUnavailable()
-                }
-
-				remote.logMessages = logMessages
-
-                return remote
-            }
-
-            let local = LocalProcessServer(executionParameters: params)
-
-            local.terminationHandler = { [weak restartingServer] in
-                restartingServer?.serverBecameUnavailable()
-            }
-
-			local.logMessages = logMessages
-
-            return local
-        }
-
-        restartingServer.serverProvider = provider
-            
-        restartingServer.initializeParamsProvider = { [weak self] in
-			guard let self = self else {
-				throw LSPServiceError.providerUnavailable
-			}
-
-			return try await self.provideInitializeParams()
-		}
-
-        restartingServer.textDocumentItemProvider = { [weak self] in
-			guard let self = self else {
-				throw LSPServiceError.providerUnavailable
-			}
-
-			return try await self.textDocumentItem(for: $0)
-		}
-            
-        // This is subtle. While shutting down, it is possible for some notifications in come in
-        // such that they arrive after this instance has been deallocated but before
-        // the actual process has been cleaned up.
-        restartingServer.requestHandler = { [weak self] in self?.handleRequest($0, block: $1) }
-        restartingServer.notificationHandler = { [weak self] in self?.handleNotification($0, block: $1) }
-        restartingServer.serverCapabilitiesChangedHandler = { [weak self] in self?.handleCapabilitiesChanged($0) }
+		self.processHostServiceName = processHostServiceName
+		self.logMessages = logMessages
     }
 
 	nonisolated var rootURL: URL {
@@ -146,17 +135,7 @@ extension LSPProjectService {
     }
 
     func shutdown() async throws {
-		// always try to really shutdown, as we really don't want to leak
-		// server processes
-        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-            self.server.shutdownAndExit { error in
-                if let error = error {
-                    continuation.resume(with: .failure(error))
-                } else {
-                    continuation.resume()
-                }
-            }
-        }
+		try await server.shutdownAndExit()
     }
 
     func documentService(for docContext: DocumentContext) async throws -> DocumentService? {
@@ -193,7 +172,7 @@ extension LSPProjectService: SymbolQueryService {
 }
 
 extension LSPProjectService {
-    private func provideInitializeParams() throws -> InitializeParams {
+	private func provideInitializeParams() throws -> InitializeParams {
         let processId = Int(ProcessInfo.processInfo.processIdentifier)
         let capabilities = LSPService.clientCapabilities
 
@@ -222,6 +201,35 @@ extension LSPProjectService {
 
         return try await docConnection.textDocumentItem
     }
+
+	private nonisolated func handleTermination() {
+		Task {
+			await self.server.serverBecameUnavailable()
+		}
+	}
+
+	private func serverProvider() async throws -> Server {
+		let params = try await self.executionParamsProvider()
+
+		if let serviceName = processHostServiceName {
+			let remote = try RemoteLanguageServer(named: serviceName, parameters: params)
+
+			remote.terminationHandler = { [weak self] in self?.handleTermination() }
+
+			remote.logMessages = logMessages
+
+			return remote
+		}
+
+		let local = LocalProcessServer(executionParameters: params)
+
+		local.terminationHandler = { [weak self] in self?.handleTermination() }
+
+		local.logMessages = logMessages
+
+		return local
+
+	}
 
     private nonisolated func handleRequest(_ request: ServerRequest, block: @escaping (ServerResult<LSPAny>) -> Void) {
         switch request {
