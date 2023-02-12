@@ -31,6 +31,7 @@ public extension UTType {
 	static let markdown = UTType(importedAs: "net.daringfireball.markdown")
 	static let ocamlSource = UTType(importedAs: "org.ocaml.ocaml")
 	static let pascalSource = UTType(importedAs: "public.pascal-source")
+	static let patchFile = UTType(importedAs: "public.patch-file")
 	static let rSource = UTType(importedAs: "org.r-project.r")
 	static let racketSource = UTType(importedAs: "org.racket-lang.source")
 	static let rustSource = UTType(importedAs: "org.rust-lang.rust-script")
