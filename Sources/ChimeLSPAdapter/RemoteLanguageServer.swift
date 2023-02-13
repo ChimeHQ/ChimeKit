@@ -73,6 +73,8 @@ public class RemoteLanguageServer {
         self.wrappedServer = JSONRPCLanguageServer(dataTransport: transport)
 
         taskQueue.addOperation {
+			self.logger.debug("launching remote server")
+
             do {
                 try await self.process.launch()
                 

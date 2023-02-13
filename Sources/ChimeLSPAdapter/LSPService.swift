@@ -25,7 +25,7 @@ public actor LSPService {
     private let executionParamsProvider: ExecutionParamsProvider
 	private let contextFilter: ContextFilter
     private var projectServices: [URL: LSPProjectService]
-    private let log: OSLog
+	private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "LSPService")
 
     let host: HostProtocol
     let transformers: LSPTransformers
@@ -57,7 +57,6 @@ public actor LSPService {
         self.serverOptions = serverOptions
         self.executionParamsProvider = executionParamsProvider
 		self.contextFilter = contextFilter
-        self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "LSPService")
 		self.processHostServiceName = processHostServiceName
 		self.logMessages = logMessages
     }
@@ -100,6 +99,7 @@ extension LSPService: ExtensionProtocol {
     public func didOpenProject(with context: ProjectContext) async throws {
         let url = context.url
 
+		logger.info("Opening project at \(url, privacy: .public)")
         precondition(projectServices[url] == nil)
 
         let conn = LSPProjectService(context: context,
@@ -118,11 +118,14 @@ extension LSPService: ExtensionProtocol {
         let url = context.url
         let conn = projectServices[url]
 
+		logger.info("Closing project at \(url, privacy: .public)")
         self.projectServices[url] = nil
 
         if let conn {
             try await conn.shutdown()
         }
+
+		logger.info("Closed project at \(url, privacy: .public)")
     }
 
     public func symbolService(for context: ProjectContext) async throws -> SymbolQueryService? {
@@ -200,6 +203,7 @@ extension LSPService {
 }
 
 extension LSPService {
+	/// Search the user's PATH for an executable
 	public static func pathExecutableParamsProvider(name: String, processServiceHostName: String) async throws -> Process.ExecutionParameters {
 		let userEnv = try await HostedProcess.userEnvironment(with: processServiceHostName)
 
