@@ -33,6 +33,9 @@ final class MockHost: HostProtocol {
     func invalidateTokens(for documentId: DocumentIdentity, in target: TextTarget) {
     }
 
+	func extensionConfigurationChanged(to configuration: ChimeExtensionInterface.ExtensionConfiguration) {
+	}
+
     func documentServiceConfigurationChanged(for documentId: DocumentIdentity, to configuration: ServiceConfiguration) {
     }
 }

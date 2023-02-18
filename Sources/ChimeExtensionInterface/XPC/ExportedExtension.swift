@@ -34,6 +34,21 @@ final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPCProtoco
         }
     }
 
+	func configuration(completionHandler: @escaping XPCValueHandler<XPCExtensionConfiguration>) {
+		let obj = self.bridgedObject
+
+		queue.addOperation {
+			do {
+				let config = try await obj.configuration
+				let configData = try JSONEncoder().encode(config)
+
+				completionHandler(configData, nil)
+			} catch {
+				completionHandler(nil, error)
+			}
+		}
+	}
+
     func didOpenProject(with xpcContext: XPCProjectContext, bookmarkData: [Data]) {
         let obj = self.bridgedObject
 

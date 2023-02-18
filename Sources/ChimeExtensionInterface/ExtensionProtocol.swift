@@ -1,5 +1,9 @@
 import Foundation
 
+public enum ChimeExtensionError: Error {
+	case noHostConnection
+}
+
 /// Provides behaviors and functionality scoped to a specific document.
 ///
 /// A significant portion of the functionality within the extension interface is implicitly scoped
@@ -61,6 +65,8 @@ public extension DocumentService {
 /// - Important: Do not make any assumptions about open/close order. A document may be opened
 /// **before** a project, and only associated later.
 public protocol ExtensionProtocol: AnyObject {
+	/// Static configuration used by the host
+	var configuration: ExtensionConfiguration { get async throws }
 
 	/// Called when a project/directory is opened by the editor.
     func didOpenProject(with context: ProjectContext) async throws
@@ -76,6 +82,12 @@ public protocol ExtensionProtocol: AnyObject {
 }
 
 public extension ExtensionProtocol {
+	var configuration: ExtensionConfiguration {
+		get async throws {
+			return ExtensionConfiguration()
+		}
+	}
+	
     func didOpenProject(with context: ProjectContext) async throws {
     }
 

@@ -17,6 +17,8 @@ public protocol HostProtocol {
 
     func invalidateTokens(for documentId: DocumentIdentity, in target: TextTarget)
 
+	/// Inform the host that the sending extension's configuration has changed.
+	func extensionConfigurationChanged(to configuration: ExtensionConfiguration)
     func documentServiceConfigurationChanged(for documentId: DocumentIdentity, to configuration: ServiceConfiguration)
 }
 

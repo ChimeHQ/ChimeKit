@@ -69,6 +69,16 @@ extension RemoteHost: HostProtocol {
         }
     }
 
+	public func extensionConfigurationChanged(to configuration: ExtensionConfiguration) {
+		Task {
+			let xpcConfig = try JSONEncoder().encode(configuration)
+
+			try await withService { host in
+				host.extensionConfigurationChanged(to: xpcConfig)
+			}
+		}
+	}
+
     public func documentServiceConfigurationChanged(for documentId: DocumentIdentity, to configuration: ServiceConfiguration) {
         Task {
             let xpcConfig = try JSONEncoder().encode(configuration)

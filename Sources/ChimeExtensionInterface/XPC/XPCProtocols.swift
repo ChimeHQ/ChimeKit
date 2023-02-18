@@ -15,6 +15,7 @@ typealias XPCProjectContext = Data
 typealias XPCDocumentContext = Data
 typealias XPCDocumentConfiguration = Data
 typealias XPCDocumentServiceConfiguration = Data
+typealias XPCExtensionConfiguration = Data
 
 typealias XPCProjectSymbolsContext = Data
 typealias XPCSemanticDetails = Data
@@ -26,6 +27,8 @@ typealias XPCSymbol = Data
 
 /// Extension XPC API
 @objc protocol ExtensionXPCProtocol {
+	func configuration(completionHandler: @escaping XPCValueHandler<XPCExtensionConfiguration>)
+
     // ApplicationService
     func didOpenProject(with xpcContext: XPCProjectContext, bookmarkData: [Data])
     func willCloseProject(with xpcContext: XPCProjectContext)
@@ -75,6 +78,7 @@ typealias XPCSymbol = Data
     // TokenService
     func invalidateTokens(for documentId: UUID, in xpcTarget: XPCTextTarget)
 
+	func extensionConfigurationChanged(to xpcConfiguration: XPCExtensionConfiguration)
     func documentServiceConfigurationChanged(for documentId: UUID, to xpcConfiguration: XPCDocumentServiceConfiguration)
 }
 

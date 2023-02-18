@@ -7,7 +7,7 @@ import Foundation
 public final class ExportedHost<Host: HostProtocol>: HostXPCProtocol {
     let bridgedObject: Host
 
-    init(_ object: Host) {
+	init(_ object: Host) {
         self.bridgedObject = object
     }
 
@@ -76,6 +76,14 @@ public final class ExportedHost<Host: HostProtocol>: HostXPCProtocol {
             }
         }
     }
+
+	func extensionConfigurationChanged(to xpcConfiguration: XPCExtensionConfiguration) {
+		guard let config = try? JSONDecoder().decode(ExtensionConfiguration.self, from: xpcConfiguration) else {
+			return
+		}
+
+		self.bridgedObject.extensionConfigurationChanged(to: config)
+	}
 
     func documentServiceConfigurationChanged(for documentId: UUID, to xpcConfiguration: XPCDocumentServiceConfiguration) {
         guard let config = try? JSONDecoder().decode(ServiceConfiguration.self, from: xpcConfiguration) else {

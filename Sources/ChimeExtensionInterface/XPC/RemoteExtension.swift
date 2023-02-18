@@ -26,6 +26,14 @@ public final class RemoteExtension {
 }
 
 extension RemoteExtension: ExtensionProtocol {
+	public var configuration: ExtensionConfiguration {
+		get async throws {
+			return try await withContinuation({ service, continuation in
+				service.configuration(completionHandler: continuation.resumingHandler)
+			})
+		}
+	}
+
     public func didOpenProject(with context: ProjectContext) async throws {
         let bookmarks: [Data] = [
             try context.url.bookmarkData(),
