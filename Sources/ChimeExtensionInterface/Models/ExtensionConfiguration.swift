@@ -71,7 +71,9 @@ public extension ExtensionConfiguration {
 				case .uti(let utType):
 					guard let uti = resourceValues.contentType else { continue }
 
-					if uti.conforms(to: utType) {
+					let resolved = UTType.resolveType(with: uti.identifier, url: url) ?? uti
+					
+					if resolved.conforms(to: utType) {
 						return true
 					}
 				}
