@@ -44,6 +44,7 @@ public actor LSPService {
 	/// - Parameter contextFilter: A function that determines which directories and files this server should interact with.
 	/// - Parameter executionParamsProvider: A function that produces the configuration required to launch the language server executable.
 	/// - Parameter processHostServiceName: The name of the XPC service used to launch and run the language server executable.
+	@available(*, deprecated, message: "Use of ContextFilter should be replaced with ExtensionConfiguration")
     public init(host: HostProtocol,
                 serverOptions: any Codable = [:] as [String: String],
                 transformers: LSPTransformers = .init(),
@@ -61,6 +62,30 @@ public actor LSPService {
 		self.logMessages = logMessages
     }
 
+	/// Create an LSPService object.
+	///
+	/// - Parameter host: The `HostProtocol`-conforming object the service will communicate with.
+	/// - Parameter serverOptions: A generic JSON object relayed to the language server as part of the initialization procedure.
+	/// - Parameter transformers: The structure of functions that is used to transformer the language server results to `ExtensionProtocol`-compatible types. Defaults to the standard transformers.
+	/// - Parameter executionParamsProvider: A function that produces the configuration required to launch the language server executable.
+	/// - Parameter processHostServiceName: The name of the XPC service used to launch and run the language server executable.
+	public init(host: HostProtocol,
+				serverOptions: any Codable = [:] as [String: String],
+				transformers: LSPTransformers = .init(),
+				executionParamsProvider: @escaping ExecutionParamsProvider,
+				processHostServiceName: String?,
+				logMessages: Bool = false) {
+		self.host = host
+		self.transformers = transformers
+		self.projectServices = [:]
+		self.serverOptions = serverOptions
+		self.executionParamsProvider = executionParamsProvider
+		self.contextFilter = { _, _ in return true }
+		self.processHostServiceName = processHostServiceName
+		self.logMessages = logMessages
+	}
+
+	@available(*, deprecated, message: "Use of ContextFilter should be replaced with ExtensionConfiguration")
 	public init(host: HostProtocol,
 				serverOptions: any Codable = [:] as [String: String],
 				transformers: LSPTransformers = .init(),
@@ -77,6 +102,32 @@ public actor LSPService {
 				  serverOptions: serverOptions,
 				  transformers: transformers,
 				  contextFilter: contextFilter,
+				  executionParamsProvider: provider,
+				  processHostServiceName: processHostServiceName,
+				  logMessages: logMessages)
+	}
+
+	/// Create an LSPService object.
+	///
+	/// - Parameter host: The `HostProtocol`-conforming object the service will communicate with.
+	/// - Parameter serverOptions: A generic JSON object relayed to the language server as part of the initialization procedure.
+	/// - Parameter transformers: The structure of functions that is used to transformer the language server results to `ExtensionProtocol`-compatible types. Defaults to the standard transformers.
+	/// - Parameter executableName: The language server executable name found in PATH.
+	/// - Parameter processHostServiceName: The name of the XPC service used to launch and run the language server executable.
+	public init(host: HostProtocol,
+				serverOptions: any Codable = [:] as [String: String],
+				transformers: LSPTransformers = .init(),
+				executableName: String,
+				processHostServiceName: String,
+				logMessages: Bool = false) {
+		let provider: ExecutionParamsProvider = {
+			try await LSPService.pathExecutableParamsProvider(name: executableName,
+															  processServiceHostName: processHostServiceName)
+		}
+
+		self.init(host: host,
+				  serverOptions: serverOptions,
+				  transformers: transformers,
 				  executionParamsProvider: provider,
 				  processHostServiceName: processHostServiceName,
 				  logMessages: logMessages)
@@ -161,6 +212,7 @@ extension LSPService: ExtensionProtocol {
     }
 }
 
+@available(*, deprecated, message: "Use ExtensionConfiguration instead")
 extension LSPService {
     /// Produce a simple `ContextFilter` that examines file UTIs and marker files
     ///
