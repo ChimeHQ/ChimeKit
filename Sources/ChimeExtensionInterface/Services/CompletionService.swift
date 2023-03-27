@@ -1,12 +1,12 @@
 import Combine
 import Foundation
 
-public enum CompletionFragment: Codable, Hashable {
+public enum CompletionFragment: Codable, Hashable, Sendable {
     case text(String)
     case placeholder(label: String, content: String)
 }
 
-public struct Completion: Codable, Hashable {
+public struct Completion: Codable, Hashable, Sendable {
     public let displayString: String
     public let range: TextRange
     public let fragments: [CompletionFragment]
@@ -19,7 +19,7 @@ public struct Completion: Codable, Hashable {
 }
 
 
-public enum CompletionTrigger: Codable, Hashable {
+public enum CompletionTrigger: Codable, Hashable, Sendable {
     case invoked
     case character(String)
 }
