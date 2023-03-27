@@ -5,6 +5,7 @@ import UniformTypeIdentifiers
 import ChimeExtensionInterface
 import LanguageClient
 import LanguageServerProtocol
+import ProcessEnv
 import ProcessServiceClient
 
 public enum LSPServiceError: Error {
