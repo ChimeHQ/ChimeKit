@@ -43,5 +43,6 @@ public extension UTType {
 	static let treeSitterQuerySource = UTType(importedAs: "io.github.tree-sitter.query-source")
 	static let toml = UTType(importedAs: "public.toml")
 	static let typescriptSource = UTType(importedAs: "org.typescriptlang.source")
+	static let typescriptJSXSource = UTType(importedAs: "org.typescriptlang.jsx-source")
 	static let zigSource = UTType(importedAs: "org.ziglang.zig")
 }
