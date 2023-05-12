@@ -30,6 +30,12 @@ public struct ExtensionConfiguration: Codable, Hashable, Sendable {
 		self.documentFilter = documentFilter
 		self.directoryContentFilter = directoryContentFilter
 	}
+
+	/// Initializes both document and directory content filters to be the same
+	public init(contentFilter: Set<DocumentType>) {
+		self.documentFilter = contentFilter
+		self.directoryContentFilter = contentFilter
+	}
 }
 
 public extension ExtensionConfiguration {
@@ -55,6 +61,8 @@ public extension ExtensionConfiguration {
 
 	/// Check if a directory is being filtered
 	func isDirectoryIncluded(at url: URL) throws -> Bool {
+		let set = (directoryContentFilter ?? Set()).union(documentFilter ?? Set())
+
 		guard let set = directoryContentFilter else { return true }
 
 		let contents = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: [.contentTypeKey])
