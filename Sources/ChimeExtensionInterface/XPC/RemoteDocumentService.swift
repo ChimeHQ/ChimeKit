@@ -2,17 +2,16 @@ import Foundation
 
 import ConcurrencyPlus
 
-actor RemoteDocumentService {
+@MainActor
+struct RemoteDocumentService {
 	private let connection: NSXPCConnection
-    private(set) var context: DocumentContext
-
-    private lazy var xpcContext: XPCDocumentContext = {
-        try! JSONEncoder().encode(context)
-    }()
+    let context: DocumentContext
+	private let xpcContext: XPCDocumentContext
 
     init(connection: NSXPCConnection, context: DocumentContext) {
         self.connection = connection
         self.context = context
+		self.xpcContext = try! JSONEncoder().encode(context)
     }
 
 	private func withContinuation<T>(function: String = #function, _ body: (ExtensionXPCProtocol, CheckedContinuation<T, Error>) -> Void) async throws -> T {

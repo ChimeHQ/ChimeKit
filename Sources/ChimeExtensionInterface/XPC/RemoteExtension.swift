@@ -2,15 +2,14 @@ import Foundation
 
 import ConcurrencyPlus
 
+@MainActor
 public final class RemoteExtension {
     private let connection: NSXPCConnection
     private var docServices: [DocumentIdentity: RemoteDocumentService]
-    private let queue: DispatchQueue
 
     public init(connection: NSXPCConnection) {
         self.connection = connection
         self.docServices = [:]
-        self.queue = DispatchQueue(label: "com.chimehq.ChimeKit.RemoteExtension")
 
         precondition(connection.remoteObjectInterface == nil)
         connection.remoteObjectInterface = NSXPCInterface(with: ExtensionXPCProtocol.self)
@@ -20,7 +19,7 @@ public final class RemoteExtension {
         return try await connection.withContinuation(body)
     }
 
-    private func withService(function: String = #function, _ body: (ExtensionXPCProtocol) -> Void) async throws {
+    private func withService(function: String = #function, _ body: @Sendable (ExtensionXPCProtocol) -> Void) async throws {
         try await connection.withService(body)
     }
 }
@@ -94,17 +93,15 @@ extension RemoteExtension: ExtensionProtocol {
     }
 
     public func documentService(for context: DocumentContext) async throws -> DocumentService? {
-        return queue.sync {
-            if let service = self.docServices[context.id] {
-                return service
-            }
+		if let service = self.docServices[context.id] {
+			return service
+		}
 
-            let service = RemoteDocumentService(connection: connection, context: context)
+		let service = RemoteDocumentService(connection: connection, context: context)
 
-            docServices[context.id] = service
+		docServices[context.id] = service
 
-            return service
-        }
+		return service
     }
 
     public func symbolService(for context: ProjectContext) async throws -> SymbolQueryService? {
