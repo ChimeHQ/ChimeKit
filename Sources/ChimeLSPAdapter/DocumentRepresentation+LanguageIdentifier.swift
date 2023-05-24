@@ -21,6 +21,10 @@ extension DocumentContext {
 			return LanguageIdentifier.css.rawValue
 		}
 
+		if uti.conforms(to: .dartSource) {
+			return LanguageIdentifier.dart.rawValue
+		}
+
 		if uti.conforms(to: .elixirSource) {
 			return LanguageIdentifier.elixir.rawValue
 		}
@@ -81,6 +85,10 @@ extension DocumentContext {
 			return LanguageIdentifier.rust.rawValue
 		}
 
+		if uti.conforms(to: .scalaSource) {
+			return LanguageIdentifier.scala.rawValue
+		}
+		
 		if uti.conforms(to: .sqlSource) {
 			return LanguageIdentifier.sql.rawValue
 		}
