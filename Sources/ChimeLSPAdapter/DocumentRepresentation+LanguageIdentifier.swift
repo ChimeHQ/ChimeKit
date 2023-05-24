@@ -89,6 +89,14 @@ extension DocumentContext {
 			return LanguageIdentifier.swift.rawValue
 		}
 
+		if uti.conforms(to: .typescriptSource) {
+			return LanguageIdentifier.typescript.rawValue
+		}
+
+		if uti.conforms(to: .typescriptJSXSource) {
+			return LanguageIdentifier.typescriptreact.rawValue
+		}
+
 		if uti.conforms(to: .yaml) {
 			return LanguageIdentifier.yaml.rawValue
 		}
