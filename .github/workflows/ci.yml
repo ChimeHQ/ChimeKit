@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test
+    runs-on: macOS-13
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test
+        run: set -o pipefail && xcodebuild -scheme ChimeKit-Package -destination "platform=macOS" test | xcpretty
