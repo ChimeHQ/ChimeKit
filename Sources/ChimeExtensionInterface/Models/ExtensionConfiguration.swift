@@ -61,9 +61,11 @@ public extension ExtensionConfiguration {
 
 	/// Check if a directory is being filtered
 	func isDirectoryIncluded(at url: URL) throws -> Bool {
-		let set = (directoryContentFilter ?? Set()).union(documentFilter ?? Set())
+		guard let directoryFilter = directoryContentFilter else {
+			return true
+		}
 
-		guard let set = directoryContentFilter else { return true }
+		let set = directoryFilter.union(documentFilter ?? Set())
 
 		let contents = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: [.contentTypeKey])
 
