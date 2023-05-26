@@ -26,34 +26,34 @@
                 
                 @Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-2-definition.swift")
             }
-            
+                        
             @Step {
-                Create a filter for the server.
+                Add an instance variable for the `LSPService`.
                 
-                Language servers are extremely expensive. A `ContextFilter` indicates if a server supports the current project/document. 
+                We use our `provideParams()` function to initialize it.
                 
                 @Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-3-definition.swift")
             }
             
             @Step {
-                Add an instance variable for the `LSPService`.
-                
-                We use our `filter` and `provideParams()` function to initialize it.
+                Fill in the functions from `ExtensionProtocol`
                 
                 @Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-4-definition.swift")
             }
             
             @Step {
-                Fill in the functions from `ExtensionProtocol`
+                Forward calls to the `lspService` instance.
                 
                 @Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-5-definition.swift")
             }
-            
-            @Step {
-                Forward calls to the `lspService` instance.
-                
-                @Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-6-definition.swift")
-            }
+			
+			@Step {
+				Define the extension's configuration.
+				
+				This static configuration allows Chime to lazily load extension and filter events based on file types and directory structures. Language servers can be expensive, so this is an important performance optimization.
+				
+				@Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-6-definition.swift")
+			}
         }
     }
 }

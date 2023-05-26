@@ -17,6 +17,10 @@ final class SwiftStandaloneExtension: ChimeExtension {
 }
 
 extension SwiftStandaloneExtension {
+    var configuration: ExtensionConfiguration {
+        get async throws { }
+    }
+
     func didOpenProject(with context: ProjectContext) async throws {
     }
 
