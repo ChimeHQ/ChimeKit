@@ -148,6 +148,12 @@ public actor LSPService {
 }
 
 extension LSPService: ExtensionProtocol {
+	public var configuration: ExtensionConfiguration {
+		get async throws {
+			throw LSPServiceError.unsupported
+		}
+	}
+
     public func didOpenProject(with context: ProjectContext) async throws {
         let url = context.url
 
