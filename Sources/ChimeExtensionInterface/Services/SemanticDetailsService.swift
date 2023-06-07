@@ -28,11 +28,11 @@ public struct SemanticDetails {
     }
 }
 
-extension SemanticDetails: Hashable {
-}
+extension SemanticDetails: Hashable {}
 
-extension SemanticDetails: Codable {
-}
+extension SemanticDetails: Codable {}
+
+extension SemanticDetails: Sendable {}
 
 public protocol SemanticDetailsService {
     func semanticDetails(at position: CombinedTextPosition) async throws -> SemanticDetails?
