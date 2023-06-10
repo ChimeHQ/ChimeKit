@@ -10,6 +10,17 @@ public enum DocumentType: Codable, Hashable, Sendable {
 	case fileName(String)
 }
 
+extension DocumentType: CustomStringConvertible {
+	public var description: String {
+		switch self {
+		case .uti(let utType):
+			return utType.description
+		case .fileName(let name):
+			return name
+		}
+	}
+}
+
 /// Static configuration for a Chime extension.
 public struct ExtensionConfiguration: Codable, Hashable, Sendable {
 	/// Describes the documents that this extension operates on.
