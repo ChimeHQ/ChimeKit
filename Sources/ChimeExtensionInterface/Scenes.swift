@@ -27,6 +27,7 @@ extension AppExtensionSceneGroup: ChimeExtensionScene {
 /// `documentContext` and `projectContext`. It uses the scene id
 /// corresponding to `ChimeExtensionSceneIdentifier.main`.
 @available(macOS 13.0, *)
+@MainActor
 public struct SidebarScene<Content: View>: ChimeExtensionScene {
     private let content: () -> Content
 
@@ -50,6 +51,7 @@ public struct SidebarScene<Content: View>: ChimeExtensionScene {
 /// `documentContext` and `projectContext`. It uses the scene id
 /// corresponding to `ChimeExtensionSceneIdentifier.main`.
 @available(macOS 13.0, *)
+@MainActor
 public struct DocumentSyncedScene<Content: View>: ChimeExtensionScene {
 	private let content: () -> Content
 

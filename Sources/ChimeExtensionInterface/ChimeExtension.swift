@@ -16,6 +16,7 @@ public enum ChimeExtensionPoint: String, CaseIterable, Hashable, Codable, Sendab
 /// This protocol defines the minimal functionality needed to interact
 /// with the Chime extension system.
 @available(macOS 13.0, *)
+@MainActor
 public protocol ChimeExtension: ExtensionProtocol, AppExtension {
 	/// Called to establish the global communication channel to the hosting application
 	///
@@ -43,6 +44,7 @@ extension ChimeExtension {
 }
 
 @available(macOS 13.0, *)
+@MainActor
 public protocol SidebarChimeUIExtension<Scene>: ChimeExtension {
     associatedtype Scene: ChimeExtensionScene
 	
@@ -57,6 +59,7 @@ extension SidebarChimeUIExtension {
 }
 
 @available(macOS 13.0, *)
+@MainActor
 public protocol DocumentSyncedChimeUIExtension<Scene>: ChimeExtension {
 	associatedtype Scene: ChimeExtensionScene
 
