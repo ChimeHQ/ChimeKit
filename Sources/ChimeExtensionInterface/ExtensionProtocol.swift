@@ -76,8 +76,10 @@ public protocol ExtensionProtocol: AnyObject {
     func didChangeDocumentContext(from oldContext: DocumentContext, to newContext: DocumentContext) async throws
     func willCloseDocument(with context: DocumentContext) async throws
 
+	@MainActor
     func documentService(for context: DocumentContext) async throws -> DocumentService?
 
+	@MainActor
     func symbolService(for context: ProjectContext) async throws -> SymbolQueryService?
 }
 

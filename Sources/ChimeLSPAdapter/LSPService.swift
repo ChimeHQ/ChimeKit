@@ -18,7 +18,8 @@ public enum LSPServiceError: Error {
 }
 
 /// Connect a language server to `ExtensionProtocol`.
-public actor LSPService {
+@MainActor
+public final class LSPService {
     public typealias ExecutionParamsProvider = () async throws -> Process.ExecutionParameters
 	public typealias ContextFilter = (ProjectContext, DocumentContext?) async -> Bool
 
@@ -87,7 +88,7 @@ public actor LSPService {
 	}
 
 	@available(*, deprecated, message: "Use of ContextFilter should be replaced with ExtensionConfiguration")
-	public init(host: HostProtocol,
+	public convenience init(host: HostProtocol,
 				serverOptions: any Codable = [:] as [String: String],
 				transformers: LSPTransformers = .init(),
 				contextFilter: @escaping ContextFilter,
@@ -115,7 +116,7 @@ public actor LSPService {
 	/// - Parameter transformers: The structure of functions that is used to transformer the language server results to `ExtensionProtocol`-compatible types. Defaults to the standard transformers.
 	/// - Parameter executableName: The language server executable name found in PATH.
 	/// - Parameter processHostServiceName: The name of the XPC service used to launch and run the language server executable.
-	public init(host: HostProtocol,
+	public convenience init(host: HostProtocol,
 				serverOptions: any Codable = [:] as [String: String],
 				transformers: LSPTransformers = .init(),
 				executableName: String,
