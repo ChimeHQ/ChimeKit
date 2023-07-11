@@ -5,13 +5,17 @@ import ChimeSwift
 
 @main
 final class SwiftStandaloneExtension: ChimeExtension {
-    private var chimeExt: SwiftExtension?
+    private let localExtension: StandaloneExtension<SwiftExtension>
 
     required init() {
         ServiceContainer.bootstrap()
+
+        self.localExtension = StandaloneExtension(extensionProvider: { host in
+            SwiftExtension(host: host, processHostServiceName: ServiceContainer.name)
+        })
     }
 
     func acceptHostConnection(_ host: HostProtocol) throws {
-        self.chimeExt = SwiftExtension(host: host, processServiceHostName: ServiceContainer.name)
+        try localExtension.acceptHostConnection(host)
     }
 }

@@ -197,32 +197,28 @@
 			}
 			
             @Step {
-                Import `ChimeSwift` and add an instance variable that references our `SwiftExtension` type.
+                Import `ChimeSwift` and add a `StandaloneExtension` instance variable to reference the `SwiftExtension` type.
+                
+                This is simple wrapper that just helps to remove some boilerplate needed for handling internals of the extension system.
                 
                 @Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-5-standalone.swift")
             }
 
 			@Step {
-				Instantiate `SwiftExtension`, providing it the host and process service name.
+				Instantiate `StandaloneExtension`, providing it with a closure to create the underlying extension type on-demand.
 				
-				This is where all the functionality actually lives. We create it when the Chime app makes a connection to our extension.
+				It will be created when the Chime app makes a connection to our extension.
 				
 				@Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-6-standalone.swift")
 			}
 			
             @Step {
-                Add implementations for all of the `ExtensionProtocol` methods.
+                Add implementations for the rest of the `ExtensionProtocol` methods.
                 
-                The defaults will not work here.
+                These just forward the core calls to the `StandaloneExtension`.
                 
                 @Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-7-standalone.swift")
-            }
-
-            @Step {
-                Forward all the calls to the `SwiftExtension` instance.
-                
-                @Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-8-standalone.swift")
-            }			
+            }		
         }
     }
 }

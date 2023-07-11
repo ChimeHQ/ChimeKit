@@ -8,7 +8,7 @@ public enum ChimeExtensionError: Error {
 ///
 /// A significant portion of the functionality within the extension interface is implicitly scoped
 /// to a particular document context, via a `DocumentService`. Chime can request a new `DocumentService`
-/// from all extensions via ``ExtensionProtocol/documentService(for:)-a5ry`` after changes have been
+/// from all extensions via ``ApplicationService.documentService(for:)`` after changes have been
 /// processed.
 ///
 /// - Important: The **type** of a document can change. If your extension only operates on certain

@@ -5,7 +5,7 @@ import ChimeSwift
 
 @main
 final class SwiftStandaloneExtension: ChimeExtension {
-    private var chimeExt: SwiftExtension?
+    private let localExtension: StandaloneExtension<SwiftExtension>
 
     required init() {
         ServiceContainer.bootstrap()

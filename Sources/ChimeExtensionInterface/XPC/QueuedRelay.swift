@@ -3,7 +3,7 @@ import Foundation
 import Queue
 
 /// More convenient interface between an AsyncQueue and callback-based systems.
-public struct QueuedRelay {
+struct QueuedRelay {
 	public let queue: AsyncQueue
 
 	public init(queue: AsyncQueue) {
