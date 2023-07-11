@@ -36,7 +36,7 @@
             }
             
             @Step {
-                Fill in the functions from `ExtensionProtocol`
+                Fill in the properties from `ExtensionProtocol`
                 
                 @Code(name: "SwiftExtension.swift", file: "extensions-lsp-2-4-definition.swift")
             }
