@@ -1,79 +1,77 @@
 import Foundation
 
-import ConcurrencyPlus
+import Queue
 
 @MainActor
 struct RemoteDocumentService {
-	private let connection: NSXPCConnection
+	private let queuedService: RemoteExtension.Service
     let context: DocumentContext
 	private let xpcContext: XPCDocumentContext
 
-    init(connection: NSXPCConnection, context: DocumentContext) {
-        self.connection = connection
+	public private(set) var completionTriggers = Set<String>()
+
+	init(queuedService: RemoteExtension.Service, context: DocumentContext) {
+        self.queuedService = queuedService
         self.context = context
 		self.xpcContext = try! JSONEncoder().encode(context)
     }
-
-	private func withContinuation<T>(function: String = #function, _ body: (ExtensionXPCProtocol, CheckedContinuation<T, Error>) -> Void) async throws -> T {
-		return try await connection.withContinuation(body)
-	}
-
-	private func withService(function: String = #function, _ body: (ExtensionXPCProtocol) -> Void) async throws {
-		try await connection.withService(body)
-	}
 }
 
 extension RemoteDocumentService: DocumentService {
-    public func willApplyChange(_ change: CombinedTextChange) async throws {
+    public func willApplyChange(_ change: CombinedTextChange) throws {
         let xpcChange = try JSONEncoder().encode(change)
 
-		try await withService({ service in
+		queuedService.addOperation(barrier: true) { service in
 			service.willApplyChange(with: xpcContext, xpcChange: xpcChange)
-		})
+		}
     }
 
-    public func didApplyChange(_ change: CombinedTextChange) async throws {
+    public func didApplyChange(_ change: CombinedTextChange) throws {
         let xpcChange = try JSONEncoder().encode(change)
 
-		try await withService({ service in
+		queuedService.addOperation(barrier: true) { service in
 			service.didApplyChange(with: xpcContext, xpcChange: xpcChange)
-		})
+		}
     }
 
-    public func willSave() async throws {
-		try await withContinuation({ service, continuation in
-			service.willSave(with: xpcContext, completionHandler: continuation.resumingHandler)
-		})
+    public func willSave() throws {
+		queuedService.addOperation(barrier: true) { service in
+			service.willSave(with: xpcContext, completionHandler: {
+				if let error = $0 {
+					print("willSave failure: \(error)")
+				}
+			})
+		}
     }
 
-    public func didSave() async throws {
-		try await withContinuation({ service, continuation in
-			service.didSave(with: xpcContext, completionHandler: continuation.resumingHandler)
-        })
+    public func didSave() throws {
+		queuedService.addOperation(barrier: true) { service in
+			service.didSave(with: xpcContext)
+		}
     }
 
     public var completionService: CompletionService? {
-        get async throws { return self }
+        get throws { return self }
     }
 
     public var formattingService: FormattingService? {
-        get async throws { return self }
+        get throws { return self }
     }
 
     public var semanticDetailsService: SemanticDetailsService? {
-        get async throws { return self }
+        get throws { return self }
     }
 
     public var defintionService: DefinitionService? {
-        get async throws { return self }
+        get throws { return self }
     }
 
     public var tokenService: TokenService? {
-        get async throws { return self }
+        get throws { return self }
     }
 
     public var symbolService: SymbolQueryService? {
-        get async throws { return self }
+        get throws { return self }
     }
 }
 
@@ -82,9 +80,9 @@ extension RemoteDocumentService: CompletionService {
         let xpcPosition = try JSONEncoder().encode(position)
         let xpcTrigger = try JSONEncoder().encode(trigger)
 
-		return try await withContinuation({ service, continuation in
-			service.completions(for: xpcContext, at: xpcPosition, xpcTrigger: xpcTrigger, completionHandler: continuation.resumingHandler)
-        })
+		return try await queuedService.addDecodingOperation { service, handler in
+			service.completions(for: xpcContext, at: xpcPosition, xpcTrigger: xpcTrigger, completionHandler: handler)
+		}
     }
 }
 
@@ -92,15 +90,15 @@ extension RemoteDocumentService: FormattingService {
     public func formatting(for ranges: [CombinedTextRange]) async throws -> [TextChange] {
 		let xpcRanges = try JSONEncoder().encode(ranges)
 
-		return try await withContinuation({ service, continuation in
-			service.formatting(for: xpcContext, for: xpcRanges, completionHandler: continuation.resumingHandler)
-		})
+		return try await queuedService.addDecodingOperation { service, handler in
+			service.formatting(for: xpcContext, for: xpcRanges, completionHandler: handler)
+		}
     }
 
     public func organizeImports() async throws -> [TextChange] {
-		return try await withContinuation({ service, continuation in
-			service.organizeImports(for: xpcContext, completionHandler: continuation.resumingHandler)
-		})
+		return try await queuedService.addDecodingOperation { service, handler in
+			service.organizeImports(for: xpcContext, completionHandler: handler)
+		}
     }
 }
 
@@ -108,9 +106,9 @@ extension RemoteDocumentService: SemanticDetailsService {
     public func semanticDetails(at position: CombinedTextPosition) async throws -> SemanticDetails? {
 		let xpcPosition = try JSONEncoder().encode(position)
 
-		return try await withContinuation({ service, continuation in
-			service.semanticDetails(for: xpcContext, at: xpcPosition, completionHandler: continuation.resumingHandler)
-		})
+		return try await queuedService.addDecodingOperation { service, handler in
+			service.semanticDetails(for: xpcContext, at: xpcPosition, completionHandler: handler)
+		}
     }
 }
 
@@ -118,9 +116,9 @@ extension RemoteDocumentService: DefinitionService {
     public func definitions(at position: CombinedTextPosition) async throws -> [DefinitionLocation] {
         let xpcPosition = try JSONEncoder().encode(position)
 
-		return try await withContinuation({ service, continuation in
-			service.findDefinition(for: xpcContext, at: xpcPosition, completionHandler: continuation.resumingHandler)
-        })
+		return try await queuedService.addDecodingOperation { service, handler in
+			service.findDefinition(for: xpcContext, at: xpcPosition, completionHandler: handler)
+		}
     }
 }
 
@@ -128,9 +126,9 @@ extension RemoteDocumentService: TokenService {
     public func tokens(in range: CombinedTextRange) async throws -> [Token] {
         let xpcRange = try JSONEncoder().encode(range)
 
-		return try await withContinuation({ service, continuation in
-			service.tokens(for: xpcContext, in: xpcRange, completionHandler: continuation.resumingHandler)
-        })
+		return try await queuedService.addDecodingOperation { service, handler in
+			service.tokens(for: xpcContext, in: xpcRange, completionHandler: handler)
+		}
     }
 }
 

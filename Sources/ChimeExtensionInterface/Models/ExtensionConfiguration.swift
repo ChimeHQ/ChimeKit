@@ -37,15 +37,29 @@ public struct ExtensionConfiguration: Codable, Hashable, Sendable {
 	/// that the system can present the true state of a project.
 	public var directoryContentFilter: Set<DocumentType>?
 
-	public init(documentFilter: Set<DocumentType>? = nil, directoryContentFilter: Set<DocumentType>? = nil) {
+	/// Initial default service configuration.
+	///
+	/// This can be updated at runtime, but the host must be informed.
+	public var serviceConfiguration: ServiceConfiguration
+
+	public init(
+		documentFilter: Set<DocumentType>? = nil,
+		directoryContentFilter: Set<DocumentType>? = nil,
+		serviceConfiguration: ServiceConfiguration = ServiceConfiguration()
+	) {
 		self.documentFilter = documentFilter
 		self.directoryContentFilter = directoryContentFilter
+		self.serviceConfiguration = serviceConfiguration
 	}
 
 	/// Initializes both document and directory content filters to be the same
-	public init(contentFilter: Set<DocumentType>) {
+	public init(
+		contentFilter: Set<DocumentType>,
+		serviceConfiguration: ServiceConfiguration = ServiceConfiguration()
+	) {
 		self.documentFilter = contentFilter
 		self.directoryContentFilter = contentFilter
+		self.serviceConfiguration = serviceConfiguration
 	}
 }
 

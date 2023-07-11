@@ -1,373 +1,200 @@
 import Foundation
-import os.log
+import OSLog
 
-import ConcurrencyPlus
+import Queue
 
 /// XPC -> Extension
+@MainActor
 final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPCProtocol {
     private let bridgedObject: Extension
-    private let log: OSLog
-    private let queue: TaskQueue
-    private var documentServices: [DocumentIdentity: DocumentService]
+    private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "ExportedExtension")
+	private let queuedRelay: QueuedRelay
+    private var documentServices = [DocumentIdentity: DocumentService]()
 
     init(_ object: Extension) {
         self.bridgedObject = object
-        self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "ExportedExtension")
-        self.queue = TaskQueue()
-        self.documentServices = [:]
+		self.queuedRelay = QueuedRelay(attributes: [.concurrent])
     }
+
+	private var appService: ApplicationService {
+		get throws  {
+			try bridgedObject.applicationService
+		}
+	}
+
+	private func documentService(for xpcContext: XPCDocumentContext) throws -> DocumentService? {
+		let context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
+		return try appService.documentService(for: context)
+	}
 
     private func resolveBookmarkData(_ bookmarkData: [Data]) {
         for data in bookmarkData {
             var stale: Bool = false
 
             do {
-                let url = try URL(resolvingBookmarkData: data,
+                let _ = try URL(resolvingBookmarkData: data,
                                   options: [.withoutUI],
                                   relativeTo: nil,
                                   bookmarkDataIsStale: &stale)
-
-                os_log("accessing the url: %{public}@", log: self.log, type: .info, String(describing: url))
             } catch {
-                os_log("failed to resolve bookmark: %{public}@", log: self.log, type: .error, String(describing: error))
+				logger.error("failed to resolve bookmark: \(error, privacy: .public)")
             }
         }
     }
 
 	func configuration(completionHandler: @escaping XPCValueHandler<XPCExtensionConfiguration>) {
-		let obj = self.bridgedObject
-
-		queue.addOperation {
-			do {
-				let config = try await obj.configuration
-				let configData = try JSONEncoder().encode(config)
-
-				completionHandler(configData, nil)
-			} catch {
-				completionHandler(nil, error)
-			}
+		queuedRelay.addEncodingOperation(with: completionHandler) {
+			try self.bridgedObject.configuration
 		}
 	}
 
     func didOpenProject(with xpcContext: XPCProjectContext, bookmarkData: [Data]) {
-        let obj = self.bridgedObject
+		queuedRelay.addOperation(barrier: true) {
+			let context = try JSONDecoder().decode(ProjectContext.self, from: xpcContext)
 
-        queue.addOperation {
-            do {
-                let context = try JSONDecoder().decode(ProjectContext.self, from: xpcContext)
+			self.resolveBookmarkData(bookmarkData)
 
-                self.resolveBookmarkData(bookmarkData)
-
-                try await obj.didOpenProject(with: context)
-            } catch {
-                os_log("didOpenProject failed: %{public}@", log: self.log, type: .error, String(describing: error))
-            }
-        }
+			try self.appService.didOpenProject(with: context)
+		}
     }
 
-    func willCloseProject(with xpcContext: XPCProjectContext) {
-        let obj = self.bridgedObject
+	func willCloseProject(with xpcContext: XPCProjectContext) {
+		queuedRelay.addOperation(barrier: true) {
+			let context = try JSONDecoder().decode(ProjectContext.self, from: xpcContext)
 
-        queue.addOperation {
-            do {
-                let context = try JSONDecoder().decode(ProjectContext.self, from: xpcContext)
-                try await obj.willCloseProject(with: context)
-            } catch {
-                os_log("willCloseProject failed: %{public}@", log: self.log, type: .error, String(describing: error))
-            }
-        }
+			try self.appService.willCloseProject(with: context)
+		}
     }
 
-    func didOpenDocument(with xpcContext: XPCDocumentContext, bookmarkData: [Data], completionHandler: @escaping XPCValueHandler<URL>) {
-        os_log("didOpenDoc", log: self.log, type: .info)
+    func didOpenDocument(with xpcContext: XPCDocumentContext, bookmarkData: [Data]) {
+		queuedRelay.addOperation(barrier: true) {
+			let context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
 
-        let context: DocumentContext
+			self.resolveBookmarkData(bookmarkData)
 
-        do {
-            context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
-        } catch {
-            os_log("caught failure %{public}@", log: self.log, type: .info, String(describing: error))
-            completionHandler(nil, error)
-            return
-        }
-
-        let obj = self.bridgedObject
-
-        queue.addOperation {
-            do {
-                self.resolveBookmarkData(bookmarkData)
-
-                let url = try await obj.didOpenDocument(with: context)
-
-                os_log("didOpenDoc completed", log: self.log, type: .info)
-                completionHandler(url, nil)
-            } catch {
-                os_log("caught task failure %{public}@", log: self.log, type: .info, String(describing: error))
-                completionHandler(nil, error)
-            }
-        }
+			try self.appService.didOpenDocument(with: context)
+		}
     }
 
-    func didChangeDocumentContext(from xpcOldContext: XPCDocumentContext, to xpcNewContext: XPCDocumentContext, completionHandler: @escaping XPCHandler) {
-        let oldContext: DocumentContext
-        let newContext: DocumentContext
+    func didChangeDocumentContext(from xpcOldContext: XPCDocumentContext, to xpcNewContext: XPCDocumentContext) {
+		queuedRelay.addOperation(barrier: true) {
+			let oldContext = try JSONDecoder().decode(DocumentContext.self, from: xpcOldContext)
+			let newContext = try JSONDecoder().decode(DocumentContext.self, from: xpcNewContext)
 
-        do {
-            oldContext = try JSONDecoder().decode(DocumentContext.self, from: xpcOldContext)
-            newContext = try JSONDecoder().decode(DocumentContext.self, from: xpcNewContext)
-        } catch {
-            completionHandler(error)
-            return
-        }
+			precondition(oldContext.id == newContext.id)
 
-        precondition(oldContext.id == newContext.id)
-
-        let obj = self.bridgedObject
-
-        queue.addOperation {
-            do {
-                try await obj.didChangeDocumentContext(from: oldContext, to: newContext)
-
-                completionHandler(nil)
-            } catch {
-                completionHandler(error)
-            }
-        }
+			try self.appService.didChangeDocumentContext(from: oldContext, to: newContext)
+		}
     }
 
-    func willCloseDocument(with context: XPCDocumentContext) {
+    func willCloseDocument(with xpcContext: XPCDocumentContext) {
+		queuedRelay.addOperation(barrier: true) {
+			let context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
+
+			try self.appService.willCloseDocument(with: context)
+		}
     }
 
     func willApplyChange(with xpcContext: XPCDocumentContext, xpcChange: Data) {
-        let context: DocumentContext
-        let change: CombinedTextChange
+		queuedRelay.addOperation(barrier: true) {
+			let change = try JSONDecoder().decode(CombinedTextChange.self, from: xpcChange)
 
-        do {
-            context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
-            change = try JSONDecoder().decode(CombinedTextChange.self, from: xpcChange)
-        } catch {
-            return
-        }
-
-        let obj = self.bridgedObject
-
-        queue.addOperation {
-            do {
-                let service = try await obj.documentService(for: context)
-
-                try await service?.willApplyChange(change)
-            } catch {
-                os_log("willApplyChange failure %{public}@", log: self.log, type: .info, String(describing: error))
-            }
-        }
+			try self.documentService(for: xpcContext)?.willApplyChange(change)
+		}
     }
 
     func didApplyChange(with xpcContext: XPCDocumentContext, xpcChange: Data) {
-        let context: DocumentContext
-        let change: CombinedTextChange
+		queuedRelay.addOperation(barrier: true) {
+			let change = try JSONDecoder().decode(CombinedTextChange.self, from: xpcChange)
 
-        do {
-            context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
-            change = try JSONDecoder().decode(CombinedTextChange.self, from: xpcChange)
-        } catch {
-            return
-        }
-
-        let obj = self.bridgedObject
-
-        queue.addOperation {
-            do {
-                let service = try await obj.documentService(for: context)
-
-                try await service?.didApplyChange(change)
-            } catch {
-                os_log("didApplyChange failure: %{public}@", log: self.log, type: .info, String(describing: error))
-            }
-        }
+			try self.documentService(for: xpcContext)?.didApplyChange(change)
+		}
     }
 
     func willSave(with xpcContext: XPCDocumentContext, completionHandler: @escaping XPCHandler) {
-        let context: DocumentContext
-
-        do {
-            context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
-        } catch {
-            completionHandler(error)
-            return
-        }
-
-        let obj = self.bridgedObject
-
-        queue.addOperation {
-            do {
-                let service = try await obj.documentService(for: context)
-                try await service?.willSave()
-
-                completionHandler(nil)
-            } catch {
-                completionHandler(error)
-            }
-        }
+		queuedRelay.addErrorOperation(with: completionHandler) {
+			let service = try self.documentService(for: xpcContext)
+			
+			try service?.willSave()
+		}
     }
 
-    func didSave(with xpcContext: XPCDocumentContext, completionHandler: @escaping XPCHandler) {
-        let context: DocumentContext
+    func didSave(with xpcContext: XPCDocumentContext) {
+		queuedRelay.addOperation {
+			let service = try self.documentService(for: xpcContext)
 
-        do {
-            context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
-        } catch {
-            completionHandler(error)
-            return
-        }
-
-        let obj = self.bridgedObject
-
-        queue.addOperation {
-            do {
-                let service = try await obj.documentService(for: context)
-                try await service?.didSave()
-
-                completionHandler(nil)
-            } catch {
-                completionHandler(error)
-            }
-        }
+			try service?.didSave()
+		}
     }
 
-    func symbols(forProject xpcContext: XPCProjectContext, matching query: String, completionHandler: @escaping XPCValueHandler<XPCArray<XPCSymbol>>) {
-        let obj = self.bridgedObject
+	func symbols(forProject xpcContext: XPCProjectContext, matching query: String, completionHandler: @escaping XPCValueHandler<XPCArray<XPCSymbol>>) {
+		queuedRelay.addEncodingOperation(with: completionHandler) {
+			let context = try JSONDecoder().decode(ProjectContext.self, from: xpcContext)
+			let service = try self.appService.symbolService(for: context)
 
-        queue.addOperation {
-            do {
-                let context = try JSONDecoder().decode(ProjectContext.self, from: xpcContext)
-                let service = try await obj.symbolService(for: context)
-                let symbols = try await service?.symbols(matching: query) ?? []
-                let symbolData = try JSONEncoder().encode(symbols)
-
-                completionHandler(symbolData, nil)
-            } catch {
-                completionHandler(nil, error)
-            }
-        }
+			return try await service?.symbols(matching: query) ?? []
+		}
     }
 
     func completions(for xpcContext: XPCDocumentContext, at xpcPosition: XPCCombinedTextPosition, xpcTrigger: XPCCompletionTrigger, completionHandler: @escaping XPCValueHandler<Data>) {
-        let obj = self.bridgedObject
+		queuedRelay.addEncodingOperation(with: completionHandler) {
+			let service = try self.documentService(for: xpcContext)?.completionService
+			let position = try JSONDecoder().decode(CombinedTextPosition.self, from: xpcPosition)
+			let trigger = try JSONDecoder().decode(CompletionTrigger.self, from: xpcTrigger)
 
-        queue.addOperation {
-            do {
-                let context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
-                let position = try JSONDecoder().decode(CombinedTextPosition.self, from: xpcPosition)
-                let trigger = try JSONDecoder().decode(CompletionTrigger.self, from: xpcTrigger)
-                let docService = try await obj.documentService(for: context)
-                let service = try await docService?.completionService
-                let completions = try await service?.completions(at: position, trigger: trigger) ?? []
-                let data = try JSONEncoder().encode(completions)
-
-                completionHandler(data, nil)
-            } catch {
-                completionHandler(nil, error)
-            }
-        }
+			return try await service?.completions(at: position, trigger: trigger) ?? []
+		}
     }
 
     func formatting(for xpcContext: XPCDocumentContext, for xpcRanges: XPCArray<XPCCombinedTextRange>, completionHandler: @escaping XPCValueHandler<XPCArray<XPCTextChange>>) {
-		queue.addOperation {
-			do {
-				let ranges = try JSONDecoder().decode([CombinedTextRange].self, from: xpcRanges)
-				let service = try await self.documentService(for: xpcContext)?.formattingService
-				let value = try await service?.formatting(for: ranges)
-				let data = try JSONEncoder().encode(value)
+		queuedRelay.addEncodingOperation(with: completionHandler) {
+			let service = try self.documentService(for: xpcContext)?.formattingService
+			let ranges = try JSONDecoder().decode([CombinedTextRange].self, from: xpcRanges)
 
-				completionHandler(data, nil)
-
-			} catch {
-				completionHandler(nil, error)
-			}
+			return try await service?.formatting(for: ranges)
 		}
     }
 
     func organizeImports(for xpcContext: XPCDocumentContext, completionHandler: @escaping XPCValueHandler<XPCArray<XPCTextChange>>) {
-		queue.addOperation {
-			do {
-				let service = try await self.documentService(for: xpcContext)?.formattingService
-				let value = try await service?.organizeImports()
-				let data = try JSONEncoder().encode(value)
+		queuedRelay.addEncodingOperation(with: completionHandler) {
+			let service = try self.documentService(for: xpcContext)?.formattingService
 
-				completionHandler(data, nil)
-
-			} catch {
-				completionHandler(nil, error)
-			}
+			return try await service?.organizeImports()
 		}
     }
 
     func semanticDetails(for xpcContext: XPCDocumentContext, at xpcPosition: XPCCombinedTextPosition, completionHandler: @escaping XPCValueHandler<XPCSemanticDetails>) {
-		queue.addOperation {
-			do {
-				let position = try JSONDecoder().decode(CombinedTextPosition.self, from: xpcPosition)
-				let service = try await self.documentService(for: xpcContext)?.semanticDetailsService
-				let value = try await service?.semanticDetails(at: position)
-				let data = try JSONEncoder().encode(value)
+		queuedRelay.addEncodingOperation(with: completionHandler) {
+			let position = try JSONDecoder().decode(CombinedTextPosition.self, from: xpcPosition)
+			let service = try self.documentService(for: xpcContext)?.semanticDetailsService
 
-				completionHandler(data, nil)
-
-			} catch {
-				completionHandler(nil, error)
-			}
+			return try await service?.semanticDetails(at: position)
 		}
     }
 
     func findDefinition(for xpcContext: XPCDocumentContext, at xpcPosition: XPCCombinedTextPosition, completionHandler: @escaping XPCValueHandler<XPCArray<XPCDefinitionLocation>>) {
-        queue.addOperation {
-            do {
-                let position = try JSONDecoder().decode(CombinedTextPosition.self, from: xpcPosition)
-                let service = try await self.documentService(for: xpcContext)?.defintionService
-                let defs = try await service?.definitions(at: position) ?? []
-                let data = try JSONEncoder().encode(defs)
+		queuedRelay.addEncodingOperation(with: completionHandler) {
+			let position = try JSONDecoder().decode(CombinedTextPosition.self, from: xpcPosition)
+			let service = try self.documentService(for: xpcContext)?.defintionService
 
-                completionHandler(data, nil)
-
-            } catch {
-                completionHandler(nil, error)
-            }
-        }
+			return try await service?.definitions(at: position) ?? []
+		}
     }
 
     func tokens(for xpcContext: XPCDocumentContext, in xpcRange: XPCCombinedTextRange, completionHandler: @escaping XPCValueHandler<XPCArray<XPCToken>>) {
-        queue.addOperation {
-            do {
-                let range = try JSONDecoder().decode(CombinedTextRange.self, from: xpcRange)
-                let service = try await self.documentService(for: xpcContext)?.tokenService
-                let tokens = try await service?.tokens(in: range) ?? []
-                let data = try JSONEncoder().encode(tokens)
+		queuedRelay.addEncodingOperation(with: completionHandler) {
+			let range = try JSONDecoder().decode(CombinedTextRange.self, from: xpcRange)
+			let service = try self.documentService(for: xpcContext)?.tokenService
 
-                completionHandler(data, nil)
-            } catch {
-                completionHandler(nil, error)
-            }
-        }
+			return try await service?.tokens(in: range) ?? []
+		}
     }
 
     func symbols(forDocument xpcContext: XPCDocumentContext, matching query: String, completionHandler: @escaping XPCValueHandler<XPCArray<XPCSymbol>>) {
-		queue.addOperation {
-			do {
-				let service = try await self.documentService(for: xpcContext)?.symbolService
-				let value = try await service?.symbols(matching: query)
-				let data = try JSONEncoder().encode(value)
+		queuedRelay.addEncodingOperation(with: completionHandler) {
+			let service = try self.documentService(for: xpcContext)?.symbolService
 
-				completionHandler(data, nil)
-			} catch {
-				completionHandler(nil, error)
-			}
+			return try await service?.symbols(matching: query)
 		}
-    }
-}
-
-extension ExportedExtension {
-    private func documentService(for xpcContext: XPCDocumentContext) async throws -> DocumentService? {
-        let context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
-
-        return try await self.bridgedObject.documentService(for: context)
     }
 }

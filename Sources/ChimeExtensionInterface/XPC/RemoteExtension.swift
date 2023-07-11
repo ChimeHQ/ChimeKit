@@ -1,110 +1,109 @@
 import Foundation
 
-import ConcurrencyPlus
+import AsyncXPCConnection
+import Queue
 
+extension AsyncQueue: AsyncQueuing {}
+
+/// Maintains order of communcations across to a remote ExtensionProtocol object.
 @MainActor
 public final class RemoteExtension {
-    private let connection: NSXPCConnection
-    private var docServices: [DocumentIdentity: RemoteDocumentService]
+	typealias Service = QueuedRemoteXPCService<ExtensionXPCProtocol, AsyncQueue>
+	public typealias ConnectionProvider = @MainActor () async throws -> NSXPCConnection
+	private let queuedService: Service
+    private var docServices = [DocumentIdentity: RemoteDocumentService]()
+	private let queue = AsyncQueue(attributes: [.concurrent, .publishErrors])
 
-    public init(connection: NSXPCConnection) {
-        self.connection = connection
-        self.docServices = [:]
+	public init(connectionProvider: @escaping ConnectionProvider) {
+		self.queuedService = Service(queue: queue, provider: {
+			let conn = try await connectionProvider()
 
-        precondition(connection.remoteObjectInterface == nil)
-        connection.remoteObjectInterface = NSXPCInterface(with: ExtensionXPCProtocol.self)
+			if conn.remoteObjectInterface == nil {
+				conn.remoteObjectInterface = NSXPCInterface(with: ExtensionXPCProtocol.self)
+			}
+			
+			return conn
+		})
     }
 
-    private func withContinuation<T>(function: String = #function, _ body: (ExtensionXPCProtocol, CheckedContinuation<T, Error>) -> Void) async throws -> T {
-        return try await connection.withContinuation(body)
-    }
+	public var errorSequence: AsyncQueue.ErrorSequence {
+		queue.errorSequence
+	}
 
-    private func withService(function: String = #function, _ body: @Sendable (ExtensionXPCProtocol) -> Void) async throws {
-        try await connection.withService(body)
-    }
-}
-
-extension RemoteExtension: ExtensionProtocol {
 	public var configuration: ExtensionConfiguration {
 		get async throws {
-			return try await withContinuation({ service, continuation in
-				service.configuration(completionHandler: continuation.resumingHandler)
-			})
+			return try await queuedService.addDecodingOperation(barrier: true) { service, handler in
+				service.configuration(completionHandler: handler)
+			}
+		}
+	}
+}
+
+extension RemoteExtension: ApplicationService {
+	public func didOpenProject(with context: ProjectContext) throws {
+		let bookmarks: [Data] = [
+			try context.url.bookmarkData(),
+		]
+
+		let xpcContext = try JSONEncoder().encode(context)
+
+		queuedService.addOperation(barrier: true) { service in
+			service.didOpenProject(with: xpcContext, bookmarkData: bookmarks)
 		}
 	}
 
-    public func didOpenProject(with context: ProjectContext) async throws {
-        let bookmarks: [Data] = [
-            try context.url.bookmarkData(),
-        ]
+	public func willCloseProject(with context: ProjectContext) throws {
+		let xpcContext = try JSONEncoder().encode(context)
 
-        let xpcContext = try JSONEncoder().encode(context)
-
-		try await withService({ remote in
-			remote.didOpenProject(with: xpcContext, bookmarkData: bookmarks)
-		})
-    }
-
-    public func willCloseProject(with context: ProjectContext) async throws {
-        let xpcContext = try JSONEncoder().encode(context)
-
-		try await withService({ service in
+		queuedService.addOperation(barrier: true) { service in
 			service.willCloseProject(with: xpcContext)
-		})
-    }
+		}
+	}
 
-    public func didOpenDocument(with context: DocumentContext) async throws -> URL? {
-        let xpcContext = try JSONEncoder().encode(context)
+	public func didOpenDocument(with context: DocumentContext) throws {
+		let xpcContext = try JSONEncoder().encode(context)
 
-        let bookmarks: [Data] = [
-            try context.url?.bookmarkData(),
-        ].compactMap({ $0 })
+		let bookmarks: [Data] = [
+			try context.url?.bookmarkData(),
+		].compactMap({ $0 })
 
-		return try await withContinuation({ service, continuation in
-			service.didOpenDocument(with: xpcContext, bookmarkData: bookmarks, completionHandler: { url, error in
-				// have to special-case this because of the allowed optional
-				switch (url, error) {
-				case (let url, nil):
-					continuation.resume(returning: url)
-				case (_, let error?):
-					continuation.resume(throwing: error)
-				}
-			})
-		})
-    }
+		queuedService.addOperation(barrier: true) { service in
+			service.didOpenDocument(with: xpcContext, bookmarkData: bookmarks)
+		}
+	}
 
-    public func didChangeDocumentContext(from oldContext: DocumentContext, to newContext: DocumentContext) async throws {
-        precondition(oldContext.id == newContext.id)
+	public func didChangeDocumentContext(from oldContext: DocumentContext, to newContext: DocumentContext) throws {
+		precondition(oldContext.id == newContext.id)
 
-        let xpcOldContext = try JSONEncoder().encode(oldContext)
-        let xpcNewContext = try JSONEncoder().encode(newContext)
+		let xpcOldContext = try JSONEncoder().encode(oldContext)
+		let xpcNewContext = try JSONEncoder().encode(newContext)
 
-		return try await withContinuation({ service, continuation in
-			service.didChangeDocumentContext(from: xpcOldContext, to: xpcNewContext, completionHandler: continuation.resumingHandler)
-		})
-    }
+		queuedService.addOperation(barrier: true) { service in
+			service.didChangeDocumentContext(from: xpcOldContext, to: xpcNewContext)
+		}
+	}
 
-    public func willCloseDocument(with context: DocumentContext) async throws {
-        let xpcContext = try JSONEncoder().encode(context)
+	public func willCloseDocument(with context: DocumentContext) throws {
+		let xpcContext = try JSONEncoder().encode(context)
 
-		try await withService { service in
+		queuedService.addOperation(barrier: true) { service in
 			service.willCloseDocument(with: xpcContext)
 		}
-    }
+	}
 
-    public func documentService(for context: DocumentContext) async throws -> DocumentService? {
+	public func documentService(for context: DocumentContext) throws -> DocumentService? {
 		if let service = self.docServices[context.id] {
 			return service
 		}
 
-		let service = RemoteDocumentService(connection: connection, context: context)
+		let service = RemoteDocumentService(queuedService: queuedService, context: context)
 
 		docServices[context.id] = service
 
 		return service
-    }
+	}
 
-    public func symbolService(for context: ProjectContext) async throws -> SymbolQueryService? {
-		return RemoteProjectService(connection: connection, context: context)
-    }
+	public func symbolService(for context: ProjectContext) throws -> SymbolQueryService? {
+		return RemoteProjectService(queuedService: queuedService, context: context)
+	}
 }

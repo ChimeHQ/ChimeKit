@@ -1,6 +1,7 @@
 import Foundation
 
 extension HostProtocol {
+	@MainActor
     public func export(over connection: NSXPCConnection) {
         precondition(connection.exportedInterface == nil)
 
@@ -10,6 +11,7 @@ extension HostProtocol {
 }
 
 extension ExtensionProtocol {
+	@MainActor
     func export(over connection: NSXPCConnection) {
         precondition(connection.exportedInterface == nil)
 
@@ -19,6 +21,7 @@ extension ExtensionProtocol {
 }
 
 extension ExtensionSceneProtocol {
+	@MainActor
     func export(over connection: NSXPCConnection) {
         precondition(connection.exportedInterface == nil)
 
@@ -28,6 +31,7 @@ extension ExtensionSceneProtocol {
 }
 
 extension ExtensionSceneHostProtocol {
+	@MainActor
     public func export(over connection: NSXPCConnection) {
         precondition(connection.exportedInterface == nil)
 

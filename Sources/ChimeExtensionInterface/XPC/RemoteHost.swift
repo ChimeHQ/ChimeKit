@@ -1,91 +1,70 @@
 import Foundation
 
-import ConcurrencyPlus
+import AsyncXPCConnection
+import Queue
 
-final class RemoteHost {
-    private let connection: NSXPCConnection
+@MainActor
+struct RemoteHost {
+	typealias Service = QueuedRemoteXPCService<HostXPCProtocol, AsyncQueue>
 
-    public init(_ connection: NSXPCConnection) {
-        self.connection = connection
+    private let queuedService: Service
 
-        precondition(connection.remoteObjectInterface == nil)
-        connection.remoteObjectInterface = NSXPCInterface(with: HostXPCProtocol.self)
-    }
+    public init(connection: NSXPCConnection) {
+		let queue = AsyncQueue(attributes: [.concurrent, .publishErrors])
 
-    private func withContinuation<T>(function: String = #function, _ body: (HostXPCProtocol, CheckedContinuation<T, Error>) -> Void) async throws -> T {
-        return try await connection.withContinuation(body)
-    }
-
-    private func withService(function: String = #function, _ body: (HostXPCProtocol) -> Void) async throws {
-        try await connection.withService(body)
+        self.queuedService = Service(queue: queue, connection: connection)
     }
 }
 
 extension RemoteHost: HostProtocol {
     public func textContent(for documentId: DocumentIdentity) async throws -> (String, Int) {
-        return try await withContinuation({ host, continuation in
-            host.textContent(for: documentId) { value, version, error in
-                let pair: (String, Int)? = value.map { ($0, version) }
+		try await queuedService.addValueErrorOperation(barrier: true) { service, handler in
+			service.textContent(for: documentId) { value, version, error in
+				let pair: (String, Int)? = value.map { ($0, version) }
 
-                continuation.resume(with: pair, error: error)
-            }
-        })
+				handler(pair, error)
+			}
+		}
     }
 
     public func textContent(for documentId: DocumentIdentity, in range: TextRange) async throws -> CombinedTextContent {
         let xpcRange = try JSONEncoder().encode(range)
 
-        return try await withContinuation({ host, continuation in
-            host.textContent(for: documentId, xpcRange: xpcRange, reply: continuation.resumingHandler)
-        })
+		return try await queuedService.addDecodingOperation(barrier: true) { service, handler in
+			service.textContent(for: documentId, xpcRange: xpcRange, reply: handler)
+		}
     }
 
     public func textBounds(for documentId: DocumentIdentity, in ranges: [TextRange], version: Int) async throws -> [NSRect] {
         let xpcRanges = try JSONEncoder().encode(ranges)
 
-        return try await withContinuation({ host, continuation in
-            host.textBounds(for: documentId, xpcRanges: xpcRanges, version: version, reply: continuation.resumingHandler)
-        })
+		return try await queuedService.addDecodingOperation(barrier: true) { service, handler in
+			service.textBounds(for: documentId, xpcRanges: xpcRanges, version: version, reply: handler)
+		}
     }
 
     public func publishDiagnostics(_ diagnostics: [Diagnostic], for documentURL: URL, version: Int?) {
-        Task {
-            let xpcDiagnostics = try JSONEncoder().encode(diagnostics)
-            let xpcVersion = version.flatMap({ NSNumber(integerLiteral: $0) })
+		queuedService.addOperation { service in
+			let xpcDiagnostics = try JSONEncoder().encode(diagnostics)
+			let xpcVersion = version.flatMap({ NSNumber(integerLiteral: $0) })
 
-            try await withService({ host in
-                host.publishDiagnostics(xpcDiagnostics, for: documentURL, version: xpcVersion)
-            })
-        }
+			service.publishDiagnostics(xpcDiagnostics, for: documentURL, version: xpcVersion)
+		}
     }
 
     public func invalidateTokens(for documentId: UUID, in target: TextTarget) {
-        Task {
-            let xpcTarget = try JSONEncoder().encode(target)
+		queuedService.addOperation { service in
+			let xpcTarget = try JSONEncoder().encode(target)
 
-            try await withService({ host in
-                host.invalidateTokens(for: documentId, in: xpcTarget)
-            })
-        }
+			service.invalidateTokens(for: documentId, in: xpcTarget)
+		}
     }
 
-	public func extensionConfigurationChanged(to configuration: ExtensionConfiguration) {
-		Task {
+	public func serviceConfigurationChanged(for documentId: DocumentIdentity, to configuration: ServiceConfiguration) {
+		queuedService.addOperation(barrier: true) { service in
 			let xpcConfig = try JSONEncoder().encode(configuration)
 
-			try await withService { host in
-				host.extensionConfigurationChanged(to: xpcConfig)
-			}
+			service.serviceConfigurationChanged(for: documentId, to: xpcConfig)
 		}
 	}
-
-    public func documentServiceConfigurationChanged(for documentId: DocumentIdentity, to configuration: ServiceConfiguration) {
-        Task {
-            let xpcConfig = try JSONEncoder().encode(configuration)
-
-            try await withService({ host in
-                host.documentServiceConfigurationChanged(for: documentId, to: xpcConfig)
-            })
-        }
-    }
 }

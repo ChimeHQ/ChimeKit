@@ -1,339 +1,281 @@
-import Combine
 import Foundation
-import os.log
+import OSLog
 
 import ChimeExtensionInterface
 import LanguageServerProtocol
+import Queue
 
-enum LSPDocumentServiceError: Error {
-    case noURI
-}
-
+@MainActor
 final class LSPDocumentService {
-	typealias ContextFilter = (DocumentContext) async -> Bool
+	private let serverHostInterface: LSPHostServerInterface
+	private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "LSPDocumentService")
+	private var tokenRepresentation: TokenRepresentation?
 
-    private let log: OSLog
-    private let server: Server
-    let context: DocumentContext
-	let contextFilter: ContextFilter
-    private let host: HostProtocol
-    let transformers: LSPTransformers
-    var serverCapabilities: ServerCapabilities? {
-        didSet {
-            handleCapabilitiesChanged()
-        }
-    }
-    private var tokenClient: SemanticTokensClient? {
-        didSet {
-            if oldValue == nil && tokenClient == nil {
-                return
-            }
+	let context: DocumentContext
+	
+	init(serverHostInterface: LSPHostServerInterface, context: DocumentContext) {
+		self.serverHostInterface = serverHostInterface
+		self.context = context
+	}
+		
+	var textDocumentItem: TextDocumentItem {
+		get async throws {
+			let uri = try context.uri
 
-            invalidateTokens(in: .all)
-        }
-    }
-    private let textChangeSubject = PassthroughSubject<Void, Never>()
-    private var subscriptions = Set<AnyCancellable>()
+			guard
+				let languageId = context.languageIdentifier
+			else {
+				throw LSPServiceError.languageNotDefined
+			}
+			
+			let pair = try await serverHostInterface.host.textContent(for: context.id)
 
-    init(server: Server,
-		 host: HostProtocol,
-		 context: DocumentContext,
-		 transformers: LSPTransformers,
-		 contextFilter: @escaping ContextFilter) {
-        self.server = server
-        self.host = host
-        self.context = context
-        self.transformers = transformers
-		self.contextFilter = contextFilter
+			return TextDocumentItem(uri: uri,
+									languageId: languageId,
+									version: pair.1,
+									text: pair.0)
+		}
+	}
 
-        self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "DocumentLSPConnection")
+	var uri: DocumentUri? {
+		try? context.uri
+	}
 
-        textChangeSubject
-            .debounce(for: .seconds(0.8), scheduler: DispatchQueue.global())
-            .sink { [weak self] in
-                self?.invalidateTokens(in: .all)
-            }.store(in: &subscriptions)
-    }
+	var isOpenable: Bool {
+		return context.url != nil && context.languageIdentifier != nil
+	}
 
-    var uri: DocumentUri? {
-        return context.url?.absoluteString
-    }
+	func handleCapabiltiesChanged(_ capabilities: ServerCapabilities) {
+		let legend = capabilities.semanticTokensProvider?.effectiveOptions.legend
 
-    private var textDocumentIdentifier: TextDocumentIdentifier {
-        get throws {
-            guard let uri = uri else {
-                throw LSPServiceError.documentURLInvalid(context)
-            }
+		let wasAvailable = tokenRepresentation != nil
 
-            return TextDocumentIdentifier(uri: uri)
-        }
-    }
+		self.tokenRepresentation = legend.map { TokenRepresentation(legend: $0) }
 
-    private var documentSyncKind: TextDocumentSyncKind {
-        return serverCapabilities?.textDocumentSync?.effectiveOptions.change ?? .none
-    }
+		let nowAvailable = tokenRepresentation != nil
 
-    var textDocumentItem: TextDocumentItem {
-        get async throws {
-            guard
-                let uri = uri,
-                let languageId = context.languageIdentifier
-            else {
-                throw LSPDocumentServiceError.noURI
-            }
+		let id = context.id
 
-            let pair = try await host.textContent(for: context.id)
+		let strings = capabilities.completionProvider?.triggerCharacters ?? []
+		let config = ServiceConfiguration(completionTriggers: Set(strings))
 
-            return TextDocumentItem(uri: uri,
-                                    languageId: languageId,
-                                    version: pair.1,
-                                    text: pair.0)
-        }
-    }
+		serverHostInterface.enqueue { _, _, host in
+			// if our token rep changes, we have to invalidate all existing tokens
+			if wasAvailable != nowAvailable {
+				host.invalidateTokens(for: id, in: .all)
+			}
 
-    func openIfNeeded() async throws {
-		guard await contextFilter(context) else { return }
-
-        let item = try await textDocumentItem
-
-        let params = DidOpenTextDocumentParams(textDocument: item)
-
-        try await server.didOpenTextDocument(params: params)
-    }
-
-    func close() async throws {
-		guard await contextFilter(context) else { return }
-
-        guard let uri = uri else {
-            throw LSPDocumentServiceError.noURI
-        }
-
-        let params = DidCloseTextDocumentParams(uri: uri)
-
-        try await server.didCloseTextDocument(params: params)
-    }
-
-    private func sendChangeEvents(_ events: [TextDocumentContentChangeEvent], version: Int) async throws {
-        guard let uri = uri else { fatalError() }
-
-        let versionedId = VersionedTextDocumentIdentifier(uri: uri,
-                                                          version: version)
-        let params = DidChangeTextDocumentParams(textDocument: versionedId,
-                                                 contentChanges: events)
-
-        try await server.didChangeTextDocument(params: params)
-
-        textChangeSubject.send()
-    }
-
-    private func invalidateTokens(in target: TextTarget) {
-        host.invalidateTokens(for: context.id, in: target)
-    }
-
-    private func handleCapabilitiesChanged() {
-        let legend = serverCapabilities?.semanticTokensProvider?.effectiveOptions.legend
-        let textDocId = try? textDocumentIdentifier
-
-        if let legend, let textDocId {
-            self.tokenClient = SemanticTokensClient(legend: legend, textDocument: textDocId, server: server)
-        } else {
-            self.tokenClient = nil
-        }
-
-        let strings = serverCapabilities?.completionProvider?.triggerCharacters ?? []
-
-        let config = ServiceConfiguration(completionTriggers: Set(strings))
-
-        host.documentServiceConfigurationChanged(for: context.id, to: config)
-    }
+			host.serviceConfigurationChanged(for: id, to: config)
+		}
+	}
 }
 
 extension LSPDocumentService: DocumentService {
-    func willApplyChange(_ change: CombinedTextChange) async throws {
-    }
+	func willApplyChange(_ change: CombinedTextChange) throws {
+	}
 
-    func didApplyChange(_ change: CombinedTextChange) async throws {
-        guard uri != nil else { return }
-		guard await contextFilter(context) else { return }
+	private func sendChangeEvents(_ events: [TextDocumentContentChangeEvent], to uri: DocumentUri, version: Int) async throws {
+		let versionedId = VersionedTextDocumentIdentifier(uri: uri,
+														  version: version)
+		let params = DidChangeTextDocumentParams(textDocument: versionedId,
+												 contentChanges: events)
 
-        switch documentSyncKind {
-        case .none:
-            break
-        case .full:
-            let content = try await host.textContent(for: context.id, in: change.textRange)
+		try await serverHostInterface.server.didChangeTextDocument(params: params)
+	}
 
-            let changeEvent = TextDocumentContentChangeEvent(range: nil, rangeLength: nil, text: content.string)
-            let version = content.version + 1
+	func didApplyChange(_ change: CombinedTextChange) throws {
+		let uri = try context.uri
+		
+		serverHostInterface.enqueueBarrier { [context] (server, _, host) in
+			let syncKind = await server.capabilities?.textDocumentSync?.effectiveOptions.change ?? .none
 
-            try await sendChangeEvents([changeEvent], version: version)
-        case .incremental:
-            let range = change.textRange.lspRange
-            let length = change.textRange.range.length
-            let version = change.textRange.version + 1
-            
-            let changeEvent = TextDocumentContentChangeEvent(range: range, rangeLength: length, text: change.string)
+			switch syncKind {
+			case .none:
+				break
+			case .full:
+				let content = try await host.textContent(for: context.id, in: change.textRange)
 
-            try await sendChangeEvents([changeEvent], version: version)
-        }
-    }
+				let changeEvent = TextDocumentContentChangeEvent(range: nil, rangeLength: nil, text: content.string)
+				let version = content.version + 1
 
-    func willSave() async throws {
-		guard await contextFilter(context) else { return }
+				try await self.sendChangeEvents([changeEvent], to: uri, version: version)
+			case .incremental:
+				let range = change.textRange.lspRange
+				let length = change.textRange.range.length
+				let version = change.textRange.version + 1
 
-        let textDocId = try textDocumentIdentifier
+				let changeEvent = TextDocumentContentChangeEvent(range: range, rangeLength: length, text: change.string)
 
-        let params = WillSaveTextDocumentParams(textDocument: textDocId, reason: .manual)
+				try await self.sendChangeEvents([changeEvent], to: uri, version: version)
+			}
 
-        try await server.willSaveTextDocument(params: params)
-    }
+			host.invalidateTokens(for: context.id, in: .all)
+		}
+	}
 
-    func didSave() async throws {
-		guard await contextFilter(context) else { return }
+	func willSave() throws {
+		let id = try context.textDocumentIdentifier
 
-        let textDocId = try textDocumentIdentifier
+		serverHostInterface.enqueueBarrier { server, _, _ in
+			let params = WillSaveTextDocumentParams(textDocument: id, reason: .manual)
 
-        let params = DidSaveTextDocumentParams(textDocument: textDocId)
+			try await server.willSaveTextDocument(params: params)
+		}
+	}
 
-        try await server.didSaveTextDocument(params: params)
-    }
+	func didSave() throws {
+	}
 
-    var completionService: CompletionService? {
-        get async throws { return self }
-    }
-
-    var formattingService: FormattingService? {
-        get async throws { return self }
-    }
-
-    var semanticDetailsService: SemanticDetailsService? {
-        get async throws { return self }
-    }
-
-    var defintionService: DefinitionService? {
-        get async throws { return self }
-    }
-
-    var tokenService: TokenService? {
-        get async throws { return self }
-    }
+	var completionService: CompletionService? { return self }
+	var formattingService: FormattingService? { return self }
+	var semanticDetailsService: SemanticDetailsService? { return self }
+	var defintionService: DefinitionService?  { return self }
+	var tokenService: TokenService? { return self }
+	var symbolService: SymbolQueryService?  { return nil }
 }
 
 extension LSPDocumentService: CompletionService {
-    func completions(at position: CombinedTextPosition, trigger: CompletionTrigger) async throws -> [Completion] {
-		guard await contextFilter(context) else { return [] }
+	func completions(at position: CombinedTextPosition, trigger: CompletionTrigger) async throws -> [Completion] {
+		let textDocId = try context.textDocumentIdentifier
 
-        let textDocId = try textDocumentIdentifier
-        let location = position.location
-        let lspContext = trigger.completionContext
-        let lspPosition = position.lspPosition
+		return try await serverHostInterface.operationValue { (server, transformers, _) in
+			let location = position.location
+			let lspContext = trigger.completionContext
+			let lspPosition = position.lspPosition
 
-        let params = CompletionParams(textDocument: textDocId, position: lspPosition, context: lspContext)
+			let params = CompletionParams(textDocument: textDocId, position: lspPosition, context: lspContext)
 
-        let response = try await server.completion(params: params)
+			let response = try await server.completion(params: params)
 
-        let fallbackRange = TextRange.range(NSRange(location: location, length: 0))
-        let transformer = transformers.completionTransformer
+			let fallbackRange = TextRange.range(NSRange(location: location, length: 0))
+			let transformer = transformers.completionTransformer
 
-        return response?.items.compactMap({ transformer(fallbackRange, $0) }) ?? []
-    }
+			return response?.items.compactMap({ transformer(fallbackRange, $0) }) ?? []
+		}
+	}
 }
 
 extension LSPDocumentService: FormattingService {
-    func formatting(for ranges: [CombinedTextRange]) async throws -> [TextChange] {
-		guard await contextFilter(context) else { return [] }
+	func formatting(for ranges: [CombinedTextRange]) async throws -> [TextChange] {
+		return try await serverHostInterface.operationValue { [context] server, transformers, _ in
+			let textDocId = try context.textDocumentIdentifier
 
-        let textDocId = try textDocumentIdentifier
+			let caps = await server.capabilities
 
-        switch serverCapabilities?.documentFormattingProvider {
-        case .optionA(false), nil:
-            throw LSPServiceError.unsupported
-        case .optionA(true), .optionB:
-            break
-        }
+			switch caps?.documentFormattingProvider {
+			case .optionA(false), nil:
+				throw LSPServiceError.unsupported
+			case .optionA(true), .optionB:
+				break
+			}
 
-        let configuration = context.configuration
+			let configuration = context.configuration
+			let options = FormattingOptions(tabSize: configuration.tabWidth,
+											insertSpaces: configuration.indentIsSoft)
+			let params = DocumentFormattingParams(textDocument: textDocId, options: options)
 
-        let options = FormattingOptions(tabSize: configuration.tabWidth,
-                                        insertSpaces: configuration.indentIsSoft)
-        let params = DocumentFormattingParams(textDocument: textDocId, options: options)
+			let response = try await server.formatting(params: params)
 
-        let response = try await server.formatting(params: params)
+			let transformer = transformers.textEditsTransformer
 
-        let transformer = transformers.textEditsTransformer
+			return response.map({ transformer($0) }) ?? []
+		}
+	}
 
-        return response.map({ transformer($0) }) ?? []
-    }
+	func organizeImports() async throws -> [TextChange] {
+		return try await serverHostInterface.operationValue { [context] server, transformers, _ in
+			let textDocId = try context.textDocumentIdentifier
 
-    func organizeImports() async throws -> [TextChange] {
-		guard await contextFilter(context) else { return [] }
+			let caps = await server.capabilities
 
-        let textDocId = try textDocumentIdentifier
+			switch caps?.codeActionProvider {
+			case .optionA(false), nil:
+				throw LSPServiceError.unsupported
+			case .optionA(true):
+				break
+			case .optionB(let options):
+				if options.codeActionKinds?.contains(CodeActionKind.SourceOrganizeImports) == true {
+					break
+				}
 
-        switch serverCapabilities?.codeActionProvider {
-        case .optionA(false), nil:
-            throw LSPServiceError.unsupported
-        case .optionA(true):
-            break
-        case .optionB(let options):
-            if options.codeActionKinds?.contains(CodeActionKind.SourceOrganizeImports) == true {
-                break
-            }
+				throw LSPServiceError.unsupported
+			}
 
-            throw LSPServiceError.unsupported
-        }
+			let uri = textDocId.uri
+			let context = CodeActionContext(diagnostics: [], only: [.SourceOrganizeImports])
+			let range = LSPRange(start: Position(line: 1, character: 0),
+								 end: Position(line: 1, character: 0))
+			let params = CodeActionParams(textDocument: textDocId, range: range, context: context)
 
-        let uri = textDocId.uri
-        let context = CodeActionContext(diagnostics: [], only: [.SourceOrganizeImports])
-        let range = LSPRange(start: Position(line: 1, character: 0),
-                             end: Position(line: 1, character: 0))
-        let params = CodeActionParams(textDocument: textDocId, range: range, context: context)
+			let response = try await server.codeAction(params: params)
 
-        let response = try await server.codeAction(params: params)
-
-        return transformers.organizeImportsTransformer(uri, response)
-    }
+			return transformers.organizeImportsTransformer(uri, response)
+		}
+	}
 }
 
 extension LSPDocumentService: SemanticDetailsService {
-    func semanticDetails(at position: CombinedTextPosition) async throws -> SemanticDetails? {
-		guard await contextFilter(context) else { return nil }
+	func semanticDetails(at position: CombinedTextPosition) async throws -> SemanticDetails? {
+		return try await serverHostInterface.operationValue { [context] server, transformers, _ in
+			let textDocId = try context.textDocumentIdentifier
+			let params = TextDocumentPositionParams(textDocument: textDocId, position: position.lspPosition)
 
-        let textDocId = try textDocumentIdentifier
-        let params = TextDocumentPositionParams(textDocument: textDocId, position: position.lspPosition)
+			let response = try await server.hover(params: params)
 
-        let response = try await server.hover(params: params)
-
-        return transformers.hoverTransformer(position, response)
-    }
+			return transformers.hoverTransformer(position, response)
+		}
+	}
 }
 
 extension LSPDocumentService: DefinitionService {
-    func definitions(at position: CombinedTextPosition) async throws -> [DefinitionLocation] {
-		guard await contextFilter(context) else { return [] }
+	func definitions(at position: CombinedTextPosition) async throws -> [DefinitionLocation] {
+		return try await serverHostInterface.operationValue { [context] server, transformers, _ in
+			let textDocId = try context.textDocumentIdentifier
+			let params = TextDocumentPositionParams(textDocument: textDocId, position: position.lspPosition)
 
-        let textDocId = try textDocumentIdentifier
+			let definition = try await server.definition(params: params)
 
-        let params = TextDocumentPositionParams(textDocument: textDocId, position: position.lspPosition)
-
-        let definition = try await server.definition(params: params)
-
-        return transformers.definitionTransformer(definition)
-    }
+			return transformers.definitionTransformer(definition)
+		}
+	}
 }
 
 extension LSPDocumentService: TokenService {
-    func tokens(in range: CombinedTextRange) async throws -> [ChimeExtensionInterface.Token] {
-		guard await contextFilter(context) else { return [] }
+	private func semanticTokenResponse(
+		in range: CombinedTextRange,
+		lastResultId: String?,
+		server: LSPHostServerInterface.Server
+	) async throws -> SemanticTokensDeltaResponse {
+		let id = try context.textDocumentIdentifier
+		let deltas = await server.capabilities?.semanticTokensProvider?.effectiveOptions.full?.deltaSupported ?? false
 
-        guard let client = tokenClient else {
-            return []
-        }
+		if deltas, let lastId = lastResultId {
+			let params = SemanticTokensDeltaParams(textDocument: id, previousResultId: lastId)
 
-        let deltas = serverCapabilities?.semanticTokensProvider?.effectiveOptions.full.deltaSupported ?? false
-        let response = try await client.tokens(in: range.lspRange, supportsDeltas: deltas)
+			return try await server.semanticTokensFullDelta(params: params)
+		}
 
-        let transformer = transformers.semanticTokenTransformer
+		let params = SemanticTokensParams(textDocument: id)
 
-        return response.map({ transformer($0) })
-    }
+		// translate into a delta response
+		return try await server.semanticTokensFull(params: params).map { .optionA($0) }
+	}
+
+	func tokens(in range: CombinedTextRange) async throws -> [ChimeExtensionInterface.Token] {
+		guard let rep = tokenRepresentation else {
+			return []
+		}
+
+		return try await serverHostInterface.operationValue { server, transformers, _ in
+			let response = try await self.semanticTokenResponse(in: range, lastResultId: rep.lastResultId, server: server)
+
+			_ = rep.applyResponse(response)
+
+			let tokens = rep.decodeTokens(in: range.lspRange)
+
+			let transformer = transformers.semanticTokenTransformer
+
+			return tokens.map { transformer($0) }
+		}
+	}
 }

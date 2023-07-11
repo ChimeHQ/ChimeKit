@@ -1,11 +1,12 @@
 import Foundation
 
-final class RemoteProjectService {
-	private let connection: NSXPCConnection
+@MainActor
+struct RemoteProjectService {
+	private let queuedService: RemoteExtension.Service
     let context: ProjectContext
 
-    init(connection: NSXPCConnection, context: ProjectContext) {
-        self.connection = connection
+	init(queuedService: RemoteExtension.Service, context: ProjectContext) {
+        self.queuedService = queuedService
         self.context = context
     }
 }
@@ -14,8 +15,8 @@ extension RemoteProjectService: SymbolQueryService {
     public func symbols(matching query: String) async throws -> [Symbol] {
         let xpcContext = try JSONEncoder().encode(context)
 
-        return try await connection.withContinuation { (service: ExtensionXPCProtocol, continuation) in
-            service.symbols(forProject: xpcContext, matching: query, completionHandler: continuation.resumingHandler)
-        }
+		return try await queuedService.addDecodingOperation { service, handler in
+			service.symbols(forProject: xpcContext, matching: query, completionHandler: handler)
+		}
     }
 }

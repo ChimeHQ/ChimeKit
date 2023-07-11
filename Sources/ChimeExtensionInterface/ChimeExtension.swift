@@ -32,7 +32,7 @@ extension ChimeExtension {
 		return ConnectingAppExtensionConfiguration { connection in
 			self.export(over: connection)
 
-			let remoteHost = RemoteHost(connection)
+			let remoteHost = RemoteHost(connection: connection)
 
 			try self.acceptHostConnection(remoteHost)
 		}

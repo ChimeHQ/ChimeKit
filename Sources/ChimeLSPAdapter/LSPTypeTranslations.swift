@@ -66,9 +66,6 @@ extension Snippet {
 }
 
 extension TextEdit {
-//    public var textRange: ExtensionInterface.TextRange {
-//        return .lineRelativeRange(LineRelativeTextRange(range))
-//    }
     public var textRange: TextRange {
         return .lineRelativeRange(LineRelativeTextRange(range))
     }
@@ -79,7 +76,6 @@ extension LSPRange {
     public var textRange: TextRange {
         return .lineRelativeRange(LineRelativeTextRange(self))
     }
-
 }
 
 extension ThreeTypeOption where T == MarkedString, U == [MarkedString], V == MarkupContent {

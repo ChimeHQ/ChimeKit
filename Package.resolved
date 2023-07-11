@@ -1,12 +1,11 @@
 {
   "pins" : [
     {
-      "identity" : "concurrencyplus",
+      "identity" : "asyncxpcconnection",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/ConcurrencyPlus",
+      "location" : "https://github.com/ChimeHQ/AsyncXPCConnection",
       "state" : {
-        "revision" : "d603e3f8be17e71d93ec650fb31674b928b26e22",
-        "version" : "0.3.3"
+        "revision" : "82a0eb00a0d881e6a65cad0acc031c1efd058d06"
       }
     },
     {
@@ -14,26 +13,25 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/Extendable",
       "state" : {
-        "revision" : "1e5f8b3b4e64fcfca4bfd5b0b38679cac7ea14c9",
-        "version" : "0.1.1"
+        "revision" : "ed81589a7be2b990baf41cbefffd2ac19e669694",
+        "version" : "0.2.0"
       }
     },
     {
       "identity" : "fseventswrapper",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Frizlab/FSEventsWrapper",
+      "location" : "https://github.com/mattmassicotte/FSEventsWrapper",
       "state" : {
-        "revision" : "e0c59a2ce2775e5f6642da6d19207445f10112d0",
-        "version" : "1.0.2"
+        "revision" : "fb3c520c936d8d3ed69da08e7f1a67516bbd411a"
       }
     },
     {
-      "identity" : "glob",
+      "identity" : "globpattern",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Bouke/Glob",
+      "location" : "https://github.com/ChimeHQ/GlobPattern",
       "state" : {
-        "revision" : "deda6e163d2ff2a8d7e138e2c3326dbd71157faf",
-        "version" : "1.0.5"
+        "revision" : "4ebb9e89e07cc475efa74f87dc6d21f4a9e060f8",
+        "version" : "0.1.1"
       }
     },
     {
@@ -41,8 +39,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/JSONRPC",
       "state" : {
-        "revision" : "afc20d00e38674774f84edc325424a32ae3b9e01",
-        "version" : "0.7.0"
+        "revision" : "306acbe0de2e87e4f6c1dc3901613aa9df293754"
       }
     },
     {
@@ -50,8 +47,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageClient",
       "state" : {
-        "revision" : "7c12bb6884a7e5d801dbce68f2f627bb7d94d1f4",
-        "version" : "0.5.0"
+        "revision" : "200ca0f39336b1d4817e8a7386657f08ef94a190"
       }
     },
     {
@@ -59,8 +55,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
       "state" : {
-        "revision" : "9293fd8a3b4298bab12475ff46f793a6d4055f0e",
-        "version" : "0.9.0"
+        "revision" : "84f1f70b828a993325f408e8e9da6222713702b0"
       }
     },
     {
@@ -68,8 +63,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ProcessEnv",
       "state" : {
-        "revision" : "7bcb6c11593be08456f48042fad1a7bf875f217a",
-        "version" : "0.3.0"
+        "revision" : "29487b6581bb785c372c611c943541ef4309d051",
+        "version" : "0.3.1"
       }
     },
     {
@@ -77,8 +72,25 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ProcessService",
       "state" : {
-        "revision" : "43819b09db194d255737a30f24b44474de5c9171",
-        "version" : "0.2.1"
+        "revision" : "feb73fa4b7d51d0ffd04228afe01b6a60acce9f7"
+      }
+    },
+    {
+      "identity" : "queue",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattmassicotte/Queue",
+      "state" : {
+        "revision" : "8d6f936097888f97011610ced40313655dc5948d",
+        "version" : "0.1.4"
+      }
+    },
+    {
+      "identity" : "semaphore",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/groue/Semaphore",
+      "state" : {
+        "revision" : "f1c4a0acabeb591068dea6cffdd39660b86dec28",
+        "version" : "0.0.8"
       }
     }
   ],

@@ -1,180 +1,108 @@
 import Foundation
-import os.log
+import OSLog
 
 import ChimeExtensionInterface
 import JSONRPC
 import LanguageClient
 import LanguageServerProtocol
+import Queue
 
-actor LSPProjectService {
-	let context: ProjectContext
-    let serverOptions: any Codable
-	let logMessages: Bool
-	let processHostServiceName: String?
+@MainActor
+final class LSPProjectService {
+	typealias Server = LanguageClient.RestartingServer<JSONRPCServer>
 
-	private lazy var server: RestartingServer = {
-		let initializeParamsProvider: InitializingServer.InitializeParamsProvider = { [weak self] in
-			guard let self = self else {
-				throw LSPServiceError.providerUnavailable
-			}
+	private let processHostServiceName: String?
+	private let executionParamsProvider: LSPService.ExecutionParamsProvider
+	private let serverOptions: any Codable
+	private let transformers: LSPTransformers
+	private let host: HostProtocol
+	private var documentConnections = [DocumentIdentity: LSPDocumentService]()
+	private let queue = AsyncQueue(attributes: [.concurrent, .publishErrors])
+	private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "LSPProjectService")
+	private var requestTask: Task<Void, Error>?
+	private var capabilitiesTask: Task<Void, Error>?
+	private var fileEventTasks = [Task<Void, Error>]()
+	private lazy var serverHostInterface: LSPHostServerInterface = {
+		let server = Server(configuration: serverConfig)
 
-			return try await self.provideInitializeParams()
-		}
-
-		let textDocumentItemProvider: RestartingServer.TextDocumentItemProvider = { [weak self] in
-			guard let self = self else {
-				throw LSPServiceError.providerUnavailable
-			}
-
-			return try await self.textDocumentItem(for: $0)
-		}
-
-		let provider: RestartingServer.ServerProvider = { [weak self] in
-			guard let self = self else {
-				throw LSPServiceError.providerUnavailable
-			}
-
-			return try await self.serverProvider()
-		}
-
-		// This is subtle. While shutting down, it is possible for some notifications in come in
-		// such that they arrive after this instance has been deallocated but before
-		// the actual process has been cleaned up.
-		let handlers = ServerHandlers(requestHandler: { [weak self] in self?.handleRequest($0, block: $1) },
-									  notificationHandler: { [weak self] in self?.handleNotification($0, block: $1) })
-
-		let config = RestartingServer.Configuration(serverProvider: provider,
-													textDocumentItemProvider: textDocumentItemProvider,
-													initializeParamsProvider: initializeParamsProvider,
-													serverCapabilitiesChangedHandler: { [weak self] in self?.handleCapabilitiesChanged($0) },
-													handlers: handlers)
-
-		return RestartingServer(configuration: config)
+		return LSPHostServerInterface(host: host,
+									  server: server,
+									  queue: queue,
+									  transformers: transformers)
 	}()
 
-    let host: HostProtocol
-    private var documentConnections: [DocumentIdentity: LSPDocumentService]
-    private let log: OSLog
-	private var watchers = [FileWatcher]()
-    let transformers: LSPTransformers
-    let executionParamsProvider: LSPService.ExecutionParamsProvider
-	let contextFilter: LSPService.ContextFilter
+	let context: ProjectContext
 
-    init(context: ProjectContext,
-         host: HostProtocol,
-         serverOptions: any Codable = [:] as [String: String],
-         transformers: LSPTransformers = .init(),
-		 contextFilter: @escaping LSPService.ContextFilter,
-         executionParamsProvider: @escaping LSPService.ExecutionParamsProvider,
-		 processHostServiceName: String?,
-		 logMessages: Bool) {
-        self.context = context
-        self.serverOptions = serverOptions
-        self.host = host
-        self.documentConnections = [:]
-        self.transformers = transformers
-        self.executionParamsProvider = executionParamsProvider
-		self.contextFilter = contextFilter
-        self.log = OSLog(subsystem: "com.chimehq.ChimeKit", category: "LSPProjectService")
+	init(
+		context: ProjectContext,
+		host: HostProtocol,
+		serverOptions: any Codable = [:] as [String: String],
+		transformers: LSPTransformers = .init(),
+		executionParamsProvider: @escaping LSPService.ExecutionParamsProvider,
+		processHostServiceName: String?,
+		logMessages: Bool
+	) {
+		self.context = context
+		self.host = host
+		self.serverOptions = serverOptions
+		self.transformers = transformers
 		self.processHostServiceName = processHostServiceName
-		self.logMessages = logMessages
-    }
+		self.executionParamsProvider = executionParamsProvider
+
+		let requestSequence = serverHostInterface.server.requestSequence
+
+		self.requestTask = Task { [weak self, requestSequence] in
+			for await request in requestSequence {
+				self?.handleRequest(request)
+			}
+		}
+
+		let capabilitiesSequence = serverHostInterface.server.capabilitiesSequence
+
+		self.capabilitiesTask = Task { [weak self, capabilitiesSequence] in
+			for await capabilities in capabilitiesSequence {
+				self?.handleCapabilitiesChanged(capabilities)
+			}
+		}
+	}
+
+	deinit {
+		requestTask = nil
+	}
 
 	nonisolated var rootURL: URL {
 		return context.url
 	}
-
-    private func connection(for docContext: DocumentContext) async throws -> LSPDocumentService {
-        guard let conn = documentConnections[docContext.id] else {
-            throw LSPServiceError.noDocumentConnection(docContext)
-        }
-
-        return conn
-    }
 }
 
 extension LSPProjectService {
-    func didOpenDocument(with docContext: DocumentContext) async throws {
-        let id = docContext.id
+	private func makeDataChannel() async throws -> DataChannel {
+		let params = try await executionParamsProvider()
 
-        assert(documentConnections[id] == nil)
-
-		let filter: LSPDocumentService.ContextFilter = { [weak self] in
-			guard let self = self else { return false }
-
-			return await self.contextFilter(self.context, $0)
-		}
-		
-        let docConnection = LSPDocumentService(server: server,
-                                               host: host,
-                                               context: docContext,
-                                               transformers: transformers,
-											   contextFilter: filter)
-
-		try await docConnection.openIfNeeded()
-
-        assert(documentConnections[id] == nil)
-        
-        documentConnections[id] = docConnection
-    }
-
-    func willCloseDocument(with docContext: DocumentContext) async throws {
-        let id = docContext.id
-
-        guard let conn = documentConnections[id] else {
-            throw LSPServiceError.noDocumentConnection(docContext)
-        }
-
-		// This is a little risky, as we could potentially return a different
-		// value here, and not close...
-		if await contextFilter(context, docContext) {
-			try await conn.close()
+		guard let serviceName = processHostServiceName else {
+			return try DataChannel.localProcessChannel(parameters: params)
 		}
 
-        self.documentConnections[id] = nil
-    }
+		return await DataChannel.processServiceChannel(named: serviceName, parameters: params)
+	}
 
-    func shutdown() async throws {
-		try await server.shutdownAndExit()
-    }
+	private func serverChannelProvider() async throws -> JSONRPCServer {
+		let dataChannel = try await makeDataChannel()
 
-    func documentService(for docContext: DocumentContext) async throws -> DocumentService? {
-        return try await connection(for: docContext)
-    }
-}
+		return JSONRPCServer(dataChannel: dataChannel)
+	}
 
-extension LSPProjectService: SymbolQueryService {
-    func symbols(matching query: String) async throws -> [Symbol] {
-		// this check is important, to ensure that we do not start up a server
-		// unless there is a reasonable expectation we could get results
-		guard await contextFilter(context, nil) == true else { return [] }
+	private func textDocumentItem(for uri: DocumentUri) async throws -> TextDocumentItem {
+		guard let docConnection = documentConnections.first(where: { $0.value.uri == uri })?.value else {
+			throw LSPServiceError.documentNotFound(uri)
+		}
 
-		// we have to request capabilities here, as the server may not be started at this
-		// point
-		let caps = try await server.capabilities
+		return try await docConnection.textDocumentItem
+	}
 
-        switch caps.workspaceSymbolProvider {
-        case nil:
-            throw LSPServiceError.unsupported
-        case .optionA(let value):
-            if value == false {
-                throw LSPServiceError.unsupported
-            }
-        case .optionB:
-            break
-        }
-
-		let params = WorkspaceSymbolParams(query: query)
-		let result = try await server.workspaceSymbol(params: params)
-
-		return transformers.workspaceSymbolResponseTransformer(result)
-    }
-}
-
-extension LSPProjectService {
-	private func provideInitializeParams() throws -> InitializeParams {
-        let processId = Int(ProcessInfo.processInfo.processIdentifier)
-        let capabilities = LSPService.clientCapabilities
+	private func initializeParams() throws -> InitializeParams {
+		let processId = Int(ProcessInfo.processInfo.processIdentifier)
+		let capabilities = LSPService.clientCapabilities
 
 		let uri = rootURL.absoluteString
 		let path = rootURL.path
@@ -192,169 +120,217 @@ extension LSPProjectService {
 								capabilities: capabilities,
 								trace: .verbose,
 								workspaceFolders: [workspaceFolder])
-    }
-
-    private func textDocumentItem(for uri: DocumentUri) async throws -> TextDocumentItem {
-        guard let docConnection = documentConnections.first(where: { $0.value.uri == uri })?.value else {
-            throw RestartingServerError.noURIMatch(uri)
-        }
-
-        return try await docConnection.textDocumentItem
-    }
-
-	private nonisolated func handleTermination() {
-		Task {
-			await self.server.serverBecameUnavailable()
-		}
 	}
 
-	private func serverProvider() async throws -> Server {
-		let params = try await self.executionParamsProvider()
+	private var serverConfig: Server.Configuration {
+		let serverProvider: Server.ServerProvider = { [weak self] in
+			guard let self = self else { throw LSPServiceError.providerUnavailable }
 
-		if let serviceName = processHostServiceName {
-			let remote = try RemoteLanguageServer(named: serviceName, parameters: params)
-
-			remote.terminationHandler = { [weak self] in self?.handleTermination() }
-
-			remote.logMessages = logMessages
-
-			return remote
+			return try await self.serverChannelProvider()
 		}
 
-		let local = LocalProcessServer(executionParameters: params)
+		let docItemProvider: Server.TextDocumentItemProvider = { [weak self] in
+			guard let self = self else { throw LSPServiceError.providerUnavailable }
 
-		local.terminationHandler = { [weak self] in self?.handleTermination() }
+			return try await self.textDocumentItem(for: $0)
+		}
 
-		local.logMessages = logMessages
+		let initializeParamsProvider: Server.InitializeParamsProvider = { [weak self] in
+			guard let self = self else { throw LSPServiceError.providerUnavailable }
 
-		return local
+			return try await self.initializeParams()
+		}
 
+		return Server.Configuration(serverProvider: serverProvider,
+									textDocumentItemProvider: docItemProvider,
+									initializeParamsProvider: initializeParamsProvider)
 	}
-
-    private nonisolated func handleRequest(_ request: ServerRequest, block: @escaping (ServerResult<LSPAny>) -> Void) {
-        switch request {
-        case .workspaceConfiguration(let params):
-			let count = params.items.count
-
-			let emptyObject = JSONValue.hash([:])
-			let responseItems = JSONValue.array(Array(repeating: emptyObject, count: count))
-
-            block(.success(responseItems))
-        case .clientRegisterCapability(let params):
-            os_log("register capability", log: self.log, type: .info)
-
-            for registration in params.serverRegistrations {
-                switch registration {
-                case .workspaceDidChangeWatchedFiles(let options):
-					Task {
-						await self.setupWatchers(options.watchers)
-					}
-                default:
-                    os_log("registration: %{public}@", log: self.log, type: .info, String(describing: registration))
-                }
-            }
-
-            block(.success(nil))
-        case .clientUnregisterCapability(_):
-            os_log("unregister capability", log: self.log, type: .info)
-            block(.success(nil))
-        case .workspaceSemanticTokenRefresh:
-            os_log("token refresh", log: self.log, type: .info)
-            block(.success(nil))
-        default:
-            block(.failure(.handlerUnavailable(request.method.rawValue)))
-        }
-    }
-
-    private nonisolated func handleNotification(_ notification: ServerNotification, block: @escaping (ServerError?) -> Void) {
-        switch notification {
-        case .windowShowMessage(let showMessageParams):
-            os_log("show message: %{public}@", log: self.log, type: .info, showMessageParams.message)
-            block(nil)
-        case .windowLogMessage(let logMessageParams):
-            os_log("log message: %{public}@", log: self.log, type: .info, logMessageParams.message)
-            block(nil)
-        case .textDocumentPublishDiagnostics(let params):
-            Task {
-                await publishDiagnostics(params)
-            }
-        case .telemetryEvent(let params):
-            os_log("telemetry event: %{public}@", log: self.log, type: .info, String(describing: params))
-            block(nil)
-        case .protocolCancelRequest(let params):
-            os_log("cancel request: %{public}@", log: self.log, type: .info, String(describing: params))
-            block(nil)
-        case .protocolProgress(let params):
-            os_log("progress: %{public}@", log: self.log, type: .info, String(describing: params))
-            block(nil)
-        case .protocolLogTrace(let params):
-            os_log("log trace: %{public}@", log: self.log, type: .info, String(describing: params))
-            block(nil)
-        }
-    }
-
-    private nonisolated func handleCapabilitiesChanged(_ capabilities: ServerCapabilities?) {
-        Task {
-            await self.updateServerCapabilities(capabilities)
-        }
-    }
-
-    private func updateServerCapabilities(_ capabilities: ServerCapabilities?) {
-        os_log("capabilities changed", log: self.log, type: .info)
-
-        for conn in self.documentConnections.values {
-            conn.serverCapabilities = capabilities
-        }
-    }
 }
 
 extension LSPProjectService {
-    private func publishDiagnostics(_ params: PublishDiagnosticsParams) {
-        let version = params.version
-        let count = params.diagnostics.count
-        
-        os_log("diagnostics count %{public}d with doc version %{public}@", log: self.log, type: .debug, count, String(describing: version))
+	private func handleRequest(_ request: ServerRequest) {
+		queue.addOperation {
+			switch request {
+			case let .workspaceConfiguration(params, handler):
+				let count = params.items.count
+				let emptyObject = JSONValue.hash([:])
+				let responseItems = Array(repeating: emptyObject, count: count)
 
-        guard let url = URL(string: params.uri) else {
-            os_log("unable to convert url: %{public}@", log: self.log, type: .info, String(describing: params))
-            return
-        }
+				await handler(.success(responseItems))
+			case let .workspaceSemanticTokenRefresh(handler):
+				self.logger.info("semantic token refresh")
 
-        let usableDiagnostics = params.diagnostics.prefix(100)
-        if count > 100 {
-            os_log("truncated diagnostics payload", log: self.log, type: .info)
-        }
+				for docId in self.documentConnections.keys {
+					self.host.invalidateTokens(for: docId, in: .all)
+				}
 
-        let transformer = transformers.diagnosticTransformer
-        let diagnostics = usableDiagnostics.map({ transformer($0) })
+				await handler(nil)
+			case let .clientRegisterCapability(params, handler):
+				let methods = params.registrations.map({ $0.method })
+				
+				self.logger.info("Registering capabilities: \(methods, privacy: .public)")
 
-        host.publishDiagnostics(diagnostics, for: url, version: params.version)
-    }
+				self.handleServerRegistrations(params.serverRegistrations)
 
-    private func setupWatchers(_ fsWatchers: [FileSystemWatcher]) {
-        let rootPath = self.rootURL.path
+				await handler(nil)
+			case let .clientUnregisterCapability(params, handler):
+				let methods = params.unregistrations.map({ $0.method })
 
-		for watcher in watchers {
-			watcher.stop()
-		}
-
-        self.watchers = fsWatchers.map({ FileWatcher(root: rootPath, params: $0) })
-
-		for watcher in watchers {
-			watcher.start()
-			watcher.handler = { [weak self] in self?.handleWatcherEvents($0) }
-		}
-    }
-
-    private nonisolated func handleWatcherEvents(_ events: [FileEvent]) {
-        let params = DidChangeWatchedFilesParams(changes: events)
-
-		Task {
-			do {
-				try await self.server.didChangeWatchedFiles(params: params)
-			} catch {
-				os_log("failed to deliver DidChangeWatchedFiles: %{public}@", log: self.log, type: .error, String(describing: error))
+				self.logger.warning("Unregistering capabilities: \(methods, privacy: .public)")
+				await handler(nil)
+			default:
+				await request.relyWithError(LSPServiceError.unsupported)
 			}
 		}
-    }
+	}
+
+	private func handleServerRegistrations(_ registrations: [ServerRegistration]) {
+		for registration in registrations {
+			logger.info("Server registration: \(registration.method.rawValue, privacy: .public)")
+
+			switch registration {
+			case let .workspaceDidChangeWatchedFiles(options):
+				setupFileWatchers(options.watchers)
+			default:
+				break
+			}
+		}
+	}
+
+	private func setupFileWatchers(_ watchers: [FileSystemWatcher]) {
+		self.fileEventTasks = watchers.compactMap {
+			do {
+				return try FileEventAsyncSequence(watcher: $0, root: rootURL)
+			} catch {
+				logger.warning("Unable to create file event sequence: \(error, privacy: .public)")
+				return nil
+			}
+		}.map { (sequence: FileEventAsyncSequence) in
+			Task { [weak self] in
+				for await event in sequence {
+					guard let self = self else { return }
+
+					self.handleFileEvent(event)
+				}
+			}
+		}
+
+	}
+
+	private func handleFileEvent(_ event: FileEvent) {
+		let params = DidChangeWatchedFilesParams(changes: [event])
+
+		serverHostInterface.enqueueBarrier { server, _, _ in
+			try await server.didChangeWatchedFiles(params: params)
+		}
+	}
+
+	private func handleCapabilitiesChanged(_ capabilities: ServerCapabilities) {
+		print("new capabilities: ", capabilities)
+
+		for conn in documentConnections.values {
+			conn.handleCapabiltiesChanged(capabilities)
+		}
+	}
+}
+
+extension LSPProjectService: ApplicationService {
+	var configuration: ExtensionConfiguration {
+		get throws { throw LSPServiceError.unsupported  }
+	}
+	
+	func didOpenProject(with context: ProjectContext) throws {
+		throw LSPServiceError.unsupported
+	}
+	
+	func willCloseProject(with context: ProjectContext) throws {
+		throw LSPServiceError.unsupported
+	}
+
+	func didOpenDocument(with docContext: DocumentContext) throws {
+		let id = docContext.id
+
+		logger.debug("Opening document: \(docContext, privacy: .public)")
+
+		assert(documentConnections[id] == nil)
+
+		let docConnection = LSPDocumentService(serverHostInterface: serverHostInterface,
+												  context: docContext)
+
+		documentConnections[id] = docConnection
+
+		guard docConnection.isOpenable else { return }
+
+		serverHostInterface.enqueueBarrier { server, _, _ in
+			let item = try await docConnection.textDocumentItem
+
+			let params = DidOpenTextDocumentParams(textDocument: item)
+			try await server.didOpenTextDocument(params: params)
+		}
+	}
+
+	func didChangeDocumentContext(from oldContext: DocumentContext, to newContext: DocumentContext) throws {
+		try willCloseDocument(with: oldContext)
+		try didOpenDocument(with: newContext)
+	}
+
+	func willCloseDocument(with docContext: DocumentContext) throws {
+		let id = docContext.id
+
+		logger.debug("Closing document: \(docContext, privacy: .public)")
+
+		let connection = documentConnections[id]
+
+		assert(connection != nil)
+
+		self.documentConnections[id] = nil
+
+		guard connection?.isOpenable == true else { return }
+
+		serverHostInterface.enqueueBarrier { server, _, _ in
+			let id = try docContext.textDocumentIdentifier
+			
+			let param = DidCloseTextDocumentParams(textDocument: id)
+			try await server.didCloseTextDocument(params: param)
+		}
+	}
+
+	func documentService(for docContext: DocumentContext) throws -> DocumentService? {
+		let id = docContext.id
+		let conn = documentConnections[id]
+
+		assert(conn != nil)
+
+		return conn
+	}
+
+	func symbolService(for context: ProjectContext) throws -> SymbolQueryService? {
+		self
+	}
+}
+
+extension LSPProjectService: SymbolQueryService {
+	func symbols(matching query: String) async throws -> [Symbol] {
+		try await serverHostInterface.operationValue { (server, transformers, _) in
+			// we have to request capabilities here, as the server may not be started at this
+			// point
+			let caps = try await server.initializeIfNeeded()
+
+			switch caps.workspaceSymbolProvider {
+			case nil:
+				throw LSPServiceError.unsupported
+			case .optionA(let value):
+				if value == false {
+					throw LSPServiceError.unsupported
+				}
+			case .optionB:
+				break
+			}
+
+			let params = WorkspaceSymbolParams(query: query)
+			let result = try await server.workspaceSymbol(params: params)
+
+			return transformers.workspaceSymbolResponseTransformer(result)
+		}
+	}
 }
