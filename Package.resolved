@@ -5,7 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/AsyncXPCConnection",
       "state" : {
-        "revision" : "82a0eb00a0d881e6a65cad0acc031c1efd058d06"
+        "revision" : "82a0eb00a0d881e6a65cad0acc031c1efd058d06",
+        "version" : "1.0.0"
       }
     },
     {
@@ -22,7 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattmassicotte/FSEventsWrapper",
       "state" : {
-        "revision" : "fb3c520c936d8d3ed69da08e7f1a67516bbd411a"
+        "branch" : "feature/asyncstream",
+        "revision" : "22b2062fca2dc64be8722b28a2bf6fd27986c655"
       }
     },
     {
@@ -39,7 +41,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/JSONRPC",
       "state" : {
-        "revision" : "306acbe0de2e87e4f6c1dc3901613aa9df293754"
+        "revision" : "42e5e5dd5aace3885d705f6fad50e60ad4cc3c69"
       }
     },
     {
@@ -47,7 +49,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageClient",
       "state" : {
-        "revision" : "200ca0f39336b1d4817e8a7386657f08ef94a190"
+        "revision" : "2ddcd6bcf6417e923e42ec4676a3c10790413ac6"
       }
     },
     {
@@ -55,7 +57,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
       "state" : {
-        "revision" : "84f1f70b828a993325f408e8e9da6222713702b0"
+        "revision" : "6f05c1b2cc8b3afad83c7cba310b3338199780af"
       }
     },
     {
@@ -65,14 +67,6 @@
       "state" : {
         "revision" : "29487b6581bb785c372c611c943541ef4309d051",
         "version" : "0.3.1"
-      }
-    },
-    {
-      "identity" : "processservice",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ChimeHQ/ProcessService",
-      "state" : {
-        "revision" : "feb73fa4b7d51d0ffd04228afe01b6a60acce9f7"
       }
     },
     {

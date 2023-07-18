@@ -11,17 +11,18 @@ import Queue
 final class LSPProjectService {
 	typealias Server = LanguageClient.RestartingServer<JSONRPCServer>
 
-	private let processHostServiceName: String?
 	private let executionParamsProvider: LSPService.ExecutionParamsProvider
 	private let serverOptions: any Codable
 	private let transformers: LSPTransformers
 	private let host: HostProtocol
+	private let logMessages: Bool
 	private var documentConnections = [DocumentIdentity: LSPDocumentService]()
 	private let queue = AsyncQueue(attributes: [.concurrent, .publishErrors])
 	private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "LSPProjectService")
 	private var requestTask: Task<Void, Error>?
 	private var capabilitiesTask: Task<Void, Error>?
 	private var fileEventTasks = [Task<Void, Error>]()
+	private var hostedProcess: LaunchedProcess?
 	private lazy var serverHostInterface: LSPHostServerInterface = {
 		let server = Server(configuration: serverConfig)
 
@@ -39,15 +40,14 @@ final class LSPProjectService {
 		serverOptions: any Codable = [:] as [String: String],
 		transformers: LSPTransformers = .init(),
 		executionParamsProvider: @escaping LSPService.ExecutionParamsProvider,
-		processHostServiceName: String?,
 		logMessages: Bool
 	) {
 		self.context = context
 		self.host = host
 		self.serverOptions = serverOptions
 		self.transformers = transformers
-		self.processHostServiceName = processHostServiceName
 		self.executionParamsProvider = executionParamsProvider
+		self.logMessages = logMessages
 
 		let requestSequence = serverHostInterface.server.requestSequence
 
@@ -76,20 +76,44 @@ final class LSPProjectService {
 }
 
 extension LSPProjectService {
-	private func makeDataChannel() async throws -> DataChannel {
-		let params = try await executionParamsProvider()
+	private nonisolated func nonisolatedConnectionInvalidated() {
+		Task {
+			await connectionInvalidated()
+		}
+	}
 
-		guard let serviceName = processHostServiceName else {
-			return try DataChannel.localProcessChannel(parameters: params)
+	private func connectionInvalidated() async {
+		logger.warning("channel connection invalidated")
+
+		await serverHostInterface.server.connectionInvalidated()
+	}
+
+	private func makeDataChannel() async throws -> DataChannel {
+		guard #available(macOS 12.0, *) else {
+			throw LSPServiceError.unsupported
 		}
 
-		return await DataChannel.processServiceChannel(named: serviceName, parameters: params)
+		let terminationHandler: @Sendable () -> Void = { [weak self] in self?.nonisolatedConnectionInvalidated() }
+
+		let params = try await executionParamsProvider()
+
+		return try await DataChannel.hostedProcessChannel(host: host, parameters: params, terminationHandler: terminationHandler)
+	}
+
+	private func loggingChannel(_ channel: DataChannel) -> DataChannel {
+		DataChannel.tap(channel: channel, onRead: { data in
+			print("read: ", String(decoding: data, as: UTF8.self))
+		}, onWrite: { data in
+			print("write: ", String(decoding: data, as: UTF8.self))
+		})
 	}
 
 	private func serverChannelProvider() async throws -> JSONRPCServer {
 		let dataChannel = try await makeDataChannel()
 
-		return JSONRPCServer(dataChannel: dataChannel)
+		let channel = logMessages ? loggingChannel(dataChannel) : dataChannel
+
+		return JSONRPCServer(dataChannel: channel)
 	}
 
 	private func textDocumentItem(for uri: DocumentUri) async throws -> TextDocumentItem {
@@ -226,7 +250,7 @@ extension LSPProjectService {
 	}
 
 	private func handleCapabilitiesChanged(_ capabilities: ServerCapabilities) {
-		print("new capabilities: ", capabilities)
+		logger.notice("new capabilities")
 
 		for conn in documentConnections.values {
 			conn.handleCapabiltiesChanged(capabilities)

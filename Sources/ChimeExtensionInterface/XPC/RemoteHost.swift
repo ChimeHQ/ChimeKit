@@ -4,10 +4,11 @@ import AsyncXPCConnection
 import Queue
 
 @MainActor
-struct RemoteHost {
+final class RemoteHost {
 	typealias Service = QueuedRemoteXPCService<HostXPCProtocol, AsyncQueue>
 
     private let queuedService: Service
+	private var runningProcesses = [UUID: LaunchedProcess]()
 
     public init(connection: NSXPCConnection) {
 		let queue = AsyncQueue(attributes: [.concurrent, .publishErrors])
@@ -66,5 +67,40 @@ extension RemoteHost: HostProtocol {
 
 			service.serviceConfigurationChanged(for: documentId, to: xpcConfig)
 		}
+	}
+	
+	public func launchProcess(with parameters: Process.ExecutionParameters) async throws -> LaunchedProcess {
+		let process = try await queuedService.addValueErrorOperation(barrier: true) { service, handler in
+			let xpcParams = try! JSONEncoder().encode(parameters)
+
+			service.launchProcess(with: xpcParams) { id, stdin, stdout, stderr, error in
+				let process = LaunchedProcess(id: id, stdinHandle: stdin, stdoutHandle: stdout, stderrHandle: stderr)
+
+				handler(process, error)
+			}
+		}
+
+		// store this so we can relay the termination later on
+		self.runningProcesses[process.id] = process
+
+		return process
+	}
+
+	func captureUserEnvironment() async throws -> [String : String] {
+		try await queuedService.addValueErrorOperation(barrier: true) { service, handler in
+			service.captureUserEnvironment(reply: handler)
+		}
+	}
+}
+
+extension RemoteHost {
+	func handleProcessTerminated(with id: UUID) throws {
+		guard let process = runningProcesses[id] else {
+			throw ChimeExtensionError.processNotFound(id)
+		}
+
+		process.terminationHandler()
+
+		runningProcesses[id] = nil
 	}
 }

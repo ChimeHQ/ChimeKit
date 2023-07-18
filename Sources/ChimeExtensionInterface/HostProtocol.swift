@@ -1,5 +1,7 @@
 import Foundation
 
+import ProcessEnv
+
 /// Application-level functionality provided by Chime to extensions.
 ///
 /// This protocol provides access to functionality of the Chime application.
@@ -25,6 +27,12 @@ public protocol HostProtocol {
 	/// Inform the host that configuration for the extension's services have changed.
 	@MainActor
 	func serviceConfigurationChanged(for documentId: DocumentIdentity, to configuration: ServiceConfiguration)
+
+	@MainActor
+	func launchProcess(with parameters: Process.ExecutionParameters) async throws -> LaunchedProcess
+
+	@MainActor
+	func captureUserEnvironment() async throws -> [String: String]
 }
 
 public extension HostProtocol {

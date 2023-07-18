@@ -145,12 +145,17 @@ extension LSPDocumentService: CompletionService {
 
 			let params = CompletionParams(textDocument: textDocId, position: lspPosition, context: lspContext)
 
-			let response = try await server.completion(params: params)
+			do {
+				let response = try await server.completion(params: params)
+				
 
-			let fallbackRange = TextRange.range(NSRange(location: location, length: 0))
-			let transformer = transformers.completionTransformer
-
-			return response?.items.compactMap({ transformer(fallbackRange, $0) }) ?? []
+				let fallbackRange = TextRange.range(NSRange(location: location, length: 0))
+				let transformer = transformers.completionTransformer
+				
+				return response?.items.compactMap({ transformer(fallbackRange, $0) }) ?? []
+			} catch {
+				throw error
+			}
 		}
 	}
 }

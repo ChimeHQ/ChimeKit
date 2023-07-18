@@ -64,7 +64,9 @@
             }
             
             @Step {
-                Create an `init` method that accepts a `HostProtocol` argument.
+                Create an `init` method.
+				
+				This accepts a `HostProtocol` argument that will be passed in when connected.
 
                 @Code(name: "Sources/ChimeSwift/SwiftExtension.swift", file: "extensions-project-2-3-definition.swift")
             }
@@ -78,7 +80,7 @@
             @Step {
                 Add conformance to `ExtensionProtocol`.
                 
-                This protocol has default implementations, so there's no need to fill in more to start.
+                We'll put in placeholders for now and fill in the real implemenation later.
 
                 @Code(name: "Sources/ChimeSwift/SwiftExtension.swift", file: "extensions-project-2-5-definition.swift")
             }
@@ -188,20 +190,12 @@
                 @Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-3-standalone.swift")
             }
 
-			@Step {
-				Import `ProcessServiceContainer` and bootstrap the service on init.
-				
-				This is required to ensure that the `ProcessService` XPC service can be found at runtime.
-				
-				@Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-4-standalone.swift")
-			}
-			
             @Step {
                 Import `ChimeSwift` and add a `StandaloneExtension` instance variable to reference the `SwiftExtension` type.
                 
                 This is wrapper that helps to remove some boilerplate needed for handling internals of the extension system. It is optional, but convenient.
                 
-                @Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-5-standalone.swift")
+                @Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-4-standalone.swift")
             }
 
 			@Step {
@@ -209,16 +203,20 @@
 				
 				It will be created when the Chime app makes a connection to our extension.
 				
-				@Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-6-standalone.swift")
+				@Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-5-standalone.swift")
 			}
 			
             @Step {
                 Add implementations for the rest of the `ExtensionProtocol` methods.
                 
-                These just forward the core calls to the `StandaloneExtension`.
-                
-                @Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-7-standalone.swift")
-            }		
+                @Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-6-standalone.swift")
+            }
+			
+			@Step {
+				Forward the core calls to the `StandaloneExtension`.
+				
+				@Code(name: "SwiftExtension/SwiftStandaloneExtension.swift", file: "extensions-project-extension-7-standalone.swift")
+			}	
         }
     }
 }

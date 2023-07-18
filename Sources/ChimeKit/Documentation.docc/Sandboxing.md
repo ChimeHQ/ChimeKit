@@ -8,4 +8,4 @@ ExtensionKit extensions **must** be sandboxed. ChimeKit manages all permissions 
 
 ## Process Service
 
-ChimeKit includes a system for running executables outside of a sandbox. It is based on [ProcessService](https://github.com/ChimeHQ/ProcessService). By default, ChimeKit depends on ProcessService in a way that **should** cause Xcode to copy ProcessSeviceContainer.framework into any client target. But, that behavior is both opaque and implicit. It's important that, if you need out-of-sandbox support, you verify that ProcessService is being integrated correctly for your extension bundle.
+ChimeKit includes a system for running executables outside of a sandbox. `HostProtocol` contains a facility for inspecting the user's shell environment and running processes on an extension's behalf.

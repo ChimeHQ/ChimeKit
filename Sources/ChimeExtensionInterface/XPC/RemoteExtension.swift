@@ -37,6 +37,12 @@ public final class RemoteExtension {
 			}
 		}
 	}
+
+	public func launchedProcessTerminated(with id: UUID) {
+		queuedService.addOperation(barrier: true) { service in
+			service.launchedProcessTerminated(with: id)
+		}
+	}
 }
 
 extension RemoteExtension: ApplicationService {

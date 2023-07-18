@@ -2,21 +2,21 @@ import Foundation
 
 extension HostProtocol {
 	@MainActor
-    public func export(over connection: NSXPCConnection) {
+	public func export(over connection: NSXPCConnection, remoteExtension: RemoteExtension) {
         precondition(connection.exportedInterface == nil)
 
         connection.exportedInterface = NSXPCInterface(with: HostXPCProtocol.self)
-        connection.exportedObject = ExportedHost(self)
+		connection.exportedObject = ExportedHost(self, remoteExtension: remoteExtension)
     }
 }
 
 extension ExtensionProtocol {
 	@MainActor
-    func export(over connection: NSXPCConnection) {
+	func export(over connection: NSXPCConnection, host: RemoteHost) {
         precondition(connection.exportedInterface == nil)
 
         connection.exportedInterface = NSXPCInterface(with: ExtensionXPCProtocol.self)
-        connection.exportedObject = ExportedExtension(self)
+		connection.exportedObject = ExportedExtension(self, host: host)
     }
 }
 

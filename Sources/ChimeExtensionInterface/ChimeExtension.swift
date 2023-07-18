@@ -30,9 +30,9 @@ public protocol ChimeExtension: ExtensionProtocol, AppExtension {
 extension ChimeExtension {
 	var globalConfiguration: ConnectingAppExtensionConfiguration {
 		return ConnectingAppExtensionConfiguration { connection in
-			self.export(over: connection)
-
 			let remoteHost = RemoteHost(connection: connection)
+
+			self.export(over: connection, host: remoteHost)
 
 			try self.acceptHostConnection(remoteHost)
 		}

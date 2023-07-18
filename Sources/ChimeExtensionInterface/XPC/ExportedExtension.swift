@@ -10,9 +10,11 @@ final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPCProtoco
     private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "ExportedExtension")
 	private let queuedRelay: QueuedRelay
     private var documentServices = [DocumentIdentity: DocumentService]()
+	private let host: RemoteHost
 
-    init(_ object: Extension) {
+	init(_ object: Extension, host: RemoteHost) {
         self.bridgedObject = object
+		self.host = host
 		self.queuedRelay = QueuedRelay(attributes: [.concurrent])
     }
 
@@ -126,6 +128,12 @@ final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPCProtoco
 			try service?.didSave()
 		}
     }
+
+	func launchedProcessTerminated(with id: UUID) {
+		queuedRelay.addOperation(barrier: true) {
+			try self.host.handleProcessTerminated(with: id)
+		}
+	}
 
 	func symbols(forProject xpcContext: XPCProjectContext, matching query: String, completionHandler: @escaping XPCValueHandler<XPCArray<XPCSymbol>>) {
 		queuedRelay.addEncodingOperation(with: completionHandler) {

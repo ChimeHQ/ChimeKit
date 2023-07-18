@@ -6,8 +6,6 @@ import ChimeExtensionInterface
 import LanguageClient
 import LanguageServerProtocol
 import ProcessEnv
-import ProcessServiceClient
-import Queue
 
 public enum LSPServiceError: Error {
     case unsupported
@@ -29,13 +27,9 @@ public final class LSPService {
     private let executionParamsProvider: ExecutionParamsProvider
     private var projectServices: [URL: LSPProjectService]
 	private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "LSPService")
-	private let queue = AsyncQueue(attributes: [.concurrent])
 
     let host: HostProtocol
     let transformers: LSPTransformers
-
-	/// The name of the XPC service used to launch and run the language server executable.
-	public let processHostServiceName: String?
 
 	/// Write raw LSP messages to the console.
 	public let logMessages: Bool
@@ -46,20 +40,16 @@ public final class LSPService {
 	/// - Parameter serverOptions: A generic JSON object relayed to the language server as part of the initialization procedure.
 	/// - Parameter transformers: The structure of functions that is used to transformer the language server results to `ExtensionProtocol`-compatible types. Defaults to the standard transformers.
 	/// - Parameter executionParamsProvider: A function that produces the configuration required to launch the language server executable.
-	/// - Parameter processHostServiceName: The name of the XPC service used to launch and run the language server executable.
 	public init(host: HostProtocol,
 				serverOptions: any Codable = [:] as [String: String],
 				transformers: LSPTransformers = .init(),
 				executionParamsProvider: @escaping ExecutionParamsProvider,
-				processHostServiceName: String?,
 				logMessages: Bool = false) {
 		self.host = host
 		self.transformers = transformers
 		self.projectServices = [:]
 		self.serverOptions = serverOptions
 		self.executionParamsProvider = executionParamsProvider
-//		self.processHostServiceName = processHostServiceName
-		self.processHostServiceName = nil
 		self.logMessages = logMessages
 	}
 
@@ -69,23 +59,20 @@ public final class LSPService {
 	/// - Parameter serverOptions: A generic JSON object relayed to the language server as part of the initialization procedure.
 	/// - Parameter transformers: The structure of functions that is used to transformer the language server results to `ExtensionProtocol`-compatible types. Defaults to the standard transformers.
 	/// - Parameter executableName: The language server executable name found in PATH.
-	/// - Parameter processHostServiceName: The name of the XPC service used to launch and run the language server executable.
 	public convenience init(host: HostProtocol,
-				serverOptions: any Codable = [:] as [String: String],
-				transformers: LSPTransformers = .init(),
-				executableName: String,
-				processHostServiceName: String,
-				logMessages: Bool = false) {
+							serverOptions: any Codable = [:] as [String: String],
+							transformers: LSPTransformers = .init(),
+							executableName: String,
+							logMessages: Bool = false) {
 		let provider: ExecutionParamsProvider = {
 			try await LSPService.pathExecutableParamsProvider(name: executableName,
-															  processServiceHostName: processHostServiceName)
+															  host: host)
 		}
 
 		self.init(host: host,
 				  serverOptions: serverOptions,
 				  transformers: transformers,
 				  executionParamsProvider: provider,
-				  processHostServiceName: processHostServiceName,
 				  logMessages: logMessages)
 	}
 
@@ -118,7 +105,6 @@ extension LSPService: ApplicationService {
 									 serverOptions: serverOptions,
 									 transformers: transformers,
 									 executionParamsProvider: executionParamsProvider,
-									 processHostServiceName: processHostServiceName,
 									 logMessages: logMessages)
 
 		self.projectServices[url] = conn
@@ -161,17 +147,13 @@ extension LSPService: ApplicationService {
 
 extension LSPService {
 	/// Search the user's PATH for an executable
-	public static func pathExecutableParamsProvider(name: String, processServiceHostName: String) async throws -> Process.ExecutionParameters {
-		let userEnv = try await HostedProcess.userEnvironment(with: processServiceHostName)
+	public static func pathExecutableParamsProvider(name: String, host: HostProtocol) async throws -> Process.ExecutionParameters {
+		let userEnv = try await host.captureUserEnvironment()
 
 		let whichParams = Process.ExecutionParameters(path: "/usr/bin/which", arguments: [name], environment: userEnv)
 
-		let data = try await HostedProcess(named: processServiceHostName, parameters: whichParams)
-			.runAndReadStdout()
-
-		guard let output = String(data: data, encoding: .utf8) else {
-			throw LSPServiceError.serverNotFound
-		}
+		let data = try await host.launchProcess(with: whichParams).readStdout()
+		let output = String(decoding: data, as: UTF8.self)
 
 		if output.isEmpty {
 			throw LSPServiceError.serverNotFound

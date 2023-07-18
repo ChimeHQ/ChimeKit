@@ -2,6 +2,8 @@ import Foundation
 
 public enum ChimeExtensionError: Error {
 	case noHostConnection
+	case unsupported
+	case processNotFound(UUID)
 }
 
 /// Provides behaviors and functionality scoped to a specific document.

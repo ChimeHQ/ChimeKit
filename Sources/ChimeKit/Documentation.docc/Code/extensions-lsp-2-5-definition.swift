@@ -4,13 +4,12 @@ import ChimeKit
 public final class SwiftExtension {
     let host: any HostProtocol
     private let lspService: LSPService
-
-    public init(host: any HostProtocol, processHostServiceName: String?) {
+    
+    public init(host: any HostProtocol) {
         self.host = host
-
+        
         self.lspService = LSPService(host: host,
-                                     executionParamsProvider: SwiftExtension.provideParams,
-                                     processHostServiceName: processHostServiceName)
+                                     executionParamsProvider: SwiftExtension.provideParams)
     }
 }
 
@@ -25,7 +24,7 @@ extension SwiftExtension: ExtensionProtocol {
         get async throws {
         }
     }
-
+    
     public var applicationService: ApplicationService {
         get throws { try lspService.applicationService }
     }

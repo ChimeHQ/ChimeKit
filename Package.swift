@@ -3,7 +3,7 @@
 import PackageDescription
 
 let settings: [SwiftSetting] = [
-//	.unsafeFlags(["-Xfrontend", "-strict-concurrency=complete"])
+	.unsafeFlags(["-Xfrontend", "-strict-concurrency=complete"])
 ]
 
 let package = Package(
@@ -15,12 +15,11 @@ let package = Package(
 		.library(name: "ChimeKit", targets: ["ChimeKit"]),
 	],
 	dependencies: [
-		.package(url: "https://github.com/ChimeHQ/AsyncXPCConnection", revision: "82a0eb00a0d881e6a65cad0acc031c1efd058d06"),
+		.package(url: "https://github.com/ChimeHQ/AsyncXPCConnection", from: "1.0.0"),
 		.package(url: "https://github.com/ChimeHQ/Extendable", from: "0.1.1"),
 		.package(url: "https://github.com/ChimeHQ/ProcessEnv", from: "0.3.0"),
-		.package(url: "https://github.com/ChimeHQ/LanguageClient", revision: "200ca0f39336b1d4817e8a7386657f08ef94a190"),
-		.package(url: "https://github.com/ChimeHQ/LanguageServerProtocol", revision: "84f1f70b828a993325f408e8e9da6222713702b0"),
-		.package(url: "https://github.com/ChimeHQ/ProcessService", revision: "feb73fa4b7d51d0ffd04228afe01b6a60acce9f7"),
+		.package(url: "https://github.com/ChimeHQ/LanguageClient", revision: "2ddcd6bcf6417e923e42ec4676a3c10790413ac6"),
+		.package(url: "https://github.com/ChimeHQ/LanguageServerProtocol", revision: "6f05c1b2cc8b3afad83c7cba310b3338199780af"),
 		.package(url: "https://github.com/mattmassicotte/Queue", from: "0.1.4"),
 	],
 	targets: [
@@ -33,7 +32,8 @@ let package = Package(
 				swiftSettings: settings),
 		.testTarget(name: "ChimeExtensionInterfaceTests",
 					dependencies: [
-						"ChimeExtensionInterface"
+						"ChimeExtensionInterface",
+						"ProcessEnv",
 					]),
 		.target(name: "ChimeLSPAdapter",
 				dependencies: [
@@ -41,7 +41,6 @@ let package = Package(
 					"LanguageServerProtocol",
 					"ChimeExtensionInterface",
 					"ProcessEnv",
-					.product(name: "ProcessServiceClient", package: "ProcessService"),
 					"Queue",
 				],
 				swiftSettings: settings),

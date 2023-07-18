@@ -1,5 +1,7 @@
 import Foundation
 
+import ProcessEnv
+
 /// Export a `HostProtocol`-conforming type over XPC.
 ///
 /// This type is used internally by Chime's extension system, and should not be used by
@@ -8,9 +10,12 @@ import Foundation
 public final class ExportedHost<Host: HostProtocol>: HostXPCProtocol {
     let bridgedObject: Host
 	private let queuedRelay: QueuedRelay
-	
-	init(_ object: Host) {
+	// I'm actually not 100% sure this need to be weak
+	private weak var remoteExtension: RemoteExtension?
+
+	init(_ object: Host, remoteExtension: RemoteExtension) {
         self.bridgedObject = object
+		self.remoteExtension = remoteExtension
 		self.queuedRelay = QueuedRelay(attributes: [.concurrent])
     }
 
@@ -64,5 +69,46 @@ public final class ExportedHost<Host: HostProtocol>: HostXPCProtocol {
 
 			self.bridgedObject.serviceConfigurationChanged(for: documentId, to: config)
 		}
+	}
+
+	func launchProcess(with xpcParameters: XPCExecutionParamters, reply: @escaping @Sendable (UUID?, FileHandle?, FileHandle?, FileHandle?, Error?) -> Void) {
+		queuedRelay.addOperation(barrier: true) {
+			let params = try JSONDecoder().decode(Process.ExecutionParameters.self, from: xpcParameters)
+
+			do {
+				let process = try await self.bridgedObject.launchProcess(with: params)
+
+				self.setupTerminationMonitoring(for: process)
+
+				reply(process.id, process.stdinHandle, process.stdoutHandle, process.stderrHandle, nil)
+			} catch {
+				reply(nil, nil, nil, nil, error)
+				throw error
+			}
+		}
+	}
+
+	func captureUserEnvironment(reply: @escaping XPCValueHandler<[String : String]>) {
+		queuedRelay.addValueErrorOperation(with: reply) {
+			try await self.bridgedObject.captureUserEnvironment()
+		}
+	}
+}
+
+extension ExportedHost {
+	private nonisolated func nonisolatedHandleTermination(of id: UUID) {
+		Task {
+			await handleTermination(of: id)
+		}
+	}
+
+	private func handleTermination(of id: UUID) {
+		remoteExtension?.launchedProcessTerminated(with: id)
+	}
+
+	private func setupTerminationMonitoring(for process: LaunchedProcess) {
+		let id = process.id
+
+		process.terminationHandler = { [weak self] in self?.nonisolatedHandleTermination(of: id) }
 	}
 }

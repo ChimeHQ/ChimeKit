@@ -4,7 +4,7 @@ import ChimeKit
 public final class SwiftExtension {
     let host: any HostProtocol
 
-    public init(host: any HostProtocol, processHostServiceName: String?) {
+    public init(host: any HostProtocol) {
         self.host = host
     }
 }

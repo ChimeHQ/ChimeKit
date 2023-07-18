@@ -24,6 +24,8 @@ typealias XPCToken = Data
 typealias XPCDiagnostic = Data
 typealias XPCSymbol = Data
 
+typealias XPCExecutionParamters = Data
+
 /// Extension XPC API
 @objc protocol ExtensionXPCProtocol {
 	@MainActor
@@ -41,6 +43,9 @@ typealias XPCSymbol = Data
     func didChangeDocumentContext(from xpcOldContext: XPCDocumentContext, to xpcNewContext: XPCDocumentContext)
 	@MainActor
     func willCloseDocument(with xpcContext: XPCDocumentContext)
+
+	@MainActor
+	func launchedProcessTerminated(with id: UUID)
 
     // ExtensionDocumentService
 	@MainActor
@@ -102,6 +107,12 @@ typealias XPCSymbol = Data
 
 	@MainActor
 	func serviceConfigurationChanged(for documentId: UUID, to xpcConfiguration: XPCServiceConfiguration)
+
+	// ProcessService
+	@MainActor
+	func launchProcess(with xpcParameters: XPCExecutionParamters, reply: @escaping @Sendable (UUID?, FileHandle?, FileHandle?, FileHandle?, Error?) -> Void)
+	@MainActor
+	func captureUserEnvironment(reply: @escaping XPCValueHandler<[String: String]>)
 }
 
 /// Extension Scene XPC API

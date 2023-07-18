@@ -1,5 +1,7 @@
 import XCTest
-@testable import ChimeExtensionInterface
+
+import ChimeExtensionInterface
+import ProcessEnv
 
 @available(macOS 13.0, *)
 final class ExampleNonUIExtension: ChimeExtension {
@@ -62,6 +64,14 @@ final class MockHost: HostProtocol {
     }
 
 	func serviceConfigurationChanged(for documentId: DocumentIdentity, to configuration: ServiceConfiguration) {
+	}
+
+	func launchProcess(with parameters: Process.ExecutionParameters) async throws -> LaunchedProcess {
+		throw ChimeExtensionError.unsupported
+	}
+
+	func captureUserEnvironment() async throws -> [String : String] {
+		throw ChimeExtensionError.unsupported
 	}
 }
 
