@@ -21,10 +21,10 @@
     {
       "identity" : "fseventswrapper",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mattmassicotte/FSEventsWrapper",
+      "location" : "https://github.com/Frizlab/FSEventsWrapper",
       "state" : {
-        "branch" : "feature/asyncstream",
-        "revision" : "22b2062fca2dc64be8722b28a2bf6fd27986c655"
+        "revision" : "70bbea4b108221fcabfce8dbced8502831c0ae04",
+        "version" : "2.1.0"
       }
     },
     {
@@ -41,7 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/JSONRPC",
       "state" : {
-        "revision" : "42e5e5dd5aace3885d705f6fad50e60ad4cc3c69"
+        "revision" : "1ae27fceaec3208f62b3ef23d2d565d4222c3ac6",
+        "version" : "0.8.1"
       }
     },
     {
@@ -49,7 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageClient",
       "state" : {
-        "revision" : "2ddcd6bcf6417e923e42ec4676a3c10790413ac6"
+        "revision" : "092fe0dac8183dff8feeb91f10f2e6a88a43852d",
+        "version" : "0.6.0"
       }
     },
     {
@@ -57,7 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
       "state" : {
-        "revision" : "6f05c1b2cc8b3afad83c7cba310b3338199780af"
+        "revision" : "a244efe43ac7a42577b4afd9ccc43b5223c7f18d",
+        "version" : "0.10.0"
       }
     },
     {
