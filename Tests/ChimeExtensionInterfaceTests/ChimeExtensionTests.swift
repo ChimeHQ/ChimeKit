@@ -66,7 +66,7 @@ final class MockHost: HostProtocol {
 	func serviceConfigurationChanged(for documentId: DocumentIdentity, to configuration: ServiceConfiguration) {
 	}
 
-	func launchProcess(with parameters: Process.ExecutionParameters) async throws -> LaunchedProcess {
+	func launchProcess(with parameters: Process.ExecutionParameters, inUserShell: Bool) async throws -> LaunchedProcess {
 		throw ChimeExtensionError.unsupported
 	}
 
