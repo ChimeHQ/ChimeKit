@@ -86,7 +86,7 @@ extension LSPDocumentService: DocumentService {
 	func didApplyChange(_ change: CombinedTextChange) throws {
 		let uri = try context.uri
 		
-		serverHostInterface.enqueueBarrier { [context] (server, _, host) in
+		serverHostInterface.enqueue(barrier: true) { [context] (server, _, host) in
 			let syncKind = await server.capabilities?.textDocumentSync?.effectiveOptions.change ?? .none
 
 			switch syncKind {
@@ -116,7 +116,7 @@ extension LSPDocumentService: DocumentService {
 	func willSave() throws {
 		let id = try context.textDocumentIdentifier
 
-		serverHostInterface.enqueueBarrier { server, _, _ in
+		serverHostInterface.enqueue(barrier: true) { server, _, _ in
 			let params = WillSaveTextDocumentParams(textDocument: id, reason: .manual)
 
 			try await server.willSaveTextDocument(params: params)

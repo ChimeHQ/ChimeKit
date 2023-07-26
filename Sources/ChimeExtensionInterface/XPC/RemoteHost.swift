@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 import AsyncXPCConnection
 import Queue
@@ -9,23 +10,35 @@ final class RemoteHost {
 
     private let queuedService: Service
 	private var runningProcesses = [UUID: LaunchedProcess]()
+	private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "RemoteHost")
 
     public init(connection: NSXPCConnection) {
 		let queue = AsyncQueue(attributes: [.concurrent, .publishErrors])
 
+		precondition(connection.remoteObjectInterface == nil)
+		connection.remoteObjectInterface = NSXPCInterface(with: HostXPCProtocol.self)
+
         self.queuedService = Service(queue: queue, connection: connection)
+
+		Task { [logger] in
+			for await error in queue.errorSequence {
+				logger.error("queue error: \(error, privacy: .public)")
+			}
+		}
     }
 }
 
 extension RemoteHost: HostProtocol {
     public func textContent(for documentId: DocumentIdentity) async throws -> (String, Int) {
-		try await queuedService.addValueErrorOperation(barrier: true) { service, handler in
+		let value = try await queuedService.addValueErrorOperation(barrier: true) { service, handler in
 			service.textContent(for: documentId) { value, version, error in
 				let pair: (String, Int)? = value.map { ($0, version) }
 
 				handler(pair, error)
 			}
 		}
+
+		return value
     }
 
     public func textContent(for documentId: DocumentIdentity, in range: TextRange) async throws -> CombinedTextContent {
@@ -69,11 +82,11 @@ extension RemoteHost: HostProtocol {
 		}
 	}
 	
-	public func launchProcess(with parameters: Process.ExecutionParameters) async throws -> LaunchedProcess {
-		let process = try await queuedService.addValueErrorOperation(barrier: true) { service, handler in
+	public func launchProcess(with parameters: Process.ExecutionParameters, inUserShell: Bool) async throws -> LaunchedProcess {
+		let process = try await queuedService.addValueErrorOperation { service, handler in
 			let xpcParams = try! JSONEncoder().encode(parameters)
 
-			service.launchProcess(with: xpcParams) { id, stdin, stdout, stderr, error in
+			service.launchProcess(with: xpcParams, inUserShell: inUserShell) { id, stdin, stdout, stderr, error in
 				let process = LaunchedProcess(id: id, stdinHandle: stdin, stdoutHandle: stdout, stderrHandle: stderr)
 
 				handler(process, error)

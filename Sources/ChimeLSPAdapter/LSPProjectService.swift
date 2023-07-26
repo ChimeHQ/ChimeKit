@@ -12,6 +12,7 @@ final class LSPProjectService {
 	typealias Server = LanguageClient.RestartingServer<JSONRPCServer>
 
 	private let executionParamsProvider: LSPService.ExecutionParamsProvider
+	private let runInUserShell: Bool
 	private let serverOptions: any Codable
 	private let transformers: LSPTransformers
 	private let host: HostProtocol
@@ -40,6 +41,7 @@ final class LSPProjectService {
 		serverOptions: any Codable = [:] as [String: String],
 		transformers: LSPTransformers = .init(),
 		executionParamsProvider: @escaping LSPService.ExecutionParamsProvider,
+		runInUserShell: Bool,
 		logMessages: Bool
 	) {
 		self.context = context
@@ -47,6 +49,7 @@ final class LSPProjectService {
 		self.serverOptions = serverOptions
 		self.transformers = transformers
 		self.executionParamsProvider = executionParamsProvider
+		self.runInUserShell = runInUserShell
 		self.logMessages = logMessages
 
 		let requestSequence = serverHostInterface.server.requestSequence
@@ -62,6 +65,12 @@ final class LSPProjectService {
 		self.capabilitiesTask = Task { [weak self, capabilitiesSequence] in
 			for await capabilities in capabilitiesSequence {
 				self?.handleCapabilitiesChanged(capabilities)
+			}
+		}
+
+		Task {
+			for await error in queue.errorSequence {
+				logger.error("queued failure: \(error, privacy: .public)")
 			}
 		}
 	}
@@ -97,7 +106,10 @@ extension LSPProjectService {
 
 		let params = try await executionParamsProvider()
 
-		return try await DataChannel.hostedProcessChannel(host: host, parameters: params, terminationHandler: terminationHandler)
+		return try await DataChannel.hostedProcessChannel(host: host,
+														  parameters: params,
+														  runInUserShell: runInUserShell,
+														  terminationHandler: terminationHandler)
 	}
 
 	private func loggingChannel(_ channel: DataChannel) -> DataChannel {
@@ -244,7 +256,7 @@ extension LSPProjectService {
 	private func handleFileEvent(_ event: FileEvent) {
 		let params = DidChangeWatchedFilesParams(changes: [event])
 
-		serverHostInterface.enqueueBarrier { server, _, _ in
+		serverHostInterface.enqueue(barrier: true) { server, _, _ in
 			try await server.didChangeWatchedFiles(params: params)
 		}
 	}
@@ -283,9 +295,12 @@ extension LSPProjectService: ApplicationService {
 
 		documentConnections[id] = docConnection
 
-		guard docConnection.isOpenable else { return }
+		guard docConnection.isOpenable else {
+			logger.warning("Document connection is not openable")
+			return
+		}
 
-		serverHostInterface.enqueueBarrier { server, _, _ in
+		serverHostInterface.enqueue(barrier: true) { server, _, _ in
 			let item = try await docConnection.textDocumentItem
 
 			let params = DidOpenTextDocumentParams(textDocument: item)
@@ -311,9 +326,9 @@ extension LSPProjectService: ApplicationService {
 
 		guard connection?.isOpenable == true else { return }
 
-		serverHostInterface.enqueueBarrier { server, _, _ in
+		serverHostInterface.enqueue(barrier: true) { server, _, _ in
 			let id = try docContext.textDocumentIdentifier
-			
+
 			let param = DidCloseTextDocumentParams(textDocument: id)
 			try await server.didCloseTextDocument(params: param)
 		}
@@ -323,7 +338,10 @@ extension LSPProjectService: ApplicationService {
 		let id = docContext.id
 		let conn = documentConnections[id]
 
-		assert(conn != nil)
+		if conn == nil {
+			logger.error("No connection for \(docContext, privacy: .public)")
+			assertionFailure()
+		}
 
 		return conn
 	}

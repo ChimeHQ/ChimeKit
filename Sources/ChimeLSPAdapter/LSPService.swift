@@ -25,6 +25,7 @@ public final class LSPService {
 
     private let serverOptions: any Codable
     private let executionParamsProvider: ExecutionParamsProvider
+	private let runInUserShell: Bool
     private var projectServices: [URL: LSPProjectService]
 	private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "LSPService")
 
@@ -39,17 +40,21 @@ public final class LSPService {
 	/// - Parameter host: The `HostProtocol`-conforming object the service will communicate with.
 	/// - Parameter serverOptions: A generic JSON object relayed to the language server as part of the initialization procedure.
 	/// - Parameter transformers: The structure of functions that is used to transformer the language server results to `ExtensionProtocol`-compatible types. Defaults to the standard transformers.
-	/// - Parameter executionParamsProvider: A function that produces the configuration required to launch the language server executable.
+	/// - Parameter executionParamsProvider: A function that produces the configuration required to launch the language server
+	/// - Parameter runInUserShell: run the server within the user's shell environment
+	/// - Parameter logMessages: log the raw JSON-RPC messages to and from the server
 	public init(host: HostProtocol,
 				serverOptions: any Codable = [:] as [String: String],
 				transformers: LSPTransformers = .init(),
 				executionParamsProvider: @escaping ExecutionParamsProvider,
+				runInUserShell: Bool = false,
 				logMessages: Bool = false) {
 		self.host = host
 		self.transformers = transformers
 		self.projectServices = [:]
 		self.serverOptions = serverOptions
 		self.executionParamsProvider = executionParamsProvider
+		self.runInUserShell = runInUserShell
 		self.logMessages = logMessages
 	}
 
@@ -59,6 +64,7 @@ public final class LSPService {
 	/// - Parameter serverOptions: A generic JSON object relayed to the language server as part of the initialization procedure.
 	/// - Parameter transformers: The structure of functions that is used to transformer the language server results to `ExtensionProtocol`-compatible types. Defaults to the standard transformers.
 	/// - Parameter executableName: The language server executable name found in PATH.
+	/// - Parameter logMessages: log the raw JSON-RPC messages to and from the server
 	public convenience init(host: HostProtocol,
 							serverOptions: any Codable = [:] as [String: String],
 							transformers: LSPTransformers = .init(),
@@ -105,6 +111,7 @@ extension LSPService: ApplicationService {
 									 serverOptions: serverOptions,
 									 transformers: transformers,
 									 executionParamsProvider: executionParamsProvider,
+									 runInUserShell: runInUserShell,
 									 logMessages: logMessages)
 
 		self.projectServices[url] = conn

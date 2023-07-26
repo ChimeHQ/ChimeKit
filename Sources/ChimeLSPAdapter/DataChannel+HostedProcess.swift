@@ -11,9 +11,10 @@ extension DataChannel {
 	static func hostedProcessChannel(
 		host: HostProtocol,
 		parameters: Process.ExecutionParameters,
+		runInUserShell: Bool,
 		terminationHandler: @escaping @Sendable () -> Void
 	) async throws -> DataChannel {
-		let process = try await host.launchProcess(with: parameters)
+		let process = try await host.launchProcess(with: parameters, inUserShell: runInUserShell)
 
 		let (stream, continuation) = DataSequence.makeStream()
 

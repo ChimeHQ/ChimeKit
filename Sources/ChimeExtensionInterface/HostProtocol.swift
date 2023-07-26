@@ -29,10 +29,17 @@ public protocol HostProtocol {
 	func serviceConfigurationChanged(for documentId: DocumentIdentity, to configuration: ServiceConfiguration)
 
 	@MainActor
-	func launchProcess(with parameters: Process.ExecutionParameters) async throws -> LaunchedProcess
+	func launchProcess(with parameters: Process.ExecutionParameters, inUserShell: Bool) async throws -> LaunchedProcess
 
 	@MainActor
 	func captureUserEnvironment() async throws -> [String: String]
+}
+
+extension HostProtocol {
+	@MainActor
+	public func launchProcess(with parameters: Process.ExecutionParameters) async throws -> LaunchedProcess {
+		try await launchProcess(with: parameters, inUserShell: false)
+	}
 }
 
 public extension HostProtocol {

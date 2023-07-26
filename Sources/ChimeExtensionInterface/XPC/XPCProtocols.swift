@@ -110,7 +110,7 @@ typealias XPCExecutionParamters = Data
 
 	// ProcessService
 	@MainActor
-	func launchProcess(with xpcParameters: XPCExecutionParamters, reply: @escaping @Sendable (UUID?, FileHandle?, FileHandle?, FileHandle?, Error?) -> Void)
+	func launchProcess(with xpcParameters: XPCExecutionParamters, inUserShell: Bool, reply: @escaping @Sendable (UUID?, FileHandle?, FileHandle?, FileHandle?, Error?) -> Void)
 	@MainActor
 	func captureUserEnvironment(reply: @escaping XPCValueHandler<[String: String]>)
 }

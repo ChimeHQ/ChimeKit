@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 import ChimeExtensionInterface
 import LanguageClient
@@ -52,27 +53,12 @@ extension LSPHostServerInterface {
 	}
 
 	func enqueue(
+		barrier: Bool = false,
 		_ operation: @MainActor @escaping (Server, LSPTransformers, HostProtocol) async throws -> Void
 	) {
-		queue.addOperation {
-			do {
-				try await operation(server, transformers, host)
-			} catch {
-				print("need to relay error back to host: \(error)")
-			}
-		}
-	}
-
-	func enqueueBarrier(
-		_ operation: @MainActor @escaping (Server, LSPTransformers, HostProtocol) async throws -> Void
-	) {
-		// should we cancel pending operations here?
-		queue.addBarrierOperation {
-			do {
-				try await operation(server, transformers, host)
-			} catch {
-				print("need to relay error back to host: \(error)")
-			}
+		// should we cancel pending operations here if this is a barrier?
+		queue.addOperation(barrier: barrier) {
+			try await operation(server, transformers, host)
 		}
 	}
 }

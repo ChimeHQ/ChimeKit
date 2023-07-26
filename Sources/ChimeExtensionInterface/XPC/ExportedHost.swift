@@ -71,12 +71,12 @@ public final class ExportedHost<Host: HostProtocol>: HostXPCProtocol {
 		}
 	}
 
-	func launchProcess(with xpcParameters: XPCExecutionParamters, reply: @escaping @Sendable (UUID?, FileHandle?, FileHandle?, FileHandle?, Error?) -> Void) {
+	func launchProcess(with xpcParameters: XPCExecutionParamters, inUserShell: Bool, reply: @escaping @Sendable (UUID?, FileHandle?, FileHandle?, FileHandle?, Error?) -> Void) {
 		queuedRelay.addOperation(barrier: true) {
 			let params = try JSONDecoder().decode(Process.ExecutionParameters.self, from: xpcParameters)
 
 			do {
-				let process = try await self.bridgedObject.launchProcess(with: params)
+				let process = try await self.bridgedObject.launchProcess(with: params, inUserShell: inUserShell)
 
 				self.setupTerminationMonitoring(for: process)
 
