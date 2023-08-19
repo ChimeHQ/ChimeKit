@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageClient",
       "state" : {
-        "revision" : "092fe0dac8183dff8feeb91f10f2e6a88a43852d",
-        "version" : "0.6.0"
+        "revision" : "bae3819325a2d6e592c2bf881f45144ddc1cfb96",
+        "version" : "0.6.1"
       }
     },
     {
@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ProcessEnv",
       "state" : {
-        "revision" : "29487b6581bb785c372c611c943541ef4309d051",
-        "version" : "0.3.1"
+        "revision" : "83f1ebc9dd6fb1db0bd89a3fcae00488a0f3fdd9",
+        "version" : "1.0.0"
       }
     },
     {
