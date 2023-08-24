@@ -8,6 +8,10 @@ extension DocumentContext {
 		if uti.conforms(to: .cSource) || uti.conforms(to: .cHeader) {
 			return LanguageIdentifier.c.rawValue
 		}
+        
+		if uti.conforms(to: .clojureSource) {
+			return LanguageIdentifier.clojure.rawValue
+		}
 
 		if uti.conforms(to: .cPlusPlusSource) || uti.conforms(to: .cPlusPlusHeader) {
 			return LanguageIdentifier.cpp.rawValue
