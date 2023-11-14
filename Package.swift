@@ -21,6 +21,9 @@ let package = Package(
 		.package(url: "https://github.com/ChimeHQ/LanguageClient", from: "0.6.0"),
 		.package(url: "https://github.com/ChimeHQ/LanguageServerProtocol", from: "0.10.0"),
 		.package(url: "https://github.com/mattmassicotte/Queue", from: "0.1.4"),
+
+		// this is temporarily necessary because I messed up the requirement in LanguageServerProtocol
+		.package(url: "https://github.com/ChimeHQ/JSONRPC", "0.8.0"..<"0.9.0"),
 	],
 	targets: [
 		.target(name: "ChimeExtensionInterface",
@@ -42,6 +45,7 @@ let package = Package(
 					"ChimeExtensionInterface",
 					"ProcessEnv",
 					"Queue",
+					"JSONRPC",
 				],
 				swiftSettings: settings),
 		.testTarget(name: "ChimeLSPAdapterTests",
