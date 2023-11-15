@@ -45,7 +45,7 @@ final class LSPDocumentService {
 		return context.url != nil && context.languageIdentifier != nil
 	}
 
-	func handleCapabiltiesChanged(_ capabilities: ServerCapabilities) {
+	func handleCapabilitiesChanged(_ capabilities: ServerCapabilities) {
 		let legend = capabilities.semanticTokensProvider?.effectiveOptions.legend
 
 		let wasAvailable = tokenRepresentation != nil

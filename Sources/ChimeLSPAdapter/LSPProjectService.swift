@@ -265,7 +265,7 @@ extension LSPProjectService {
 		logger.notice("new capabilities")
 
 		for conn in documentConnections.values {
-			conn.handleCapabiltiesChanged(capabilities)
+			conn.handleCapabilitiesChanged(capabilities)
 		}
 	}
 }
