@@ -8,6 +8,10 @@ Chime can load ExtensionKit-based extensions at runtime. ChimeKit provides a num
 
 ## Topics
 
+### Extension Projects
+
+- <doc:Building>
+
 ### Defining Extensions
 
 - ``ChimeExtension``

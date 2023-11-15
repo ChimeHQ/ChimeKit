@@ -25,6 +25,7 @@ ChimeKit can be used as a single library. But, internally it is a collection of 
 
 ### Building Extensions
 
+- <doc:Building>
 - <doc:Sandboxing>
 - <doc:Context>
 - <doc:Text>
