@@ -5,11 +5,12 @@ import ChimeExtensionInterface
 import JSONRPC
 import LanguageClient
 import LanguageServerProtocol
+import LSPClient
 import Queue
 
 @MainActor
 final class LSPProjectService {
-	typealias Server = LanguageClient.RestartingServer<JSONRPCServer>
+	typealias Server = LanguageClient.RestartingServer<JSONRPCServerConnection>
 
 	private let executionParamsProvider: LSPService.ExecutionParamsProvider
 	private let runInUserShell: Bool
@@ -52,11 +53,11 @@ final class LSPProjectService {
 		self.runInUserShell = runInUserShell
 		self.logMessages = logMessages
 
-		let requestSequence = serverHostInterface.server.requestSequence
+		let eventSequence = serverHostInterface.server.eventSequence
 
-		self.requestTask = Task { [weak self, requestSequence] in
-			for await request in requestSequence {
-				self?.handleRequest(request)
+		self.requestTask = Task { [weak self, eventSequence] in
+			for await event in eventSequence {
+				self?.handleEvent(event)
 			}
 		}
 
@@ -120,12 +121,12 @@ extension LSPProjectService {
 		})
 	}
 
-	private func serverChannelProvider() async throws -> JSONRPCServer {
+	private func serverChannelProvider() async throws -> JSONRPCServerConnection {
 		let dataChannel = try await makeDataChannel()
 
 		let channel = logMessages ? loggingChannel(dataChannel) : dataChannel
 
-		return JSONRPCServer(dataChannel: channel)
+		return JSONRPCServerConnection(dataChannel: channel)
 	}
 
 	private func textDocumentItem(for uri: DocumentUri) async throws -> TextDocumentItem {
@@ -184,16 +185,16 @@ extension LSPProjectService {
 }
 
 extension LSPProjectService {
-	private func handleRequest(_ request: ServerRequest) {
+	private func handleEvent(_ event: ServerEvent) {
 		queue.addOperation {
-			switch request {
-			case let .workspaceConfiguration(params, handler):
+			switch event {
+			case let .request(_, .workspaceConfiguration(params, handler)):
 				let count = params.items.count
 				let emptyObject = JSONValue.hash([:])
 				let responseItems = Array(repeating: emptyObject, count: count)
 
 				await handler(.success(responseItems))
-			case let .workspaceSemanticTokenRefresh(handler):
+			case let .request(_, .workspaceSemanticTokenRefresh(handler)):
 				self.logger.info("semantic token refresh")
 
 				for docId in self.documentConnections.keys {
@@ -201,7 +202,7 @@ extension LSPProjectService {
 				}
 
 				await handler(nil)
-			case let .clientRegisterCapability(params, handler):
+			case let .request(_, .clientRegisterCapability(params, handler)):
 				let methods = params.registrations.map({ $0.method })
 				
 				self.logger.info("Registering capabilities: \(methods, privacy: .public)")
@@ -209,13 +210,15 @@ extension LSPProjectService {
 				self.handleServerRegistrations(params.serverRegistrations)
 
 				await handler(nil)
-			case let .clientUnregisterCapability(params, handler):
+			case let .request(_, .clientUnregisterCapability(params, handler)):
 				let methods = params.unregistrations.map({ $0.method })
 
 				self.logger.warning("Unregistering capabilities: \(methods, privacy: .public)")
 				await handler(nil)
-			default:
+			case let .request(id: _, request: request):
 				await request.relyWithError(LSPServiceError.unsupported)
+			default:
+				break
 			}
 		}
 	}
@@ -257,7 +260,7 @@ extension LSPProjectService {
 		let params = DidChangeWatchedFilesParams(changes: [event])
 
 		serverHostInterface.enqueue(barrier: true) { server, _, _ in
-			try await server.didChangeWatchedFiles(params: params)
+			try await server.workspaceDidChangeWatchedFiles(params: params)
 		}
 	}
 
@@ -296,7 +299,7 @@ extension LSPProjectService: ApplicationService {
 		documentConnections[id] = docConnection
 
 		guard docConnection.isOpenable else {
-			logger.warning("Document connection is not openable")
+			logger.warning("Document connection is not openable: \(docContext.languageIdentifier ?? "")")
 			return
 		}
 

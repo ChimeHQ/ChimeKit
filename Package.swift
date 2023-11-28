@@ -1,10 +1,6 @@
-// swift-tools-version:5.6
+// swift-tools-version: 5.8
 
 import PackageDescription
-
-let settings: [SwiftSetting] = [
-//	.unsafeFlags(["-Xfrontend", "-strict-concurrency=complete"])
-]
 
 let package = Package(
 	name: "ChimeKit",
@@ -18,12 +14,10 @@ let package = Package(
 		.package(url: "https://github.com/ChimeHQ/AsyncXPCConnection", from: "1.0.0"),
 		.package(url: "https://github.com/ChimeHQ/Extendable", from: "0.1.1"),
 		.package(url: "https://github.com/ChimeHQ/ProcessEnv", from: "1.0.0"),
-		.package(url: "https://github.com/ChimeHQ/LanguageClient", from: "0.6.0"),
-		.package(url: "https://github.com/ChimeHQ/LanguageServerProtocol", from: "0.10.0"),
+		.package(url: "https://github.com/ChimeHQ/LanguageClient", from: "0.7.0"),
+		.package(url: "https://github.com/ChimeHQ/LanguageServerProtocol", from: "0.11.0"),
 		.package(url: "https://github.com/mattmassicotte/Queue", from: "0.1.4"),
-
-		// this is temporarily necessary because I messed up the requirement in LanguageServerProtocol
-		.package(url: "https://github.com/ChimeHQ/JSONRPC", "0.8.0"..<"0.9.0"),
+		.package(url: "https://github.com/ChimeHQ/JSONRPC", from: "0.9.0"),
 	],
 	targets: [
 		.target(name: "ChimeExtensionInterface",
@@ -31,8 +25,7 @@ let package = Package(
 					"AsyncXPCConnection",
 					"Extendable",
 					"Queue"
-				],
-				swiftSettings: settings),
+				]),
 		.testTarget(name: "ChimeExtensionInterfaceTests",
 					dependencies: [
 						"ChimeExtensionInterface",
@@ -46,8 +39,7 @@ let package = Package(
 					"ProcessEnv",
 					"Queue",
 					"JSONRPC",
-				],
-				swiftSettings: settings),
+				]),
 		.testTarget(name: "ChimeLSPAdapterTests",
 					dependencies: [
 						"ChimeLSPAdapter"
@@ -56,7 +48,16 @@ let package = Package(
 				dependencies: [
 					"ChimeExtensionInterface",
 					"ChimeLSPAdapter",
-				],
-				swiftSettings: settings),
+				]),
 	]
 )
+
+let swiftSettings: [SwiftSetting] = [
+	.enableExperimentalFeature("StrictConcurrency")
+]
+
+for target in package.targets {
+	var settings = target.swiftSettings ?? []
+	settings.append(contentsOf: swiftSettings)
+	target.swiftSettings = settings
+}

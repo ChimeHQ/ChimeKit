@@ -19,11 +19,9 @@ extension DataChannel {
 		let (stream, continuation) = DataSequence.makeStream()
 
 		let dataStream = process.stdoutHandle.dataStream
-		let byteStream = AsyncByteSequence(base: dataStream)
-		let framedData = AsyncMessageFramingSequence(base: byteStream)
 
 		Task {
-			for try await data in framedData {
+			for try await data in dataStream {
 				continuation.yield(data)
 			}
 
@@ -46,9 +44,7 @@ extension DataChannel {
 		let handler: DataChannel.WriteHandler = {
 			_ = process
 
-			let data = MessageFraming.frame($0)
-
-			try stdin.write(contentsOf: data)
+			try stdin.write(contentsOf: $0)
 		}
 
 		return DataChannel(writeHandler: handler,
