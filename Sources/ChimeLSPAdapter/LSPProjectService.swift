@@ -217,6 +217,8 @@ extension LSPProjectService {
 				await handler(nil)
 			case let .request(id: _, request: request):
 				await request.relyWithError(LSPServiceError.unsupported)
+			case let .notification(.textDocumentPublishDiagnostics(params)):
+				self.publishDiagnostics(params)
 			default:
 				break
 			}
@@ -270,6 +272,32 @@ extension LSPProjectService {
 		for conn in documentConnections.values {
 			conn.handleCapabilitiesChanged(capabilities)
 		}
+	}
+
+	private func publishDiagnostics(_ params: PublishDiagnosticsParams) {
+		let version = params.version
+		let versionStr = version.flatMap { String($0) } ?? "nil"
+		let count = params.diagnostics.count
+
+		logger.debug("diagnostics count \(count, privacy: .public) with doc version \(versionStr, privacy: .public)")
+
+		guard let url = URL(string: params.uri) else {
+			let paramsStr = String(describing: params)
+
+			logger.warning("unable to convert url: \(paramsStr, privacy: .public)")
+
+			return
+		}
+
+		let usableDiagnostics = params.diagnostics.prefix(100)
+		if count > 100 {
+			logger.info("truncated diagnostics payload")
+		}
+
+		let transformer = transformers.diagnosticTransformer
+		let diagnostics = usableDiagnostics.map({ transformer($0) })
+
+		host.publishDiagnostics(diagnostics, for: url, version: version)
 	}
 }
 
