@@ -220,7 +220,9 @@ extension LSPProjectService {
 			case let .notification(.textDocumentPublishDiagnostics(params)):
 				self.publishDiagnostics(params)
 			default:
-				break
+				let eventStr = String(describing: event)
+
+				self.logger.info("dropping unhandled server event: \(eventStr, privacy: .public)")
 			}
 		}
 	}
