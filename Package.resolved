@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/JSONRPC",
       "state" : {
-        "revision" : "1ae27fceaec3208f62b3ef23d2d565d4222c3ac6",
-        "version" : "0.8.1"
+        "revision" : "c6ec759d41a76ac88fe7327c41a77d9033943374",
+        "version" : "0.9.0"
       }
     },
     {
@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageClient",
       "state" : {
-        "revision" : "bae3819325a2d6e592c2bf881f45144ddc1cfb96",
-        "version" : "0.6.1"
+        "revision" : "6e5971905edd8068b30a986e7e99910381a9a748",
+        "version" : "0.7.0"
       }
     },
     {
@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
       "state" : {
-        "revision" : "a244efe43ac7a42577b4afd9ccc43b5223c7f18d",
-        "version" : "0.10.0"
+        "revision" : "d4b9a4e327ba07366d1f56464c1d6365b77418dd",
+        "version" : "0.11.0"
       }
     },
     {
