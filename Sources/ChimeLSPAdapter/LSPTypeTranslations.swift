@@ -70,6 +70,33 @@ extension TextEdit {
         return .lineRelativeRange(LineRelativeTextRange(range))
     }
 
+	/// Combine two TextEdit structures together, if they can be represented as a single edit.
+	public func merge(_ other: TextEdit) -> TextEdit? {
+		if range.start == other.range.end {
+			return TextEdit(
+				range: LSPRange(start: other.range.start, end: range.end),
+				newText: other.newText + newText
+			)
+		}
+
+		return nil
+	}
+
+	public func merge(_ others: [TextEdit]) -> (TextEdit, [TextEdit]) {
+		var current: TextEdit? = self
+		var list = others
+
+		while let otherEdit = list.first {
+			guard let newEdit = current?.merge(otherEdit) else {
+				break
+			}
+
+			current = newEdit
+			list.removeFirst()
+		}
+
+		return (current ?? self, list)
+	}
 }
 
 extension LSPRange {

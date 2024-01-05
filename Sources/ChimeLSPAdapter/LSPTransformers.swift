@@ -28,13 +28,15 @@ public struct LSPTransformers {
     public let symbolInformationTransformer: SymbolInformationTransformer
     public let semanticTokenTransformer: SemanticTokenTransformer
 
-    public init(completionTransformer: @escaping CompletionTransformer = LSPTransformers.standardCompletionTransformer,
-                textEditTransformer: @escaping TextEditTransformer = LSPTransformers.standardTextEditTransformer,
-                diagnosticTransformer: @escaping DiagnosticTransformer = LSPTransformers.standardDiagnosticTransformer,
-                hoverTransformer: @escaping HoverTransformer = LSPTransformers.standardHoverTransformer,
-                definitionTransformer: @escaping DefinitionTransformer = LSPTransformers.standardDefinitionTransformer,
-                symbolInformationTransformer: @escaping SymbolInformationTransformer = LSPTransformers.standardSymbolInformationTransformer,
-                semanticTokenTransformer: @escaping SemanticTokenTransformer = LSPTransformers.standardSemanticTokenTransformer) {
+	public init(
+		completionTransformer: @escaping CompletionTransformer = LSPTransformers.standardCompletionTransformer,
+		textEditTransformer: @escaping TextEditTransformer = LSPTransformers.standardTextEditTransformer,
+		diagnosticTransformer: @escaping DiagnosticTransformer = LSPTransformers.standardDiagnosticTransformer,
+		hoverTransformer: @escaping HoverTransformer = LSPTransformers.standardHoverTransformer,
+		definitionTransformer: @escaping DefinitionTransformer = LSPTransformers.standardDefinitionTransformer,
+		symbolInformationTransformer: @escaping SymbolInformationTransformer = LSPTransformers.standardSymbolInformationTransformer,
+		semanticTokenTransformer: @escaping SemanticTokenTransformer = LSPTransformers.standardSemanticTokenTransformer
+	) {
         self.completionTransformer = completionTransformer
         self.textEditTransformer = textEditTransformer
         self.diagnosticTransformer = diagnosticTransformer
@@ -115,7 +117,10 @@ extension LSPTransformers {
             displayString = item.label
         }
 
-        let range = edit?.textRange ?? fallbackRange
+		// this currently discards any additional edits that could not be applied, but at least it can handle some kinds
+		let resolvedEditPair = edit?.merge(item.additionalTextEdits ?? [])
+
+		let range = resolvedEditPair?.0.textRange ?? fallbackRange
         let fragments = Snippet(value: text).completionFragments
 
         return Completion(displayString: displayString, range: range, fragments: fragments)
