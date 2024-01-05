@@ -46,7 +46,7 @@ All of Chime's [extensions][extensions] are open source and we will **always** b
 
 ## Contributing and Collaboration
 
-I would love to hear from you! Issues or pull requests work great. A [Discord server][discord] is also available for live help, but I have a strong bias towards answering in the form of documenation.
+I would love to hear from you! Issues or pull requests work great. A [Discord server][discord] is also available for live help, but I have a strong bias towards answering in the form of documentation.
 
 I prefer collaboration, and would love to find ways to work together if you have a similar project.
 
