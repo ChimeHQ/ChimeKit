@@ -80,7 +80,7 @@ extension LSPDocumentService: DocumentService {
 		let params = DidChangeTextDocumentParams(textDocument: versionedId,
 												 contentChanges: events)
 
-		try await serverHostInterface.server.didChangeTextDocument(params: params)
+		try await serverHostInterface.server.textDocumentDidChange(params: params)
 	}
 
 	func didApplyChange(_ change: CombinedTextChange) throws {
@@ -119,7 +119,7 @@ extension LSPDocumentService: DocumentService {
 		serverHostInterface.enqueue(barrier: true) { server, _, _ in
 			let params = WillSaveTextDocumentParams(textDocument: id, reason: .manual)
 
-			try await server.willSaveTextDocument(params: params)
+			try await server.textDocumentWillSave(params: params)
 		}
 	}
 

@@ -5,7 +5,6 @@ import ChimeExtensionInterface
 import JSONRPC
 import LanguageClient
 import LanguageServerProtocol
-import LSPClient
 import Queue
 
 @MainActor
@@ -337,7 +336,7 @@ extension LSPProjectService: ApplicationService {
 			let item = try await docConnection.textDocumentItem
 
 			let params = DidOpenTextDocumentParams(textDocument: item)
-			try await server.didOpenTextDocument(params: params)
+			try await server.textDocumentDidOpen(params: params)
 		}
 	}
 
@@ -363,7 +362,7 @@ extension LSPProjectService: ApplicationService {
 			let id = try docContext.textDocumentIdentifier
 
 			let param = DidCloseTextDocumentParams(textDocument: id)
-			try await server.didCloseTextDocument(params: param)
+			try await server.textDocumentDidClose(params: param)
 		}
 	}
 
