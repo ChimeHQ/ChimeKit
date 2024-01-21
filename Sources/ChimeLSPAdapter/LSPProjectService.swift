@@ -263,7 +263,7 @@ extension LSPProjectService {
 		let params = DidChangeWatchedFilesParams(changes: [event])
 
 		serverHostInterface.enqueue(barrier: true) { server, _, _ in
-			try await server.workspaceDidChangeWatchedFiles(params: params)
+			try await server.workspaceDidChangeWatchedFiles(params)
 		}
 	}
 
@@ -336,7 +336,7 @@ extension LSPProjectService: ApplicationService {
 			let item = try await docConnection.textDocumentItem
 
 			let params = DidOpenTextDocumentParams(textDocument: item)
-			try await server.textDocumentDidOpen(params: params)
+			try await server.textDocumentDidOpen(params)
 		}
 	}
 
@@ -362,7 +362,7 @@ extension LSPProjectService: ApplicationService {
 			let id = try docContext.textDocumentIdentifier
 
 			let param = DidCloseTextDocumentParams(textDocument: id)
-			try await server.textDocumentDidClose(params: param)
+			try await server.textDocumentDidClose(param)
 		}
 	}
 
@@ -402,7 +402,7 @@ extension LSPProjectService: SymbolQueryService {
 			}
 
 			let params = WorkspaceSymbolParams(query: query)
-			let result = try await server.workspaceSymbol(params: params)
+			let result = try await server.workspaceSymbol(params)
 
 			return transformers.workspaceSymbolResponseTransformer(result)
 		}

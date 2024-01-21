@@ -38,8 +38,10 @@ extension ChimeExtension {
 		}
 	}
 
-	public var configuration: ConnectingAppExtensionConfiguration {
-		return globalConfiguration
+	public nonisolated var configuration: ConnectingAppExtensionConfiguration {
+		MainActor.runUnsafely {
+			return globalConfiguration
+		}
 	}
 }
 
@@ -53,8 +55,10 @@ public protocol SidebarChimeUIExtension<Scene>: ChimeExtension {
 
 @available(macOS 13.0, *)
 extension SidebarChimeUIExtension {
-    public var configuration: AppExtensionSceneConfiguration {
-		return AppExtensionSceneConfiguration(self.scene, configuration: globalConfiguration)
+	public nonisolated var configuration: AppExtensionSceneConfiguration {
+		MainActor.runUnsafely {
+			return AppExtensionSceneConfiguration(self.scene, configuration: globalConfiguration)
+		}
     }
 }
 
@@ -69,6 +73,8 @@ public protocol DocumentSyncedChimeUIExtension<Scene>: ChimeExtension {
 @available(macOS 13.0, *)
 extension DocumentSyncedChimeUIExtension {
 	public var configuration: AppExtensionSceneConfiguration {
-		return AppExtensionSceneConfiguration(self.scene, configuration: globalConfiguration)
+		MainActor.runUnsafely {
+			return AppExtensionSceneConfiguration(self.scene, configuration: globalConfiguration)
+		}
 	}
 }
