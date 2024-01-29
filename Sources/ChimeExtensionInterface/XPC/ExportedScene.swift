@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 final class ExportedScene<Scene: ExtensionSceneProtocol>: ExtensionSceneXPCProtocol {
     let scene: Scene
 

@@ -126,12 +126,12 @@ extension LSPDocumentService: DocumentService {
 	func didSave() throws {
 	}
 
-	var completionService: CompletionService? { return self }
-	var formattingService: FormattingService? { return self }
-	var semanticDetailsService: SemanticDetailsService? { return self }
-	var defintionService: DefinitionService?  { return self }
-	var tokenService: TokenService? { return self }
-	var symbolService: SymbolQueryService?  { return nil }
+	var completionService: (some CompletionService)? { return self }
+	var formattingService: (some FormattingService)? { return self }
+	var semanticDetailsService: (some SemanticDetailsService)? { return self }
+	var defintionService: (some DefinitionService)?  { return self }
+	var tokenService: (some TokenService)? { return self }
+	var symbolService: (some SymbolQueryService)?  { return nil as SymbolQueryServicePlaceholder? }
 }
 
 extension LSPDocumentService: CompletionService {

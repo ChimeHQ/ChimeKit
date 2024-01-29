@@ -13,5 +13,6 @@ public struct DefinitionLocation: Codable, Hashable, Sendable {
 }
 
 public protocol DefinitionService {
+	@MainActor
     func definitions(at position: CombinedTextPosition) async throws -> [DefinitionLocation]
 }

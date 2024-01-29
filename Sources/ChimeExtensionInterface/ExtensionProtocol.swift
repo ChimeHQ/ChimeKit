@@ -16,6 +16,14 @@ public enum ChimeExtensionError: Error {
 /// - Important: The **type** of a document can change. If your extension only operates on certain
 /// kinds of documents, be sure to pay attention the ``DocumentContext/uti`` property.
 public protocol DocumentService {
+	associatedtype TokenServiceType: TokenService
+	associatedtype CompletionServiceType: CompletionService
+	associatedtype FormattingServiceType: FormattingService
+	associatedtype SemanticDetailsServiceType: SemanticDetailsService
+	associatedtype DefinitionServiceType: DefinitionService
+	associatedtype SymbolQueryServiceType: SymbolQueryService
+
+
 	@MainActor
     func willApplyChange(_ change: CombinedTextChange) throws
 	@MainActor
@@ -26,17 +34,17 @@ public protocol DocumentService {
     func didSave() throws
 
 	@MainActor
-    var completionService: CompletionService? { get throws }
+    var completionService: CompletionServiceType? { get throws }
 	@MainActor
-    var formattingService: FormattingService? { get throws }
+    var formattingService: FormattingServiceType? { get throws }
 	@MainActor
-    var semanticDetailsService: SemanticDetailsService? { get throws }
+    var semanticDetailsService: SemanticDetailsServiceType? { get throws }
 	@MainActor
-    var defintionService: DefinitionService? { get throws }
+    var defintionService: DefinitionServiceType? { get throws }
 	@MainActor
-    var tokenService: TokenService? { get throws }
+    var tokenService: TokenServiceType? { get throws }
 	@MainActor
-    var symbolService: SymbolQueryService? { get throws }
+    var symbolService: SymbolQueryServiceType? { get throws }
 }
 
 /// Used to interface with the Chime application.
@@ -48,6 +56,9 @@ public protocol DocumentService {
 /// - Important: Do not make any assumptions about open/close order. A document may be opened
 /// **before** a project, and only associated later.
 public protocol ApplicationService {
+	associatedtype SymbolQueryServiceType: SymbolQueryService
+	associatedtype DocumentServiceType: DocumentService
+
 	/// Called when a project/directory is opened by the editor.
 	@MainActor
 	func didOpenProject(with context: ProjectContext) throws
@@ -62,19 +73,21 @@ public protocol ApplicationService {
 	func willCloseDocument(with context: DocumentContext) throws
 
 	@MainActor
-	func documentService(for context: DocumentContext) throws -> DocumentService?
+	func documentService(for context: DocumentContext) throws -> DocumentServiceType?
 
 	@MainActor
-	func symbolService(for context: ProjectContext) throws -> SymbolQueryService?
+	func symbolService(for context: ProjectContext) throws -> SymbolQueryServiceType?
 }
 
 /// Root functionality used to interface with the Chime extension system.
 public protocol ExtensionProtocol: AnyObject {
+	associatedtype AppService: ApplicationService
+
 	/// Static configuration used by the host.
 	@MainActor
 	var configuration: ExtensionConfiguration { get throws }
 
 	/// The core service that interfaces with the application.
 	@MainActor
-	var applicationService: ApplicationService { get throws }
+	var applicationService: AppService { get throws }
 }

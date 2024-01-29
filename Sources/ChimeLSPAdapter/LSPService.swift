@@ -138,11 +138,11 @@ extension LSPService: ApplicationService {
 		try connection(for: context)?.willCloseDocument(with: context)
 	}
 
-	public func documentService(for context: DocumentContext) throws -> DocumentService? {
+	public func documentService(for context: DocumentContext) throws -> (some DocumentService)? {
 		try connection(for: context)?.documentService(for: context)
 	}
 
-	public func symbolService(for context: ProjectContext) throws -> SymbolQueryService? {
+	public func symbolService(for context: ProjectContext) throws -> (some SymbolQueryService)? {
 		// error - we need to know about all projects
 		guard let conn = projectServices[context.url] else {
 			throw LSPServiceError.noProjectConnection(context.url)

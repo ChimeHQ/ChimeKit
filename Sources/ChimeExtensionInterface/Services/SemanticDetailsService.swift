@@ -35,5 +35,6 @@ extension SemanticDetails: Codable {}
 extension SemanticDetails: Sendable {}
 
 public protocol SemanticDetailsService {
+	@MainActor
     func semanticDetails(at position: CombinedTextPosition) async throws -> SemanticDetails?
 }

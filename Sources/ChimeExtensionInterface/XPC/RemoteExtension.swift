@@ -97,7 +97,7 @@ extension RemoteExtension: ApplicationService {
 		}
 	}
 
-	public func documentService(for context: DocumentContext) throws -> DocumentService? {
+	public func documentService(for context: DocumentContext) throws -> (some DocumentService)? {
 		if let service = self.docServices[context.id] {
 			return service
 		}
@@ -109,7 +109,7 @@ extension RemoteExtension: ApplicationService {
 		return service
 	}
 
-	public func symbolService(for context: ProjectContext) throws -> SymbolQueryService? {
+	public func symbolService(for context: ProjectContext) throws -> (some SymbolQueryService)? {
 		return RemoteProjectService(queuedService: queuedService, context: context)
 	}
 }

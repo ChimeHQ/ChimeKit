@@ -50,27 +50,27 @@ extension RemoteDocumentService: DocumentService {
 		}
     }
 
-    public var completionService: CompletionService? {
+    public var completionService: (some CompletionService)? {
         get throws { return self }
     }
 
-    public var formattingService: FormattingService? {
+    public var formattingService: (some FormattingService)? {
         get throws { return self }
     }
 
-    public var semanticDetailsService: SemanticDetailsService? {
+    public var semanticDetailsService: (some SemanticDetailsService)? {
         get throws { return self }
     }
 
-    public var defintionService: DefinitionService? {
+    public var defintionService: (some DefinitionService)? {
         get throws { return self }
     }
 
-    public var tokenService: TokenService? {
+    public var tokenService: (some TokenService)? {
         get throws { return self }
     }
 
-    public var symbolService: SymbolQueryService? {
+    public var symbolService: (some SymbolQueryService)? {
         get throws { return self }
     }
 }

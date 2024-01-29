@@ -25,5 +25,6 @@ public enum CompletionTrigger: Codable, Hashable, Sendable {
 }
 
 public protocol CompletionService {
+	@MainActor
     func completions(at position: CombinedTextPosition, trigger: CompletionTrigger) async throws -> [Completion]
 }

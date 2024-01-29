@@ -11,5 +11,6 @@ public struct Token: Codable, Hashable, Sendable {
 }
 
 public protocol TokenService {
+	@MainActor
     func tokens(in range: CombinedTextRange) async throws -> [Token]
 }

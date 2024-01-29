@@ -23,5 +23,6 @@ public struct Symbol: Codable, Hashable, Sendable {
 }
 
 public protocol SymbolQueryService {
+	@MainActor
     func symbols(matching query: String) async throws -> [Symbol]
 }

@@ -24,7 +24,7 @@ extension StandaloneExtension: ExtensionProtocol {
 		}
 	}
 
-	public var applicationService: ApplicationService {
+	public var applicationService: some ApplicationService {
 		get throws {
 			guard let wrappedExtension else { throw ChimeExtensionError.noHostConnection }
 			

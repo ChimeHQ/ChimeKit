@@ -366,7 +366,7 @@ extension LSPProjectService: ApplicationService {
 		}
 	}
 
-	func documentService(for docContext: DocumentContext) throws -> DocumentService? {
+	func documentService(for docContext: DocumentContext) throws -> (some DocumentService)? {
 		let id = docContext.id
 		let conn = documentConnections[id]
 
@@ -378,7 +378,7 @@ extension LSPProjectService: ApplicationService {
 		return conn
 	}
 
-	func symbolService(for context: ProjectContext) throws -> SymbolQueryService? {
+	func symbolService(for context: ProjectContext) throws -> (some SymbolQueryService)? {
 		self
 	}
 }

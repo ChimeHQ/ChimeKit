@@ -9,7 +9,7 @@ final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPCProtoco
     private let bridgedObject: Extension
     private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "ExportedExtension")
 	private let queuedRelay: QueuedRelay
-    private var documentServices = [DocumentIdentity: DocumentService]()
+    private var documentServices = [DocumentIdentity: any DocumentService]()
 	private let host: RemoteHost
 
 	init(_ object: Extension, host: RemoteHost) {
@@ -18,13 +18,13 @@ final class ExportedExtension<Extension: ExtensionProtocol>: ExtensionXPCProtoco
 		self.queuedRelay = QueuedRelay(attributes: [.concurrent])
     }
 
-	private var appService: ApplicationService {
+	private var appService: some ApplicationService {
 		get throws  {
 			try bridgedObject.applicationService
 		}
 	}
 
-	private func documentService(for xpcContext: XPCDocumentContext) throws -> DocumentService? {
+	private func documentService(for xpcContext: XPCDocumentContext) throws -> (some DocumentService)? {
 		let context = try JSONDecoder().decode(DocumentContext.self, from: xpcContext)
 		return try appService.documentService(for: context)
 	}
