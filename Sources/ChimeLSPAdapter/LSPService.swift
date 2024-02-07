@@ -23,9 +23,14 @@ public enum LSPServiceError: Error {
 public final class LSPService {
     public typealias ExecutionParamsProvider = () async throws -> Process.ExecutionParameters
 
+	public enum Execution {
+		case hosted(ExecutionParamsProvider)
+		case hostedWithUserShell(ExecutionParamsProvider)
+		case unixScript(path: String, arguments: [String])
+	}
+
     private let serverOptions: any Codable
-    private let executionParamsProvider: ExecutionParamsProvider
-	private let runInUserShell: Bool
+	private let execution: Execution
     private var projectServices: [URL: LSPProjectService]
 	private let logger = Logger(subsystem: "com.chimehq.ChimeKit", category: "LSPService")
 
@@ -35,6 +40,19 @@ public final class LSPService {
 	/// Write raw LSP messages to the console.
 	public let logMessages: Bool
 
+	public init(host: HostProtocol,
+				serverOptions: any Codable = [:] as [String: String],
+				transformers: LSPTransformers = .init(),
+				execution: Execution,
+				logMessages: Bool = false) {
+		self.host = host
+		self.transformers = transformers
+		self.projectServices = [:]
+		self.serverOptions = serverOptions
+		self.execution = execution
+		self.logMessages = logMessages
+	}
+
 	/// Create an LSPService object.
 	///
 	/// - Parameter host: The `HostProtocol`-conforming object the service will communicate with.
@@ -43,19 +61,21 @@ public final class LSPService {
 	/// - Parameter executionParamsProvider: A function that produces the configuration required to launch the language server
 	/// - Parameter runInUserShell: run the server within the user's shell environment
 	/// - Parameter logMessages: log the raw JSON-RPC messages to and from the server
-	public init(host: HostProtocol,
+	public convenience init(host: HostProtocol,
 				serverOptions: any Codable = [:] as [String: String],
 				transformers: LSPTransformers = .init(),
 				executionParamsProvider: @escaping ExecutionParamsProvider,
 				runInUserShell: Bool = false,
 				logMessages: Bool = false) {
-		self.host = host
-		self.transformers = transformers
-		self.projectServices = [:]
-		self.serverOptions = serverOptions
-		self.executionParamsProvider = executionParamsProvider
-		self.runInUserShell = runInUserShell
-		self.logMessages = logMessages
+		let execution = runInUserShell ? Execution.hostedWithUserShell(executionParamsProvider) : Execution.hosted(executionParamsProvider)
+
+		self.init(
+			host: host,
+			serverOptions: serverOptions,
+			transformers: transformers,
+			execution: execution,
+			logMessages: logMessages
+		)
 	}
 
 	/// Create an LSPService object.
@@ -106,13 +126,14 @@ extension LSPService: ApplicationService {
 		logger.info("Opening project at \(url, privacy: .public)")
 		precondition(projectServices[url] == nil)
 
-		let conn = LSPProjectService(context: context,
-									 host: host,
-									 serverOptions: serverOptions,
-									 transformers: transformers,
-									 executionParamsProvider: executionParamsProvider,
-									 runInUserShell: runInUserShell,
-									 logMessages: logMessages)
+		let conn = LSPProjectService(
+			context: context,
+			host: host,
+			serverOptions: serverOptions,
+			transformers: transformers,
+			execution: execution,
+			logMessages: logMessages
+		)
 
 		self.projectServices[url] = conn
 	}
