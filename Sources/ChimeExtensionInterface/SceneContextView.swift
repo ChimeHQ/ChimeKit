@@ -19,11 +19,11 @@ extension SceneContextViewModel: ExtensionSceneProtocol {
 }
 
 public struct DocumentContextKey: EnvironmentKey {
-	public static var defaultValue: DocumentContext? = nil
+	public static let defaultValue: DocumentContext? = nil
 }
 
 public struct ProjectContextKey: EnvironmentKey {
-    public static var defaultValue: ProjectContext? = nil
+	public static let defaultValue: ProjectContext? = nil
 }
 
 public extension EnvironmentValues {
