@@ -124,5 +124,5 @@ typealias XPCExecutionParamters = Data
 /// Scene Host XPC API
 @objc protocol ExtensionSceneHostXPCProtocol {
 	@MainActor
-    func textBounds(xpcRanges: XPCArray<XPCTextRange>, version: Int, reply: @escaping (XPCArray<NSRect>?, Error?) -> Void)
+	func textBounds(xpcRanges: XPCArray<XPCTextRange>, version: Int, reply: @escaping (XPCArray<CGRect>?, Error?) -> Void)
 }

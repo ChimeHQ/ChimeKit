@@ -5,7 +5,9 @@ import UniformTypeIdentifiers
 import ChimeExtensionInterface
 import LanguageClient
 import LanguageServerProtocol
+#if canImport(ProcessEnv)
 import ProcessEnv
+#endif
 
 public enum LSPServiceError: Error {
     case unsupported
@@ -78,6 +80,7 @@ public final class LSPService {
 		)
 	}
 
+	#if os(macOS)
 	/// Create an LSPService object.
 	///
 	/// - Parameter host: The `HostProtocol`-conforming object the service will communicate with.
@@ -101,6 +104,7 @@ public final class LSPService {
 				  executionParamsProvider: provider,
 				  logMessages: logMessages)
 	}
+#endif
 
     private func connection(for context: DocumentContext) -> LSPProjectService? {
         guard let projContext = context.projectContext else {
@@ -176,6 +180,7 @@ extension LSPService: ApplicationService {
 extension LSPService {
 	/// Search the user's PATH for an executable
 	public static func pathExecutableParamsProvider(name: String, host: HostProtocol) async throws -> Process.ExecutionParameters {
+#if os(macOS)
 		let userEnv = try await host.captureUserEnvironment()
 
 		let whichParams = Process.ExecutionParameters(path: "/usr/bin/which", arguments: [name], environment: userEnv)
@@ -190,5 +195,8 @@ extension LSPService {
 		let path = output.trimmingCharacters(in: .whitespacesAndNewlines)
 
 		return .init(path: path, environment: userEnv)
+#else
+		throw LSPServiceError.unsupported
+#endif
 	}
 }

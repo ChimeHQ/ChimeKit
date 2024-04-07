@@ -1,6 +1,8 @@
 import Foundation
 
+#if canImport(ProcessEnv)
 import ProcessEnv
+#endif
 
 /// Export a `HostProtocol`-conforming type over XPC.
 ///

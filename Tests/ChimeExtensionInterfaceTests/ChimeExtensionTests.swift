@@ -1,7 +1,9 @@
 import XCTest
 
 import ChimeExtensionInterface
+#if canImport(ProcessEnv)
 import ProcessEnv
+#endif
 
 @available(macOS 13.0, *)
 final class ExampleNonUIExtension: ChimeExtension {
@@ -53,7 +55,7 @@ final class MockHost: HostProtocol {
         return ("", 1)
     }
 
-    func textBounds(for documentId: DocumentIdentity, in ranges: [ChimeExtensionInterface.TextRange], version: Int) async throws -> [NSRect] {
+    func textBounds(for documentId: DocumentIdentity, in ranges: [ChimeExtensionInterface.TextRange], version: Int) async throws -> [CGRect] {
         return []
     }
 

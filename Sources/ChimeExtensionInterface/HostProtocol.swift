@@ -1,6 +1,8 @@
 import Foundation
 
+#if canImport(ProcessEnv)
 import ProcessEnv
+#endif
 
 /// Application-level functionality provided by Chime to extensions.
 ///
@@ -16,7 +18,7 @@ public protocol HostProtocol {
     func textContent(for documentId: DocumentIdentity, in range: TextRange) async throws -> CombinedTextContent
 
 	@MainActor
-    func textBounds(for documentId: DocumentIdentity, in ranges: [TextRange], version: Int) async throws -> [NSRect]
+    func textBounds(for documentId: DocumentIdentity, in ranges: [TextRange], version: Int) async throws -> [CGRect]
 
 	@MainActor
     func publishDiagnostics(_ diagnostics: [Diagnostic], for documentURL: URL, version: Int?)

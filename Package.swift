@@ -1,10 +1,14 @@
-// swift-tools-version: 5.8
+// swift-tools-version: 5.9
 
 import PackageDescription
 
 let package = Package(
 	name: "ChimeKit",
-	platforms: [.macOS(.v11)],
+	platforms: [
+		.macOS(.v11),
+		.iOS(.v16),
+		.visionOS(.v1),
+	],
 	products: [
 		.library(name: "ChimeExtensionInterface", targets: ["ChimeExtensionInterface"]),
 		.library(name: "ChimeLSPAdapter", targets: ["ChimeLSPAdapter"]),
@@ -29,14 +33,14 @@ let package = Package(
 		.testTarget(name: "ChimeExtensionInterfaceTests",
 					dependencies: [
 						"ChimeExtensionInterface",
-						"ProcessEnv",
+						.product(name: "ProcessEnv", package: "ProcessEnv", condition: .when(platforms: [.macOS])),
 					]),
 		.target(name: "ChimeLSPAdapter",
 				dependencies: [
 					"LanguageClient",
 					"LanguageServerProtocol",
 					"ChimeExtensionInterface",
-					"ProcessEnv",
+					.product(name: "ProcessEnv", package: "ProcessEnv", condition: .when(platforms: [.macOS])),
 					"Queue",
 					"JSONRPC",
 				]),

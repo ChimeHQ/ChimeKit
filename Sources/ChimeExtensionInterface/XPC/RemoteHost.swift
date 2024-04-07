@@ -49,8 +49,8 @@ extension RemoteHost: HostProtocol {
 		}
     }
 
-    public func textBounds(for documentId: DocumentIdentity, in ranges: [TextRange], version: Int) async throws -> [NSRect] {
-        let xpcRanges = try JSONEncoder().encode(ranges)
+    public func textBounds(for documentId: DocumentIdentity, in ranges: [TextRange], version: Int) async throws -> [CGRect] {
+		let xpcRanges = try JSONEncoder().encode(ranges)
 
 		return try await queuedService.addDecodingOperation(barrier: true) { service, handler in
 			service.textBounds(for: documentId, xpcRanges: xpcRanges, version: version, reply: handler)
@@ -81,7 +81,7 @@ extension RemoteHost: HostProtocol {
 			service.serviceConfigurationChanged(for: documentId, to: xpcConfig)
 		}
 	}
-	
+
 	public func launchProcess(with parameters: Process.ExecutionParameters, inUserShell: Bool) async throws -> LaunchedProcess {
 		let process = try await queuedService.addValueErrorOperation { service, handler in
 			let xpcParams = try! JSONEncoder().encode(parameters)

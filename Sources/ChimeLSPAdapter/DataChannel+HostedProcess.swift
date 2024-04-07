@@ -2,6 +2,7 @@ import Foundation
 
 import ChimeExtensionInterface
 import JSONRPC
+#if os(macOS)
 import ProcessEnv
 import LanguageServerProtocol
 
@@ -51,3 +52,4 @@ extension DataChannel {
 						   dataSequence: stream)
 	}
 }
+#endif

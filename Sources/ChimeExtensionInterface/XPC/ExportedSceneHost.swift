@@ -7,9 +7,9 @@ final class ExportedSceneHost<Host: ExtensionSceneHostProtocol>: ExtensionSceneH
         self.host = host
     }
 
-    func textBounds(xpcRanges: XPCArray<XPCTextRange>, version: Int, reply: @escaping (XPCArray<NSRect>?, Error?) -> Void) {
+	func textBounds(xpcRanges: XPCArray<XPCTextRange>, version: Int, reply: @escaping (XPCArray<CGRect>?, Error?) -> Void) {
 		do {
-			let rects = try JSONEncoder().encode([] as [NSRect])
+			let rects = try JSONEncoder().encode([] as [CGRect])
 
 			reply(rects, nil)
 		} catch {

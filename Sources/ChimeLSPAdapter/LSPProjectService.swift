@@ -99,6 +99,7 @@ extension LSPProjectService {
 			throw LSPServiceError.unsupported
 		}
 
+#if os(macOS)
 		switch execution {
 		case let .hosted(provider):
 			let params = try await provider()
@@ -125,6 +126,14 @@ extension LSPProjectService {
 				terminationHandler: { [weak self] in self?.nonisolatedConnectionInvalidated($0) }
 			)
 		}
+#else
+		return DataChannel(writeHandler: {
+			data in
+				throw LSPServiceError.unsupported
+			},
+			dataSequence: DataChannel.DataSequence(unfolding: { nil })
+		)
+#endif
 	}
 
 	private func loggingChannel(_ channel: DataChannel) -> DataChannel {
@@ -246,14 +255,17 @@ extension LSPProjectService {
 			logger.info("Server registration: \(registration.method.rawValue, privacy: .public)")
 
 			switch registration {
+#if os(macOS)
 			case let .workspaceDidChangeWatchedFiles(options):
 				setupFileWatchers(options.watchers)
+#endif
 			default:
 				break
 			}
 		}
 	}
 
+#if os(macOS)
 	private func setupFileWatchers(_ watchers: [FileSystemWatcher]) {
 		self.fileEventTasks = watchers.compactMap {
 			do {
@@ -271,8 +283,8 @@ extension LSPProjectService {
 				}
 			}
 		}
-
 	}
+#endif
 
 	private func handleFileEvent(_ event: FileEvent) {
 		let params = DidChangeWatchedFilesParams(changes: [event])
