@@ -103,7 +103,15 @@ extension LSPTransformers {
 
 extension LSPTransformers {
     public static let standardCompletionTransformer: CompletionTransformer = { fallbackRange, item in
-        let edit = item.textEdit
+		// This is a little bit of a hack to keep things working. Teally needs to be revisited.
+		let edit = item.textEdit.map { twoType in
+			switch twoType {
+			case let .optionA(textEdit):
+				textEdit
+			case let .optionB(insertReplaceEdit):
+				TextEdit(range: insertReplaceEdit.replace, newText: insertReplaceEdit.newText)
+			}
+		}
 
         guard let text = edit?.newText ?? item.insertText else {
             return nil
