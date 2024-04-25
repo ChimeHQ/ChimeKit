@@ -34,7 +34,7 @@ final class LSPTransformersTests: XCTestCase {
 		let lspCompletion = CompletionItem(
 			label: "",
 			insertText: nil,
-			textEdit: TextEdit(range: editRange, newText: "stuff = append(stuff, $0)"),
+			textEdit: .optionA(TextEdit(range: editRange, newText: "stuff = append(stuff, $0)")),
 			additionalTextEdits: [
 				TextEdit(range: additionalEditRange, newText: "")
 			]
