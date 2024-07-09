@@ -29,6 +29,7 @@ public extension UTType {
 	static let latexSource = UTType(importedAs: "org.latex-project.latex")
     static let luaSource = UTType(importedAs: "org.lua.source")
 	static let markdown = UTType(importedAs: "net.daringfireball.markdown")
+	static let ocamlInterface = UTType(importedAs: "org.ocaml.ocaml-interface")
 	static let ocamlSource = UTType(importedAs: "org.ocaml.ocaml")
 	static let pascalSource = UTType(importedAs: "public.pascal-source")
 	static let patchFile = UTType(importedAs: "public.patch-file")
